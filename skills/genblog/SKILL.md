@@ -19,6 +19,20 @@ editorial gate decides publishability
 
 Do not let search results or an LLM overwrite campaign claims automatically.
 
+## Style System
+
+GenBlog supports multiple personas over time. The default is `lexington_humanized_affiliate_v1`:
+
+- Stay neutral and affiliate-friendly.
+- Write like a careful human analyst, not a corporate review page.
+- Prioritize users who may open an account through an affiliate link.
+- Show real data first: realistic bonus, deposit, trading volume, fee/onramp friction.
+- Use MoneyHero-style comparison tables with clear "better fit" rows.
+- Use honest CTAs such as `Claim the bonus`, but only after requirements are visible.
+- Avoid stacked adjectives and AI-polished phrases. Prefer numbers and caveats.
+
+SEO intro rule: do not write a generic intro just to target keywords. Use at most one short context sentence, then give the verdict.
+
 ## Standard Workflow
 
 1. Load campaign data from JSON or the current pipeline-compatible source.

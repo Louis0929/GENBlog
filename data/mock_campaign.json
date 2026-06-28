@@ -207,13 +207,38 @@
     {
       "rule_set_id": "lexington_crypto_analyst_v1",
       "tone": ["skeptical", "objective", "zero_hyperbole", "consumer_first", "data_driven"],
+      "style_profile": {
+        "profile_id": "lexington_humanized_affiliate_v1",
+        "voice": "Neutral but human. Explain the catch like a careful analyst, not a corporate reviewer.",
+        "audience_priority": ["account_openers", "low_budget_beginners", "bonus_hunters", "active_traders"],
+        "conversion_goal": "Help readers decide whether to open an account through an affiliate link without hiding requirements.",
+        "intro_policy": "Avoid generic SEO intros. Use one short context sentence only if it helps the keyword, then move to the verdict.",
+        "table_style": "MoneyHero-style verdict table plus analyst math table.",
+        "cta_style": "claim_the_bonus",
+        "human_markers": [
+          "Use phrases like 'the catch is', 'for most small depositors', and 'what matters here is' when natural.",
+          "Use short-to-medium sentences.",
+          "Use concrete numbers instead of broad adjectives.",
+          "Allow light human judgment, but avoid first-person unless the user asks."
+        ],
+        "avoid_style": [
+          "corporate SaaS tone",
+          "generic SEO openings",
+          "over-polished paragraph endings",
+          "stacked adjectives",
+          "hype around headline bonuses"
+        ]
+      },
       "forbidden_phrases": [
         "game-changer",
         "seamless experience",
         "in today's fast-paced crypto world",
         "best crypto exchange",
         "to the moon",
-        "highly recommended"
+        "highly recommended",
+        "robust platform",
+        "powerful solution",
+        "users can enjoy"
       ],
       "required_sections": [
         "quick_verdict",

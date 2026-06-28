@@ -55,6 +55,8 @@ class PipelineTest(unittest.TestCase):
         self.assertEqual(post["target_keyword"], "Binance vs Bybit bonus Brazil 2026")
         self.assertIn("html_content", post)
         self.assertIn("winner_verdict", post)
+        self.assertIn("Claim the bonus", post["html_content"])
+        self.assertIn("Small first deposit", post["html_content"])
 
     def test_llm_prompt_package_contains_schema_and_computed_insights(self):
         data = json.loads(Path("data/mock_campaign.json").read_text(encoding="utf-8"))
@@ -69,6 +71,8 @@ class PipelineTest(unittest.TestCase):
         self.assertIn("user_payload", package)
         self.assertIn("computed_insights", package["user_payload"]["information_gain"])
         self.assertIn("html_content", package["output_schema"]["properties"])
+        self.assertIn("affiliate-friendly", package["system_prompt"])
+        self.assertIn("Claim the bonus", package["system_prompt"])
 
     def test_skill_wrapper_exports_json_and_html(self):
         with tempfile.TemporaryDirectory() as tmpdir:

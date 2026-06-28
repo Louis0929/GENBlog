@@ -22,6 +22,33 @@
       "consumer_first",
       "data_driven"
     ],
+    "style_profile": {
+      "profile_id": "lexington_humanized_affiliate_v1",
+      "voice": "Neutral but human. Explain the catch like a careful analyst, not a corporate reviewer.",
+      "audience_priority": [
+        "account_openers",
+        "low_budget_beginners",
+        "bonus_hunters",
+        "active_traders"
+      ],
+      "conversion_goal": "Help readers decide whether to open an account through an affiliate link without hiding requirements.",
+      "intro_policy": "Avoid generic SEO intros. Use one short context sentence only if it helps the keyword, then move to the verdict.",
+      "table_style": "MoneyHero-style verdict table plus analyst math table.",
+      "cta_style": "claim_the_bonus",
+      "human_markers": [
+        "Use phrases like 'the catch is', 'for most small depositors', and 'what matters here is' when natural.",
+        "Use short-to-medium sentences.",
+        "Use concrete numbers instead of broad adjectives.",
+        "Allow light human judgment, but avoid first-person unless the user asks."
+      ],
+      "avoid_style": [
+        "corporate SaaS tone",
+        "generic SEO openings",
+        "over-polished paragraph endings",
+        "stacked adjectives",
+        "hype around headline bonuses"
+      ]
+    },
     "rules": [
       "Do not repeat a headline bonus without explicitly stating its required deposit and trading volume.",
       "Every fee or bonus claim must be source-backed, dated, and qualified if requirements or expiry terms are unclear.",
@@ -34,7 +61,10 @@
       "in today's fast-paced crypto world",
       "best crypto exchange",
       "to the moon",
-      "highly recommended"
+      "highly recommended",
+      "robust platform",
+      "powerful solution",
+      "users can enjoy"
     ]
   },
   "platforms": {
@@ -268,6 +298,7 @@
         "spot_fee": "0.1% Maker/Taker",
         "fiat_onramp": "pix",
         "fiat_onramp_fee": "Free / Zero Fees",
+        "affiliate_url": "https://accounts.binance.com/register?ref=BESTBONUS",
         "source_urls": [
           "https://www.binance.com/en/activity/referral",
           "https://www.binance.com/en/fee/trading",
@@ -285,6 +316,7 @@
         "spot_fee": "0.1% Maker/Taker",
         "fiat_onramp": "pix",
         "fiat_onramp_fee": "Zero Fees",
+        "affiliate_url": "https://www.bybit.com/register?affiliate_id=93065",
         "source_urls": [
           "https://www.bybit.com/en/promo/global-deposit-blastoff",
           "https://www.bybit.com/en/help-center/article/Trading-Fee-Structure",
@@ -312,9 +344,12 @@
     ],
     "must_do": [
       "Lead with a practical verdict.",
+      "Keep the tone neutral, human, and affiliate-friendly.",
       "Do not repeat headline bonuses without requirements.",
       "Explain realistic value before headline value.",
       "Qualify claims with sources and dates when possible.",
+      "Use MoneyHero-style comparison tables where possible.",
+      "Use a clear but honest CTA such as 'Claim the bonus'.",
       "Do not use hype or generic SEO filler."
     ]
   }

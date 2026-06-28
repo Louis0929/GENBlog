@@ -63,6 +63,7 @@ def build_writer_brief(bundle: ComparisonBundle, info: InformationGain) -> JsonD
         "persona": {
             "name": "The Lexington Crypto-Analyst",
             "tone": bundle.editorial_rules.get("tone", []),
+            "style_profile": bundle.editorial_rules.get("style_profile", {}),
             "rules": bundle.editorial_rules.get("claim_rules", []),
             "forbidden_phrases": bundle.editorial_rules.get("forbidden_phrases", []),
         },
@@ -94,9 +95,12 @@ def build_writer_brief(bundle: ComparisonBundle, info: InformationGain) -> JsonD
             "required_sections": bundle.editorial_rules.get("required_sections", []),
             "must_do": [
                 "Lead with a practical verdict.",
+                "Keep the tone neutral, human, and affiliate-friendly.",
                 "Do not repeat headline bonuses without requirements.",
                 "Explain realistic value before headline value.",
                 "Qualify claims with sources and dates when possible.",
+                "Use MoneyHero-style comparison tables where possible.",
+                "Use a clear but honest CTA such as 'Claim the bonus'.",
                 "Do not use hype or generic SEO filler.",
             ],
         },
@@ -170,6 +174,7 @@ def _comparison_row(bundle: PlatformBundle, metrics: PlatformMetrics) -> JsonDic
         "spot_fee": fee.get("fee_display"),
         "fiat_onramp": fiat.get("rail"),
         "fiat_onramp_fee": fiat.get("fee_display"),
+        "affiliate_url": bundle.platform.get("affiliate_program", {}).get("affiliate_url"),
         "source_urls": _source_urls(bundle),
     }
 

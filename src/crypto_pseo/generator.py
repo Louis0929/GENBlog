@@ -84,6 +84,7 @@ def _html_content(
     metrics_b: JsonDict,
     winner_verdict: str,
 ) -> str:
+    verdict_rows = _verdict_rows(table, metrics_a, metrics_b)
     rows = "\n".join(
         [
             "<tr>"
@@ -95,6 +96,7 @@ def _html_content(
             f"<td>{_pct(row['realistic_bonus_roi'])}</td>"
             f"<td>{escape(str(row.get('spot_fee') or 'Not provided'))}</td>"
             f"<td>{escape(str(row.get('fiat_onramp') or 'Not provided'))}: {escape(str(row.get('fiat_onramp_fee') or 'Not provided'))}</td>"
+            f"<td>{_cta_link(row)}</td>"
             "</tr>"
             for row in table
         ]
@@ -102,6 +104,16 @@ def _html_content(
     source_links = _source_links(table)
     return f"""<h2>Quick Verdict</h2>
 <p>{escape(winner_verdict)}</p>
+<p>The catch is simple: the bigger advertised number is not always the better opening-account deal. For most small depositors, what matters here is the realistic reward after deposit and trading requirements.</p>
+
+<table>
+<thead>
+<tr><th>Use case</th><th>Better fit</th><th>Reason</th></tr>
+</thead>
+<tbody>
+{verdict_rows}
+</tbody>
+</table>
 
 <h2>Headline vs Realistic Bonus</h2>
 <p>{escape(table[0]['platform'])} advertises {escape(table[0]['headline_offer'])}, but the realistic value used in this comparison is ${table[0]['realistic_value_usdt']:,.0f}. {escape(table[1]['platform'])} advertises {escape(table[1]['headline_offer'])}, but the realistic entry value used here is ${table[1]['realistic_value_usdt']:,.0f}.</p>
@@ -114,7 +126,7 @@ def _html_content(
 
 <table>
 <thead>
-<tr><th>Platform</th><th>Headline offer</th><th>Realistic value</th><th>Entry deposit</th><th>Trade volume hurdle</th><th>Realistic ROI</th><th>Spot fee</th><th>{escape(job['region'].title())} fiat onramp</th></tr>
+<tr><th>Platform</th><th>Headline offer</th><th>Realistic value</th><th>Entry deposit</th><th>Trade volume hurdle</th><th>Realistic ROI</th><th>Spot fee</th><th>{escape(job['region'].title())} fiat onramp</th><th>Action</th></tr>
 </thead>
 <tbody>
 {rows}
@@ -127,9 +139,9 @@ def _html_content(
 
 <h2>Who Should Choose Each</h2>
 <h3>Choose {escape(table[0]['platform'])} if</h3>
-<p>You are a low-budget user who cares more about realistic unlock requirements than maximum advertised bonus numbers.</p>
+<p>You are opening a first account, using a smaller deposit, and care more about realistic unlock requirements than maximum advertised bonus numbers. {_inline_cta(table[0])}</p>
 <h3>Choose {escape(table[1]['platform'])} if</h3>
-<p>You are comfortable with a larger deposit and can realistically satisfy the required trading volume without overtrading just to chase a reward.</p>
+<p>You are comfortable with a larger deposit and can realistically satisfy the required trading volume without overtrading just to chase a reward. {_inline_cta(table[1])}</p>
 
 <h2>Source Notes</h2>
 <p>Claims should be rechecked before publishing because crypto bonuses, fiat rails, and fee schedules can change quickly.</p>
@@ -144,6 +156,23 @@ def _winner_verdict(brief: JsonDict) -> str:
     return (
         f"{info['low_budget_winner']} is the cleaner choice for low-budget users because it has the stronger realistic bonus ROI "
         f"and lower entry deposit. {table[1]['platform']} may still appeal to users who can satisfy its larger deposit and trading-volume requirement."
+    )
+
+
+def _verdict_rows(table: list[JsonDict], metrics_a: JsonDict, metrics_b: JsonDict) -> str:
+    platform_a = table[0]["platform"]
+    platform_b = table[1]["platform"]
+    low_deposit = platform_a if metrics_a["required_deposit_usdt"] <= metrics_b["required_deposit_usdt"] else platform_b
+    higher_bonus = platform_a if metrics_a["realistic_value_usdt"] >= metrics_b["realistic_value_usdt"] else platform_b
+    better_roi = platform_a if (metrics_a["realistic_bonus_roi"] or 0) >= (metrics_b["realistic_bonus_roi"] or 0) else platform_b
+    rows = [
+        ("Small first deposit", low_deposit, "Lower entry deposit and less bonus friction."),
+        ("Highest realistic bonus", higher_bonus, "Higher realistic reward, before considering effort and capital lock-up."),
+        ("Best bonus ROI", better_roi, "Better reward relative to the required deposit."),
+    ]
+    return "\n".join(
+        f"<tr><td>{escape(use_case)}</td><td>{escape(winner)}</td><td>{escape(reason)}</td></tr>"
+        for use_case, winner, reason in rows
     )
 
 
@@ -180,6 +209,20 @@ def _source_links(table: list[JsonDict]) -> str:
         urls.extend(row.get("source_urls", []))
     unique_urls = list(dict.fromkeys(urls))
     return "\n".join(f'<li><a href="{escape(url)}">{escape(url)}</a></li>' for url in unique_urls)
+
+
+def _cta_link(row: JsonDict) -> str:
+    affiliate_url = row.get("affiliate_url")
+    if not affiliate_url:
+        return "Check current offer"
+    return f'<a href="{escape(affiliate_url)}" rel="sponsored nofollow">Claim the bonus</a>'
+
+
+def _inline_cta(row: JsonDict) -> str:
+    affiliate_url = row.get("affiliate_url")
+    if not affiliate_url:
+        return "Check the current offer terms before signing up."
+    return f'<a href="{escape(affiliate_url)}" rel="sponsored nofollow">Claim the bonus</a> after checking the current terms.'
 
 
 def _missing_source_urls(post: JsonDict, brief: JsonDict) -> list[str]:

@@ -59,12 +59,30 @@ def build_llm_prompt_package(brief: JsonDict) -> JsonDict:
 
 def _system_prompt(brief: JsonDict) -> str:
     persona = brief["persona"]
+    style_profile = persona.get("style_profile", {})
     forbidden = "\n".join(f"- {phrase}" for phrase in persona.get("forbidden_phrases", []))
     rules = "\n".join(f"- {rule}" for rule in persona.get("rules", []))
+    human_markers = "\n".join(f"- {rule}" for rule in style_profile.get("human_markers", []))
+    avoid_style = "\n".join(f"- {rule}" for rule in style_profile.get("avoid_style", []))
     required_sections = "\n".join(f"- {section.replace('_', ' ')}" for section in brief["editorial_gate"].get("required_sections", []))
     return f"""You are {persona['name']}.
 
-Write as a skeptical crypto analyst: objective, consumer-first, data-driven, and zero-hyperbole.
+Write as a skeptical crypto analyst: objective, consumer-first, data-driven, affiliate-friendly, and zero-hyperbole.
+
+Voice profile:
+{style_profile.get("voice", "Neutral but human.")}
+
+Audience priority:
+{", ".join(style_profile.get("audience_priority", ["account_openers"]))}
+
+Conversion goal:
+{style_profile.get("conversion_goal", "Help readers decide whether to open an account through an affiliate link without hiding requirements.")}
+
+Human style markers:
+{human_markers}
+
+Avoid style:
+{avoid_style}
 
 Core rules:
 {rules}
@@ -75,7 +93,7 @@ Forbidden phrases:
 Required sections:
 {required_sections}
 
-Output only valid JSON matching BlogPostStructure. Do not wrap the JSON in Markdown. Do not invent facts, bonuses, fees, regions, or source URLs. Use the computed insights as the article's analytical spine."""
+Output only valid JSON matching BlogPostStructure. Do not wrap the JSON in Markdown. Do not invent facts, bonuses, fees, regions, or source URLs. Use the computed insights as the article's analytical spine. Put a clear 'Claim the bonus' CTA where it is useful, but keep the surrounding copy honest and requirements-aware."""
 
 
 def _user_payload(brief: JsonDict) -> JsonDict:
@@ -87,12 +105,15 @@ def _user_payload(brief: JsonDict) -> JsonDict:
         "required_output_schema": brief["required_output_schema"],
         "writing_requirements": [
             "Lead with the practical verdict.",
+            "Use a short context sentence only if it helps search intent, then move to the verdict.",
             "Treat headline bonuses as marketing until requirements are explained.",
             "Use realistic bonus value before headline value.",
-            "Include a comparison table in html_content.",
+            "Include a MoneyHero-style quick verdict table and an analyst math table in html_content.",
             "Include source notes or claim caveats in html_content.",
+            "Use the CTA text 'Claim the bonus' for affiliate links.",
             "Do not overstate certainty when a claim depends on promotion terms or expiry.",
             "Avoid generic SEO filler introductions.",
+            "Avoid stacked adjectives and corporate phrases; prefer concrete numbers.",
         ],
         "example_output_shape": {
             "h1_title": "string",
