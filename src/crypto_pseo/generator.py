@@ -23,10 +23,10 @@ def generate_blog_post(brief: JsonDict) -> JsonDict:
     platform_a = table[0]
     platform_b = table[1]
 
-    h1_title = f"{platform_a['platform']} vs {platform_b['platform']} Bonus in {job['region'].title()}: Which Offer Is Actually Better?"
+    h1_title = _build_h1_title(platform_a, platform_b, job)
     meta_description = (
-        f"A skeptical comparison of {platform_a['platform']} and {platform_b['platform']} bonuses in {job['region'].title()}, "
-        "using realistic bonus value, deposit requirements, trading volume, fees, and Pix support."
+        f"{platform_a['platform']} vs {platform_b['platform']} in {job['region'].title()}: compare realistic bonus value, "
+        "deposit requirements, trading volume, fees, Pix support, and account-opening perks."
     )
     winner_verdict = _winner_verdict(brief)
     html_content = _html_content(brief, job, table, insights, metrics_a, metrics_b, winner_verdict)
@@ -40,6 +40,18 @@ def generate_blog_post(brief: JsonDict) -> JsonDict:
         "schema_markup": schema_markup,
         "winner_verdict": winner_verdict,
     }
+
+
+def _build_h1_title(platform_a: JsonDict, platform_b: JsonDict, job: JsonDict) -> str:
+    region = job["region"].title()
+    category = job.get("category", "")
+    if category == "exchange":
+        return f"{platform_a['platform']} vs {platform_b['platform']} in {region}: Which Global Crypto Exchange Has the Better Bonus?"
+    if category == "card":
+        return f"{platform_a['platform']} vs {platform_b['platform']} in {region}: Which Card Has the Better Bonus and Benefits?"
+    if category == "wallet":
+        return f"{platform_a['platform']} vs {platform_b['platform']} in {region}: Which Wallet Gives Users More Practical Value?"
+    return f"{platform_a['platform']} vs {platform_b['platform']} in {region}: Which Offer Gives Users More Practical Value?"
 
 
 def validate_blog_post(post: JsonDict, brief: JsonDict) -> list[str]:

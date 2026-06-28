@@ -159,7 +159,7 @@ class PipelineTest(unittest.TestCase):
             paths = export_article(post, tmpdir)
 
             html = Path(paths["html"]).read_text(encoding="utf-8")
-            self.assertIn("<h1>Binance vs Bybit Bonus in Brazil", html)
+            self.assertIn("<h1>Binance vs Bybit in Brazil: Which Global Crypto Exchange Has the Better Bonus?", html)
             self.assertIn('type="application/ld+json"', html)
 
     def test_okx_mock_job_validates_and_generates_benefit_lens(self):
