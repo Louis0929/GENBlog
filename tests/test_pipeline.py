@@ -144,10 +144,8 @@ class PipelineTest(unittest.TestCase):
 
     def test_article_gate_rejects_missing_computed_insight(self):
         brief, post = _brief_and_post()
-        post["html_content"] = post["html_content"].replace(
-            "Binance has a realistic bonus ROI of 300.0%, versus 10.0% for Bybit.",
-            "",
-        )
+        insight = brief["information_gain"]["computed_insights"][0]
+        post["html_content"] = post["html_content"].replace(insight, "")
 
         issues = validate_blog_post(post, brief)
 
@@ -174,6 +172,21 @@ class PipelineTest(unittest.TestCase):
         self.assertEqual(info.metrics_b.name, "OKX")
         self.assertIn("localization", post["html_content"])
         self.assertIn("Miles, Lounge Access and Other Benefits", post["html_content"])
+
+    def test_three_platform_job_generates_multi_row_comparison(self):
+        data = json.loads(Path("data/mock_campaign.json").read_text(encoding="utf-8"))
+        bundle = build_comparison_bundle(data, "job_binance_vs_bybit_vs_okx_brazil_bonus")
+        info = compute_information_gain(bundle)
+        brief = build_writer_brief(bundle, info)
+        post = generate_blog_post(brief)
+        issues = validate_blog_post(post, brief)
+
+        self.assertFalse(issues)
+        self.assertEqual(len(bundle.platforms), 3)
+        self.assertEqual(len(info.comparison_table), 3)
+        self.assertIn("Binance vs Bybit vs OKX", post["h1_title"])
+        self.assertIn("<td>OKX</td>", post["html_content"])
+        self.assertIn("Highest realistic bonus", post["html_content"])
 
 
 if __name__ == "__main__":

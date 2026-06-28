@@ -42,7 +42,14 @@ class PlatformBundle:
 @dataclass(frozen=True)
 class ComparisonBundle:
     job: JsonDict
-    platform_a: PlatformBundle
-    platform_b: PlatformBundle
+    platforms: list[PlatformBundle]
     editorial_rules: JsonDict
     sources_by_id: dict[str, JsonDict]
+
+    @property
+    def platform_a(self) -> PlatformBundle:
+        return self.platforms[0]
+
+    @property
+    def platform_b(self) -> PlatformBundle:
+        return self.platforms[1]

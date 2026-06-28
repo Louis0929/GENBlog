@@ -43,6 +43,8 @@ SEO intro rule: do not write a generic intro just to target keywords. Use at mos
 6. Run the editorial gate.
 7. Export `generated_post.json` and `article.html`.
 
+Comparison jobs can include two or more platforms. For three-way posts, use verdict rows such as "Small first deposit", "Highest realistic bonus", and "Best bonus ROI" instead of forcing a single overall winner.
+
 ## Quick Start
 
 From the repo root, run:

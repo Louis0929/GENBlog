@@ -347,6 +347,17 @@
       "cms_target": "wordpress"
     },
     {
+      "job_id": "job_binance_vs_bybit_vs_okx_brazil_bonus",
+      "content_type": "comparison",
+      "target_keyword": "Binance vs Bybit vs OKX bonus Brazil 2026",
+      "region": "brazil",
+      "category": "exchange",
+      "platform_ids": ["binance", "bybit", "okx"],
+      "persona": "lexington_crypto_analyst",
+      "intent": "Compare account-opening value, realistic bonuses, fiat friction, and benefit evidence across three global exchanges for Brazil users.",
+      "cms_target": "wordpress"
+    },
+    {
       "job_id": "job_bybit_vs_okx_brazil_bonus",
       "content_type": "comparison",
       "target_keyword": "Bybit vs OKX bonus Brazil 2026",

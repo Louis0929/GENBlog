@@ -79,8 +79,7 @@ def build_comparison_bundle(data: JsonDict, job_id: str) -> ComparisonBundle:
     platform_ids = job["platform_ids"]
     return ComparisonBundle(
         job=job,
-        platform_a=_build_platform_bundle(platform_ids[0], platforms_by_id, claims, job),
-        platform_b=_build_platform_bundle(platform_ids[1], platforms_by_id, claims, job),
+        platforms=[_build_platform_bundle(platform_id, platforms_by_id, claims, job) for platform_id in platform_ids],
         editorial_rules=rules,
         sources_by_id=sources_by_id,
     )
@@ -192,8 +191,8 @@ def _validate_article_job(job: JsonDict, index: int, platform_ids: set[str], iss
         issues,
     )
     ids = job.get("platform_ids", [])
-    if not isinstance(ids, list) or len(ids) != 2:
-        _error(issues, f"{path}.platform_ids", "Comparison jobs currently require exactly two platforms.")
+    if not isinstance(ids, list) or len(ids) < 2:
+        _error(issues, f"{path}.platform_ids", "Comparison jobs require at least two platforms.")
         return
     for platform_id in ids:
         if platform_id not in platform_ids:

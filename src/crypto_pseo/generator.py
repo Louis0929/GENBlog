@@ -18,19 +18,18 @@ def generate_blog_post(brief: JsonDict) -> JsonDict:
     job = brief["job"]
     table = brief["information_gain"]["comparison_table"]
     insights = brief["information_gain"]["computed_insights"]
+    metrics = brief["information_gain"].get("metrics", [brief["information_gain"]["metrics_a"], brief["information_gain"]["metrics_b"]])
     metrics_a = brief["information_gain"]["metrics_a"]
     metrics_b = brief["information_gain"]["metrics_b"]
-    platform_a = table[0]
-    platform_b = table[1]
 
-    h1_title = _build_h1_title(platform_a, platform_b, job)
+    h1_title = _build_h1_title(table, job)
     meta_description = (
-        f"{platform_a['platform']} vs {platform_b['platform']} in {job['region'].title()}: compare realistic bonus value, "
+        f"{_platform_list_title(table)} in {job['region'].title()}: compare realistic bonus value, "
         "deposit requirements, trading volume, fees, Pix support, and account-opening perks."
     )
     winner_verdict = _winner_verdict(brief)
-    html_content = _html_content(brief, job, table, insights, metrics_a, metrics_b, winner_verdict)
-    schema_markup = _faq_schema(platform_a, platform_b, winner_verdict)
+    html_content = _html_content(brief, job, table, insights, metrics, winner_verdict)
+    schema_markup = _faq_schema(table, winner_verdict)
 
     return {
         "h1_title": h1_title,
@@ -42,16 +41,17 @@ def generate_blog_post(brief: JsonDict) -> JsonDict:
     }
 
 
-def _build_h1_title(platform_a: JsonDict, platform_b: JsonDict, job: JsonDict) -> str:
+def _build_h1_title(table: list[JsonDict], job: JsonDict) -> str:
     region = job["region"].title()
     category = job.get("category", "")
+    platform_names = _platform_list_title(table)
     if category == "exchange":
-        return f"{platform_a['platform']} vs {platform_b['platform']} in {region}: Which Global Crypto Exchange Has the Better Bonus?"
+        return f"{platform_names} in {region}: Which Global Crypto Exchange Has the Better Bonus?"
     if category == "card":
-        return f"{platform_a['platform']} vs {platform_b['platform']} in {region}: Which Card Has the Better Bonus and Benefits?"
+        return f"{platform_names} in {region}: Which Card Has the Better Bonus and Benefits?"
     if category == "wallet":
-        return f"{platform_a['platform']} vs {platform_b['platform']} in {region}: Which Wallet Gives Users More Practical Value?"
-    return f"{platform_a['platform']} vs {platform_b['platform']} in {region}: Which Offer Gives Users More Practical Value?"
+        return f"{platform_names} in {region}: Which Wallet Gives Users More Practical Value?"
+    return f"{platform_names} in {region}: Which Offer Gives Users More Practical Value?"
 
 
 def validate_blog_post(post: JsonDict, brief: JsonDict) -> list[str]:
@@ -93,14 +93,14 @@ def _html_content(
     job: JsonDict,
     table: list[JsonDict],
     insights: list[str],
-    metrics_a: JsonDict,
-    metrics_b: JsonDict,
+    metrics: list[JsonDict],
     winner_verdict: str,
 ) -> str:
-    verdict_rows = _verdict_rows(table, metrics_a, metrics_b)
-    lower_deposit = _metric_winner(table, metrics_a, metrics_b, "required_deposit_usdt", lower_is_better=True)
-    higher_bonus = _metric_winner(table, metrics_a, metrics_b, "realistic_value_usdt", lower_is_better=False)
-    who_should_choose = _who_should_choose_items(table, metrics_a, metrics_b)
+    verdict_rows = _verdict_rows(table, metrics)
+    lower_deposit = _metric_winner(table, metrics, "required_deposit_usdt", lower_is_better=True)
+    higher_bonus = _metric_winner(table, metrics, "realistic_value_usdt", lower_is_better=False)
+    bonus_gap = _metric_gap(metrics, "realistic_value_usdt")
+    who_should_choose = _who_should_choose_items(table, metrics)
     rows = "\n".join(
         [
             "<tr>"
@@ -133,7 +133,7 @@ def _html_content(
 </table>
 
 <h2>Headline vs Realistic Bonus</h2>
-<p>{escape(table[0]['platform'])} advertises {escape(table[0]['headline_offer'])}, but the realistic value used in this comparison is ${table[0]['realistic_value_usdt']:,.0f}. {escape(table[1]['platform'])} advertises {escape(table[1]['headline_offer'])}, but the realistic entry value used here is ${table[1]['realistic_value_usdt']:,.0f}.</p>
+{_headline_bonus_paragraphs(table)}
 <p>The headline number is not the consumer value. The useful comparison is what a normal user can unlock without pretending they will meet the maximum deposit or volume tier.</p>
 
 <h2>Deposit Requirement Math</h2>
@@ -152,7 +152,7 @@ def _html_content(
 
 <h2>Fees and Fiat Friction</h2>
 <p>Both platforms list 0.1% spot trading fees in this data set. The difference is not the headline trading fee; it is the onboarding friction. For {escape(job['region'].title())}, Pix support matters because a bonus that looks attractive can become less useful if deposits are slow, costly, or require extra identity matching.</p>
-<p>{escape(lower_deposit['platform'])} has the lower tracked entry deposit in this comparison. {escape(higher_bonus['platform'])} has the higher realistic bonus by ${abs(metrics_a['realistic_value_usdt'] - metrics_b['realistic_value_usdt']):,.0f}. The practical question is whether that extra value is worth the deposit, trading-volume and onboarding friction.</p>
+<p>{escape(lower_deposit['platform'])} has the lower tracked entry deposit in this comparison. {escape(higher_bonus['platform'])} has the highest realistic bonus by a ${bonus_gap:,.0f} gap versus the lowest realistic bonus in the set. The practical question is whether that extra value is worth the deposit, trading-volume and onboarding friction.</p>
 
 <h2>Miles, Lounge Access and Other Benefits</h2>
 <p>Some readers care less about the opening bonus and more about ongoing perks: miles, lounge access, card rewards, fee rebates or application eligibility. This data set is still exchange-led, so miles and airport lounge access should not be assumed unless a separate card-benefit claim is present.</p>
@@ -175,7 +175,7 @@ def _winner_verdict(brief: JsonDict) -> str:
     table = info["comparison_table"]
     low_budget = info["low_budget_winner"]
     roi_winner = info["roi_winner"]
-    higher_bonus = table[0]["platform"] if table[0]["realistic_value_usdt"] >= table[1]["realistic_value_usdt"] else table[1]["platform"]
+    higher_bonus = info.get("highest_bonus_winner") or _metric_winner(table, info.get("metrics", []), "realistic_value_usdt", lower_is_better=False)["platform"]
     if low_budget == roi_winner:
         return (
             f"{low_budget} is the cleaner choice for low-budget users because it combines the stronger realistic bonus ROI "
@@ -188,12 +188,10 @@ def _winner_verdict(brief: JsonDict) -> str:
     )
 
 
-def _verdict_rows(table: list[JsonDict], metrics_a: JsonDict, metrics_b: JsonDict) -> str:
-    platform_a = table[0]["platform"]
-    platform_b = table[1]["platform"]
-    low_deposit = platform_a if metrics_a["required_deposit_usdt"] <= metrics_b["required_deposit_usdt"] else platform_b
-    higher_bonus = platform_a if metrics_a["realistic_value_usdt"] >= metrics_b["realistic_value_usdt"] else platform_b
-    better_roi = platform_a if (metrics_a["realistic_bonus_roi"] or 0) >= (metrics_b["realistic_bonus_roi"] or 0) else platform_b
+def _verdict_rows(table: list[JsonDict], metrics: list[JsonDict]) -> str:
+    low_deposit = _metric_winner(table, metrics, "required_deposit_usdt", lower_is_better=True)["platform"]
+    higher_bonus = _metric_winner(table, metrics, "realistic_value_usdt", lower_is_better=False)["platform"]
+    better_roi = _metric_winner(table, metrics, "realistic_bonus_roi", lower_is_better=False)["platform"]
     rows = [
         ("Small first deposit", low_deposit, "Lower entry deposit and less bonus friction."),
         ("Highest realistic bonus", higher_bonus, "Higher realistic reward, before considering effort and capital lock-up."),
@@ -205,19 +203,22 @@ def _verdict_rows(table: list[JsonDict], metrics_a: JsonDict, metrics_b: JsonDic
     )
 
 
-def _metric_winner(table: list[JsonDict], metrics_a: JsonDict, metrics_b: JsonDict, metric: str, *, lower_is_better: bool) -> JsonDict:
-    value_a = metrics_a.get(metric)
-    value_b = metrics_b.get(metric)
-    if value_a == value_b:
-        return table[0]
-    if lower_is_better:
-        return table[0] if value_a < value_b else table[1]
-    return table[0] if value_a > value_b else table[1]
+def _metric_winner(table: list[JsonDict], metrics: list[JsonDict], metric: str, *, lower_is_better: bool) -> JsonDict:
+    rows_by_id = {row.get("platform", "").lower(): row for row in table}
+
+    def value(item: JsonDict) -> float:
+        raw = item.get(metric)
+        if raw is None:
+            return float("inf") if lower_is_better else float("-inf")
+        return float(raw)
+
+    winner = min(metrics, key=value) if lower_is_better else max(metrics, key=value)
+    return rows_by_id.get(str(winner.get("name", "")).lower(), table[0])
 
 
-def _who_should_choose_items(table: list[JsonDict], metrics_a: JsonDict, metrics_b: JsonDict) -> str:
-    lower_deposit = _metric_winner(table, metrics_a, metrics_b, "required_deposit_usdt", lower_is_better=True)["platform"]
-    higher_bonus = _metric_winner(table, metrics_a, metrics_b, "realistic_value_usdt", lower_is_better=False)["platform"]
+def _who_should_choose_items(table: list[JsonDict], metrics: list[JsonDict]) -> str:
+    lower_deposit = _metric_winner(table, metrics, "required_deposit_usdt", lower_is_better=True)["platform"]
+    higher_bonus = _metric_winner(table, metrics, "realistic_value_usdt", lower_is_better=False)["platform"]
     by_name = {row["platform"]: row for row in table}
     sections = []
     for row in table:
@@ -236,14 +237,15 @@ def _who_should_choose_items(table: list[JsonDict], metrics_a: JsonDict, metrics
     return "\n".join(sections)
 
 
-def _faq_schema(platform_a: JsonDict, platform_b: JsonDict, winner_verdict: str) -> str:
+def _faq_schema(table: list[JsonDict], winner_verdict: str) -> str:
+    platform_names = _platform_list_title(table)
     schema = {
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
             {
                 "@type": "Question",
-                "name": f"Which bonus is better for low-budget users, {platform_a['platform']} or {platform_b['platform']}?",
+                "name": f"Which bonus is better for low-budget users: {platform_names}?",
                 "acceptedAnswer": {"@type": "Answer", "text": winner_verdict},
             },
             {
@@ -261,6 +263,25 @@ def _faq_schema(platform_a: JsonDict, platform_b: JsonDict, winner_verdict: str)
 
 def _insight_items(insights: list[str]) -> str:
     return "\n".join(f"<li>{escape(insight)}</li>" for insight in insights)
+
+
+def _headline_bonus_paragraphs(table: list[JsonDict]) -> str:
+    return "\n".join(
+        f"<p>{escape(row['platform'])} advertises {escape(row['headline_offer'])}, but the realistic value used in this comparison is ${row['realistic_value_usdt']:,.0f}.</p>"
+        for row in table
+    )
+
+
+def _platform_list_title(table: list[JsonDict]) -> str:
+    names = [row["platform"] for row in table]
+    return " vs ".join(names)
+
+
+def _metric_gap(metrics: list[JsonDict], metric: str) -> float:
+    values = [float(item.get(metric) or 0) for item in metrics]
+    if not values:
+        return 0
+    return max(values) - min(values)
 
 
 def _benefit_items(table: list[JsonDict]) -> str:

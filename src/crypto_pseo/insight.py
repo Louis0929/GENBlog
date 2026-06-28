@@ -19,6 +19,7 @@ class PlatformMetrics:
 
 @dataclass(frozen=True)
 class InformationGain:
+    metrics: list[PlatformMetrics]
     metrics_a: PlatformMetrics
     metrics_b: PlatformMetrics
     bonus_diff_usdt: float
@@ -27,23 +28,27 @@ class InformationGain:
     trade_volume_diff_usdt: float
     roi_winner: str
     low_budget_winner: str
+    highest_bonus_winner: str
     computed_insights: list[str]
     comparison_table: list[JsonDict]
 
 
 def compute_information_gain(bundle: ComparisonBundle) -> InformationGain:
-    metrics_a = _platform_metrics(bundle.platform_a)
-    metrics_b = _platform_metrics(bundle.platform_b)
+    metrics = [_platform_metrics(platform) for platform in bundle.platforms]
+    metrics_a = metrics[0]
+    metrics_b = metrics[1]
     bonus_diff = metrics_a.realistic_value_usdt - metrics_b.realistic_value_usdt
     deposit_diff = metrics_a.required_deposit_usdt - metrics_b.required_deposit_usdt
     trade_volume_diff = metrics_a.required_trade_volume_usdt - metrics_b.required_trade_volume_usdt
     deposit_burden_ratio = _safe_divide(metrics_b.required_deposit_usdt, metrics_a.required_deposit_usdt)
 
-    roi_winner = _winner_by_roi(metrics_a, metrics_b)
-    low_budget_winner = _winner_by_budget(metrics_a, metrics_b)
-    insights = _build_insights(metrics_a, metrics_b, bonus_diff, deposit_burden_ratio, trade_volume_diff, roi_winner, low_budget_winner)
+    roi_winner = _winner_name(metrics, "realistic_bonus_roi", lower_is_better=False)
+    low_budget_winner = _winner_name(metrics, "required_deposit_usdt", lower_is_better=True)
+    highest_bonus_winner = _winner_name(metrics, "realistic_value_usdt", lower_is_better=False)
+    insights = _build_insights(metrics, roi_winner, low_budget_winner, highest_bonus_winner)
 
     return InformationGain(
+        metrics=metrics,
         metrics_a=metrics_a,
         metrics_b=metrics_b,
         bonus_diff_usdt=bonus_diff,
@@ -52,8 +57,9 @@ def compute_information_gain(bundle: ComparisonBundle) -> InformationGain:
         trade_volume_diff_usdt=trade_volume_diff,
         roi_winner=roi_winner,
         low_budget_winner=low_budget_winner,
+        highest_bonus_winner=highest_bonus_winner,
         computed_insights=insights,
-        comparison_table=_comparison_table(bundle, metrics_a, metrics_b),
+        comparison_table=_comparison_table(bundle, metrics),
     )
 
 
@@ -68,10 +74,12 @@ def build_writer_brief(bundle: ComparisonBundle, info: InformationGain) -> JsonD
             "forbidden_phrases": bundle.editorial_rules.get("forbidden_phrases", []),
         },
         "platforms": {
+            "platform_list": [_brief_platform(platform) for platform in bundle.platforms],
             "platform_a": _brief_platform(bundle.platform_a),
             "platform_b": _brief_platform(bundle.platform_b),
         },
         "information_gain": {
+            "metrics": [metric.__dict__ for metric in info.metrics],
             "metrics_a": info.metrics_a.__dict__,
             "metrics_b": info.metrics_b.__dict__,
             "bonus_diff_usdt": info.bonus_diff_usdt,
@@ -80,6 +88,7 @@ def build_writer_brief(bundle: ComparisonBundle, info: InformationGain) -> JsonD
             "trade_volume_diff_usdt": info.trade_volume_diff_usdt,
             "roi_winner": info.roi_winner,
             "low_budget_winner": info.low_budget_winner,
+            "highest_bonus_winner": info.highest_bonus_winner,
             "computed_insights": info.computed_insights,
             "comparison_table": info.comparison_table,
         },
@@ -125,39 +134,24 @@ def _platform_metrics(bundle: PlatformBundle) -> PlatformMetrics:
     )
 
 
-def _build_insights(
-    a: PlatformMetrics,
-    b: PlatformMetrics,
-    bonus_diff: float,
-    deposit_burden_ratio: float | None,
-    trade_volume_diff: float,
-    roi_winner: str,
-    low_budget_winner: str,
-) -> list[str]:
+def _build_insights(metrics: list[PlatformMetrics], roi_winner: str, low_budget_winner: str, highest_bonus_winner: str) -> list[str]:
     insights = []
-    if a.realistic_bonus_roi is not None and b.realistic_bonus_roi is not None:
-        insights.append(
-            f"{a.name} has a realistic bonus ROI of {_pct(a.realistic_bonus_roi)}, versus {_pct(b.realistic_bonus_roi)} for {b.name}."
-        )
-    if deposit_burden_ratio is not None:
-        insights.append(
-            f"{b.name} requires {deposit_burden_ratio:g}x the entry deposit of {a.name} for the compared realistic bonus tier."
-        )
-    if trade_volume_diff != 0:
-        higher = b.name if b.required_trade_volume_usdt > a.required_trade_volume_usdt else a.name
-        insights.append(f"{higher} adds a ${abs(trade_volume_diff):,.0f} trading-volume hurdle in this comparison.")
-    if bonus_diff != 0:
-        higher_bonus = a.name if bonus_diff > 0 else b.name
-        insights.append(f"{higher_bonus} has the higher realistic bonus by ${abs(bonus_diff):,.0f}, but deposit and volume requirements change the practical value.")
-    insights.append(f"ROI winner: {roi_winner}. Low-budget onboarding winner: {low_budget_winner}.")
+    roi_parts = [f"{metric.name}: {_pct(metric.realistic_bonus_roi)}" for metric in metrics]
+    insights.append(f"Realistic bonus ROI by platform: {'; '.join(roi_parts)}.")
+    deposit_parts = [f"{metric.name}: ${metric.required_deposit_usdt:,.0f}" for metric in metrics]
+    insights.append(f"Entry deposit requirements: {'; '.join(deposit_parts)}.")
+    volume_hurdles = [metric for metric in metrics if metric.required_trade_volume_usdt > 0]
+    if volume_hurdles:
+        hurdle_parts = [f"{metric.name}: ${metric.required_trade_volume_usdt:,.0f}" for metric in volume_hurdles]
+        insights.append(f"Trading-volume hurdles appear in this data set: {'; '.join(hurdle_parts)}.")
+    bonus_parts = [f"{metric.name}: ${metric.realistic_value_usdt:,.0f}" for metric in metrics]
+    insights.append(f"Realistic bonus values: {'; '.join(bonus_parts)}.")
+    insights.append(f"ROI winner: {roi_winner}. Low-budget onboarding winner: {low_budget_winner}. Highest realistic bonus: {highest_bonus_winner}.")
     return insights
 
 
-def _comparison_table(bundle: ComparisonBundle, a: PlatformMetrics, b: PlatformMetrics) -> list[JsonDict]:
-    return [
-        _comparison_row(bundle.platform_a, a),
-        _comparison_row(bundle.platform_b, b),
-    ]
+def _comparison_table(bundle: ComparisonBundle, metrics: list[PlatformMetrics]) -> list[JsonDict]:
+    return [_comparison_row(platform, metric) for platform, metric in zip(bundle.platforms, metrics)]
 
 
 def _comparison_row(bundle: PlatformBundle, metrics: PlatformMetrics) -> JsonDict:
@@ -215,18 +209,15 @@ def _benefit_summary(claims: list[JsonDict]) -> str:
     return "; ".join(visible)
 
 
-def _winner_by_roi(a: PlatformMetrics, b: PlatformMetrics) -> str:
-    if a.realistic_bonus_roi is None:
-        return b.name
-    if b.realistic_bonus_roi is None:
-        return a.name
-    return a.name if a.realistic_bonus_roi >= b.realistic_bonus_roi else b.name
+def _winner_name(metrics: list[PlatformMetrics], field: str, *, lower_is_better: bool) -> str:
+    def key(metric: PlatformMetrics) -> float:
+        value = getattr(metric, field)
+        if value is None:
+            return float("-inf") if not lower_is_better else float("inf")
+        return value
 
-
-def _winner_by_budget(a: PlatformMetrics, b: PlatformMetrics) -> str:
-    if a.required_deposit_usdt == b.required_deposit_usdt:
-        return _winner_by_roi(a, b)
-    return a.name if a.required_deposit_usdt < b.required_deposit_usdt else b.name
+    winner = min(metrics, key=key) if lower_is_better else max(metrics, key=key)
+    return winner.name
 
 
 def _safe_divide(numerator: float, denominator: float) -> float | None:
@@ -235,5 +226,7 @@ def _safe_divide(numerator: float, denominator: float) -> float | None:
     return numerator / denominator
 
 
-def _pct(value: float) -> str:
+def _pct(value: float | None) -> str:
+    if value is None:
+        return "N/A"
     return f"{value * 100:.1f}%"
