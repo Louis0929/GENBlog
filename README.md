@@ -17,6 +17,7 @@ It is designed around one core rule:
 - Generates a local baseline `BlogPostStructure` JSON for end-to-end testing.
 - Provides a repo-local `genblog` skill wrapper that exports article JSON and HTML.
 - Supports optional search evidence with deterministic `mock` and credential-gated `google_cse` providers.
+- Renders a MoneyHero-inspired comparison article layout with a verdict hero, trust strip, tables, and CTA buttons.
 
 ## Run
 

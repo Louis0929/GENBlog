@@ -52,6 +52,19 @@ Every comparison article must contain:
 - Who Should Choose Each
 - Source Notes
 
+## UI Pattern
+
+Use MoneyHero-inspired comparison UI patterns without copying exact branding or layout:
+
+- first-screen verdict area
+- trust strip explaining why the comparison is useful
+- MoneyHero-style summary table with use case, better fit, and reason
+- detailed comparison table with reward, realistic value, requirement, fees, fiat rail, and CTA
+- clear orange-style CTA buttons for affiliate actions
+- source/evidence notes separated from the main recommendation
+
+Keep UI utilitarian and comparison-first. Avoid decorative landing-page sections.
+
 ## Claim Rules
 
 - Start from realistic value, not headline bonus.
