@@ -13,11 +13,13 @@ It is designed around one core rule:
 - Computes information gain before any LLM call.
 - Builds a strict writer brief for a skeptical crypto analyst persona.
 - Exports the brief as JSON so it can be passed to Claude, Gemini, or another writer agent.
+- Exports a provider-agnostic LLM prompt package for structured-output generation.
+- Generates a local baseline `BlogPostStructure` JSON for end-to-end testing.
 
 ## Run
 
 ```powershell
-python run_pipeline.py --input data/mock_campaign.json --job-id job_binance_vs_bybit_brazil_bonus
+python run_pipeline.py --input data/mock_campaign.json --job-id job_binance_vs_bybit_brazil_bonus --brief-output data/writer_brief.json --llm-prompt-output data/llm_prompt_package.json --post-output data/generated_post.json
 ```
 
 The command prints validation results, computed insights, and a writer brief.
@@ -31,7 +33,9 @@ src/crypto_pseo/
   __init__.py
   cli.py
   contract.py
+  generator.py
   insight.py
+  llm_prompt.py
   validation.py
 tests/
   test_pipeline.py

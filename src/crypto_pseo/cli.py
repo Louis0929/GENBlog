@@ -4,7 +4,9 @@ import argparse
 import json
 from pathlib import Path
 
+from .generator import generate_blog_post, validate_blog_post
 from .insight import build_writer_brief, compute_information_gain
+from .llm_prompt import build_llm_prompt_package
 from .validation import build_comparison_bundle, validate_campaign
 
 
@@ -13,6 +15,8 @@ def main() -> None:
     parser.add_argument("--input", required=True, help="Path to campaign JSON.")
     parser.add_argument("--job-id", required=True, help="Article job id to process.")
     parser.add_argument("--brief-output", help="Optional path to write the writer brief JSON.")
+    parser.add_argument("--post-output", help="Optional path to write the generated BlogPostStructure JSON.")
+    parser.add_argument("--llm-prompt-output", help="Optional path to write a provider-agnostic LLM prompt package.")
     args = parser.parse_args()
 
     data = json.loads(Path(args.input).read_text(encoding="utf-8"))
@@ -42,6 +46,23 @@ def main() -> None:
     if args.brief_output:
         Path(args.brief_output).write_text(json.dumps(brief, indent=2, ensure_ascii=False), encoding="utf-8")
         print(f"\nWrote brief: {args.brief_output}")
+
+    if args.llm_prompt_output:
+        prompt_package = build_llm_prompt_package(brief)
+        Path(args.llm_prompt_output).write_text(json.dumps(prompt_package, indent=2, ensure_ascii=False), encoding="utf-8")
+        print(f"\nWrote LLM prompt package: {args.llm_prompt_output}")
+
+    if args.post_output:
+        post = generate_blog_post(brief)
+        post_issues = validate_blog_post(post, brief)
+        print("\nGenerated BlogPostStructure")
+        print(json.dumps(post, indent=2, ensure_ascii=False))
+        print("\nEditorial Gate")
+        print(f"- passed: {not post_issues}")
+        for issue in post_issues:
+            print(f"  [error] {issue}")
+        Path(args.post_output).write_text(json.dumps(post, indent=2, ensure_ascii=False), encoding="utf-8")
+        print(f"\nWrote post: {args.post_output}")
 
 
 if __name__ == "__main__":
