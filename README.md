@@ -18,6 +18,7 @@ It is designed around one core rule:
 - Provides a repo-local `genblog` skill wrapper that exports article JSON and HTML.
 - Supports optional search evidence with deterministic `mock` and credential-gated `google_cse` providers.
 - Renders a MoneyHero-inspired comparison article layout with a verdict hero, trust strip, tables, and CTA buttons.
+- Supports benefit-lens claims for miles, lounge access, card rewards, fee rebates, application eligibility, and localized onboarding.
 
 ## Run
 
@@ -31,6 +32,12 @@ Run the GenBlog skill wrapper:
 
 ```powershell
 python skills/genblog/scripts/run_genblog.py --input data/mock_campaign.json --job-id job_binance_vs_bybit_brazil_bonus --search-provider mock --output-dir outputs/binance-vs-bybit-brazil
+```
+
+Generate the OKX comparison mock article:
+
+```powershell
+python skills/genblog/scripts/run_genblog.py --input data/mock_campaign.json --job-id job_bybit_vs_okx_brazil_bonus --search-provider mock --output-dir outputs/bybit-vs-okx-brazil
 ```
 
 ## Project Shape

@@ -174,6 +174,8 @@ def _comparison_row(bundle: PlatformBundle, metrics: PlatformMetrics) -> JsonDic
         "spot_fee": fee.get("fee_display"),
         "fiat_onramp": fiat.get("rail"),
         "fiat_onramp_fee": fiat.get("fee_display"),
+        "benefit_summary": _benefit_summary(bundle.benefit_claims),
+        "benefit_claims": bundle.benefit_claims,
         "affiliate_url": bundle.platform.get("affiliate_program", {}).get("affiliate_url"),
         "source_urls": _source_urls(bundle),
     }
@@ -186,6 +188,7 @@ def _brief_platform(bundle: PlatformBundle) -> JsonDict:
         "trading_fee": bundle.trading_fee,
         "fiat_onramp": bundle.fiat_onramp,
         "regional_availability": bundle.regional_availability,
+        "benefit_claims": bundle.benefit_claims,
     }
 
 
@@ -194,7 +197,22 @@ def _source_urls(bundle: PlatformBundle) -> list[str]:
     for claim in [bundle.signup_bonus, bundle.trading_fee, bundle.fiat_onramp, bundle.regional_availability]:
         if claim and claim.get("source_url"):
             urls.append(claim["source_url"])
+    for claim in bundle.benefit_claims:
+        if claim and claim.get("source_url"):
+            urls.append(claim["source_url"])
     return urls
+
+
+def _benefit_summary(claims: list[JsonDict]) -> str:
+    if not claims:
+        return "No benefit claims in current data."
+    visible = []
+    for claim in claims:
+        benefit_type = str(claim.get("benefit_type", "benefit")).replace("_", " ")
+        availability = claim.get("availability", "unknown")
+        value = claim.get("value_display", "Not provided")
+        visible.append(f"{benefit_type}: {value} ({availability})")
+    return "; ".join(visible)
 
 
 def _winner_by_roi(a: PlatformMetrics, b: PlatformMetrics) -> str:

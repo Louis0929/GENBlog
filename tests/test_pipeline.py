@@ -57,6 +57,8 @@ class PipelineTest(unittest.TestCase):
         self.assertIn("winner_verdict", post)
         self.assertIn("Claim the bonus", post["html_content"])
         self.assertIn("Small first deposit", post["html_content"])
+        self.assertIn("Miles, Lounge Access and Other Benefits", post["html_content"])
+        self.assertIn("miles lounge access", post["html_content"])
 
     def test_llm_prompt_package_contains_schema_and_computed_insights(self):
         data = json.loads(Path("data/mock_campaign.json").read_text(encoding="utf-8"))
@@ -159,6 +161,19 @@ class PipelineTest(unittest.TestCase):
             html = Path(paths["html"]).read_text(encoding="utf-8")
             self.assertIn("<h1>Binance vs Bybit Bonus in Brazil", html)
             self.assertIn('type="application/ld+json"', html)
+
+    def test_okx_mock_job_validates_and_generates_benefit_lens(self):
+        data = json.loads(Path("data/mock_campaign.json").read_text(encoding="utf-8"))
+        bundle = build_comparison_bundle(data, "job_bybit_vs_okx_brazil_bonus")
+        info = compute_information_gain(bundle)
+        brief = build_writer_brief(bundle, info)
+        post = generate_blog_post(brief)
+        issues = validate_blog_post(post, brief)
+
+        self.assertFalse(issues)
+        self.assertEqual(info.metrics_b.name, "OKX")
+        self.assertIn("localization", post["html_content"])
+        self.assertIn("Miles, Lounge Access and Other Benefits", post["html_content"])
 
 
 if __name__ == "__main__":

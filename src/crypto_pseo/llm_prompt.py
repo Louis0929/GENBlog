@@ -109,6 +109,7 @@ def _user_payload(brief: JsonDict) -> JsonDict:
             "Treat headline bonuses as marketing until requirements are explained.",
             "Use realistic bonus value before headline value.",
             "Include a MoneyHero-style quick verdict table and an analyst math table in html_content.",
+            "Include a benefits lens when benefit claims exist, covering miles, lounge access, rewards, application eligibility, or explaining when they are not evidenced.",
             "Include source notes or claim caveats in html_content.",
             "Use the CTA text 'Claim the bonus' for affiliate links.",
             "Do not overstate certainty when a claim depends on promotion terms or expiry.",

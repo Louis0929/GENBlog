@@ -36,6 +36,7 @@ class PlatformBundle:
     trading_fee: JsonDict | None
     fiat_onramp: JsonDict | None
     regional_availability: JsonDict | None
+    benefit_claims: list[JsonDict]
 
 
 @dataclass(frozen=True)

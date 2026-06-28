@@ -60,10 +60,24 @@ Use MoneyHero-inspired comparison UI patterns without copying exact branding or 
 - trust strip explaining why the comparison is useful
 - MoneyHero-style summary table with use case, better fit, and reason
 - detailed comparison table with reward, realistic value, requirement, fees, fiat rail, and CTA
+- benefits lens for miles, lounge access, card rewards, fee rebates, and application eligibility when available
 - clear orange-style CTA buttons for affiliate actions
 - source/evidence notes separated from the main recommendation
 
 Keep UI utilitarian and comparison-first. Avoid decorative landing-page sections.
+
+## Benefit Lens
+
+Some users care more about application and ongoing perks than welcome bonuses. Add a benefits section when relevant:
+
+- miles or points earning
+- airport lounge access
+- card rewards or spending rebates
+- fee rebates
+- application eligibility
+- local-language or local-fiat onboarding
+
+Be explicit when a benefit is not evidenced. Never infer lounge access, miles, or card rewards from an exchange signup bonus.
 
 ## Claim Rules
 

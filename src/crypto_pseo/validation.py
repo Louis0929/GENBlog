@@ -21,6 +21,7 @@ CLAIM_REQUIRED_FIELDS = {
     "trading_fee": {"fee_type", "fee_value", "fee_display"},
     "fiat_onramp": {"rail", "availability", "fee_display", "fee_value", "region"},
     "regional_availability": {"region", "availability"},
+    "benefit": {"benefit_type", "availability", "value_display", "requirement", "notes"},
 }
 
 RECOMMENDED_CLAIM_FIELDS = {"source_url", "claim_status", "valid_until"}
@@ -216,6 +217,7 @@ def _build_platform_bundle(platform_id: str, platforms_by_id: dict[str, JsonDict
         trading_fee=_maybe_claim(platform_claims, "trading_fee", region),
         fiat_onramp=_maybe_claim(platform_claims, "fiat_onramp", region),
         regional_availability=_maybe_claim(platform_claims, "regional_availability", region),
+        benefit_claims=_claims_for_region(platform_claims, "benefit", region),
     )
 
 
@@ -227,13 +229,18 @@ def _one_claim(claims: list[JsonDict], claim_type: str, region: str) -> JsonDict
 
 
 def _maybe_claim(claims: list[JsonDict], claim_type: str, region: str) -> JsonDict | None:
+    regional = _claims_for_region(claims, claim_type, region)
     typed = [claim for claim in claims if claim.get("claim_type") == claim_type]
-    regional = [
+    return regional[0] if regional else (typed[0] if typed else None)
+
+
+def _claims_for_region(claims: list[JsonDict], claim_type: str, region: str) -> list[JsonDict]:
+    typed = [claim for claim in claims if claim.get("claim_type") == claim_type]
+    return [
         claim
         for claim in typed
         if claim.get("region") == region or region in claim.get("eligible_regions", []) or "global" in claim.get("eligible_regions", [])
     ]
-    return regional[0] if regional else (typed[0] if typed else None)
 
 
 def _find_editorial_rules(data: JsonDict, persona: str) -> JsonDict:
