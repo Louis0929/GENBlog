@@ -15,6 +15,8 @@ It is designed around one core rule:
 - Exports the brief as JSON so it can be passed to Claude, Gemini, or another writer agent.
 - Exports a provider-agnostic LLM prompt package for structured-output generation.
 - Generates a local baseline `BlogPostStructure` JSON for end-to-end testing.
+- Provides a repo-local `genblog` skill wrapper that exports article JSON and HTML.
+- Supports optional search evidence with deterministic `mock` and credential-gated `google_cse` providers.
 
 ## Run
 
@@ -24,18 +26,27 @@ python run_pipeline.py --input data/mock_campaign.json --job-id job_binance_vs_b
 
 The command prints validation results, computed insights, and a writer brief.
 
+Run the GenBlog skill wrapper:
+
+```powershell
+python skills/genblog/scripts/run_genblog.py --input data/mock_campaign.json --job-id job_binance_vs_bybit_brazil_bonus --search-provider mock --output-dir outputs/binance-vs-bybit-brazil
+```
+
 ## Project Shape
 
 ```text
 data/mock_campaign.json
 docs/validation_contract.md
+skills/genblog/
 src/crypto_pseo/
   __init__.py
   cli.py
   contract.py
+  export.py
   generator.py
   insight.py
   llm_prompt.py
+  search.py
   validation.py
 tests/
   test_pipeline.py

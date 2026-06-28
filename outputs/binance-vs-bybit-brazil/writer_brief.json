@@ -1,0 +1,321 @@
+{
+  "job": {
+    "job_id": "job_binance_vs_bybit_brazil_bonus",
+    "content_type": "comparison",
+    "target_keyword": "Binance vs Bybit bonus Brazil 2026",
+    "region": "brazil",
+    "category": "exchange",
+    "platform_ids": [
+      "binance",
+      "bybit"
+    ],
+    "persona": "lexington_crypto_analyst",
+    "intent": "Compare true onboarding costs and realistic signup bonuses for low-budget retail users.",
+    "cms_target": "wordpress"
+  },
+  "persona": {
+    "name": "The Lexington Crypto-Analyst",
+    "tone": [
+      "skeptical",
+      "objective",
+      "zero_hyperbole",
+      "consumer_first",
+      "data_driven"
+    ],
+    "rules": [
+      "Do not repeat a headline bonus without explicitly stating its required deposit and trading volume.",
+      "Every fee or bonus claim must be source-backed, dated, and qualified if requirements or expiry terms are unclear.",
+      "Use realistic_value_usdt before headline_value_usdt to ground expectations.",
+      "Always highlight the fiat onramp method if the region requires it."
+    ],
+    "forbidden_phrases": [
+      "game-changer",
+      "seamless experience",
+      "in today's fast-paced crypto world",
+      "best crypto exchange",
+      "to the moon",
+      "highly recommended"
+    ]
+  },
+  "platforms": {
+    "platform_a": {
+      "platform": {
+        "platform_id": "binance",
+        "name": "Binance",
+        "category": "exchange",
+        "tier": "tier_1",
+        "target_regions": [
+          "global",
+          "latam",
+          "brazil"
+        ],
+        "supported_fiat_rails": [
+          "pix",
+          "bank_transfer",
+          "card"
+        ],
+        "affiliate_program": {
+          "status": "active",
+          "affiliate_url": "https://accounts.binance.com/register?ref=BESTBONUS",
+          "commission_model": "revshare_and_cpa",
+          "commission_value": "20% fee kickback + CPA",
+          "source_url": "https://www.binance.com/en/activity/referral"
+        }
+      },
+      "signup_bonus": {
+        "claim_id": "binance_bonus_2026_001",
+        "platform_id": "binance",
+        "claim_type": "signup_bonus",
+        "headline_offer": "Up to $19,800 USDT or $600 Voucher",
+        "headline_value_usdt": 19800,
+        "realistic_value_usdt": 30,
+        "required_deposit_usdt": 10,
+        "required_trade_volume_usdt": 0,
+        "user_requirements": "Complete KYC and deposit $10 equivalent via Pix for a $30 fee rebate voucher.",
+        "eligible_regions": [
+          "brazil",
+          "global"
+        ],
+        "source_id": "src_binance_official",
+        "source_url": "https://www.binance.com/en/activity/referral",
+        "last_checked_at": "2026-06-28",
+        "valid_until": "2026-07-31",
+        "claim_status": "verified",
+        "confidence": 0.95
+      },
+      "trading_fee": {
+        "claim_id": "binance_fee_2026_001",
+        "platform_id": "binance",
+        "claim_type": "trading_fee",
+        "fee_type": "spot_trading",
+        "fee_value": 0.001,
+        "fee_unit": "rate",
+        "fee_display": "0.1% Maker/Taker",
+        "notes": "Can be reduced by 25% (to 0.075%) if paid using BNB.",
+        "source_id": "src_binance_official",
+        "source_url": "https://www.binance.com/en/fee/trading",
+        "last_checked_at": "2026-06-28",
+        "claim_status": "verified",
+        "confidence": 0.99
+      },
+      "fiat_onramp": {
+        "claim_id": "binance_pix_2026_001",
+        "platform_id": "binance",
+        "claim_type": "fiat_onramp",
+        "rail": "pix",
+        "availability": "available",
+        "fee_display": "Free / Zero Fees",
+        "fee_value": 0,
+        "fee_unit": "rate",
+        "fee_currency": "BRL",
+        "region": "brazil",
+        "notes": "Accepts Pix via email, phone, CPF, CNPJ, or random key. Monthly limit of 7,000 USDT equivalent.",
+        "source_id": "src_binance_official",
+        "source_url": "https://www.binance.com/en/fiat/deposit/BRL",
+        "last_checked_at": "2026-06-28",
+        "claim_status": "verified",
+        "confidence": 0.95
+      },
+      "regional_availability": {
+        "claim_id": "binance_brazil_2026_001",
+        "platform_id": "binance",
+        "claim_type": "regional_availability",
+        "region": "brazil",
+        "availability": "active",
+        "notes": "Regulated operations with high Pix liquidity.",
+        "source_id": "src_binance_official",
+        "source_url": "https://www.binance.com/en-BH/blog/all/binance-brazil",
+        "last_checked_at": "2026-06-28",
+        "claim_status": "verified",
+        "confidence": 0.9
+      }
+    },
+    "platform_b": {
+      "platform": {
+        "platform_id": "bybit",
+        "name": "Bybit",
+        "category": "exchange",
+        "tier": "tier_1",
+        "target_regions": [
+          "global",
+          "latam",
+          "brazil"
+        ],
+        "supported_fiat_rails": [
+          "pix",
+          "ted",
+          "card"
+        ],
+        "affiliate_program": {
+          "status": "active",
+          "affiliate_url": "https://www.bybit.com/register?affiliate_id=93065",
+          "commission_model": "cpa",
+          "commission_value": "up to $1000 per trader",
+          "source_url": "https://affiliates.bybit.com/"
+        }
+      },
+      "signup_bonus": {
+        "claim_id": "bybit_bonus_2026_001",
+        "platform_id": "bybit",
+        "claim_type": "signup_bonus",
+        "headline_offer": "Up to $30,000 USDT",
+        "headline_value_usdt": 30000,
+        "realistic_value_usdt": 50,
+        "required_deposit_usdt": 500,
+        "required_trade_volume_usdt": 100000,
+        "user_requirements": "Register via affiliate, complete KYC Lv.1, deposit $500, and trade $100,000 volume to unlock the entry $50 reward. Max reward requires $250k deposit.",
+        "eligible_regions": [
+          "brazil",
+          "global"
+        ],
+        "source_id": "src_bybit_official",
+        "source_url": "https://www.bybit.com/en/promo/global-deposit-blastoff",
+        "last_checked_at": "2026-06-28",
+        "valid_until": "2026-07-31",
+        "claim_status": "verified",
+        "confidence": 0.95
+      },
+      "trading_fee": {
+        "claim_id": "bybit_fee_2026_001",
+        "platform_id": "bybit",
+        "claim_type": "trading_fee",
+        "fee_type": "spot_trading",
+        "fee_value": 0.001,
+        "fee_unit": "rate",
+        "fee_display": "0.1% Maker/Taker",
+        "notes": "Can be reduced by using MNT for fee deductions.",
+        "source_id": "src_bybit_official",
+        "source_url": "https://www.bybit.com/en/help-center/article/Trading-Fee-Structure",
+        "last_checked_at": "2026-06-28",
+        "claim_status": "verified",
+        "confidence": 0.99
+      },
+      "fiat_onramp": {
+        "claim_id": "bybit_pix_2026_001",
+        "platform_id": "bybit",
+        "claim_type": "fiat_onramp",
+        "rail": "pix",
+        "availability": "available",
+        "fee_display": "Zero Fees",
+        "fee_value": 0,
+        "fee_unit": "rate",
+        "fee_currency": "BRL",
+        "region": "brazil",
+        "notes": "Requires strict matching of CPF/CNPJ with Bybit KYC details. Real-time deposits.",
+        "source_id": "src_bybit_official",
+        "source_url": "https://www.bybit.com/en/help-center",
+        "last_checked_at": "2026-06-28",
+        "claim_status": "verified",
+        "confidence": 0.95
+      },
+      "regional_availability": {
+        "claim_id": "bybit_brazil_2026_001",
+        "platform_id": "bybit",
+        "claim_type": "regional_availability",
+        "region": "brazil",
+        "availability": "active",
+        "notes": "Actively pushing Bybit Pay and Pix integrations.",
+        "source_id": "src_bybit_official",
+        "source_url": "https://www.bybit.com/en/help-center",
+        "last_checked_at": "2026-06-28",
+        "claim_status": "verified",
+        "confidence": 0.9
+      }
+    }
+  },
+  "information_gain": {
+    "metrics_a": {
+      "platform_id": "binance",
+      "name": "Binance",
+      "headline_value_usdt": 19800.0,
+      "realistic_value_usdt": 30.0,
+      "required_deposit_usdt": 10.0,
+      "required_trade_volume_usdt": 0.0,
+      "realistic_bonus_roi": 3.0,
+      "headline_to_realistic_ratio": 660.0
+    },
+    "metrics_b": {
+      "platform_id": "bybit",
+      "name": "Bybit",
+      "headline_value_usdt": 30000.0,
+      "realistic_value_usdt": 50.0,
+      "required_deposit_usdt": 500.0,
+      "required_trade_volume_usdt": 100000.0,
+      "realistic_bonus_roi": 0.1,
+      "headline_to_realistic_ratio": 600.0
+    },
+    "bonus_diff_usdt": -20.0,
+    "deposit_diff_usdt": -490.0,
+    "deposit_burden_ratio": 50.0,
+    "trade_volume_diff_usdt": -100000.0,
+    "roi_winner": "Binance",
+    "low_budget_winner": "Binance",
+    "computed_insights": [
+      "Binance has a realistic bonus ROI of 300.0%, versus 10.0% for Bybit.",
+      "Bybit requires 50x the entry deposit of Binance for the compared realistic bonus tier.",
+      "Bybit adds a $100,000 trading-volume hurdle in this comparison.",
+      "Bybit has the higher realistic bonus by $20, but deposit and volume requirements change the practical value.",
+      "ROI winner: Binance. Low-budget onboarding winner: Binance."
+    ],
+    "comparison_table": [
+      {
+        "platform": "Binance",
+        "headline_offer": "Up to $19,800 USDT or $600 Voucher",
+        "realistic_value_usdt": 30.0,
+        "required_deposit_usdt": 10.0,
+        "required_trade_volume_usdt": 0.0,
+        "realistic_bonus_roi": 3.0,
+        "spot_fee": "0.1% Maker/Taker",
+        "fiat_onramp": "pix",
+        "fiat_onramp_fee": "Free / Zero Fees",
+        "source_urls": [
+          "https://www.binance.com/en/activity/referral",
+          "https://www.binance.com/en/fee/trading",
+          "https://www.binance.com/en/fiat/deposit/BRL",
+          "https://www.binance.com/en-BH/blog/all/binance-brazil"
+        ]
+      },
+      {
+        "platform": "Bybit",
+        "headline_offer": "Up to $30,000 USDT",
+        "realistic_value_usdt": 50.0,
+        "required_deposit_usdt": 500.0,
+        "required_trade_volume_usdt": 100000.0,
+        "realistic_bonus_roi": 0.1,
+        "spot_fee": "0.1% Maker/Taker",
+        "fiat_onramp": "pix",
+        "fiat_onramp_fee": "Zero Fees",
+        "source_urls": [
+          "https://www.bybit.com/en/promo/global-deposit-blastoff",
+          "https://www.bybit.com/en/help-center/article/Trading-Fee-Structure",
+          "https://www.bybit.com/en/help-center",
+          "https://www.bybit.com/en/help-center"
+        ]
+      }
+    ]
+  },
+  "required_output_schema": {
+    "h1_title": "string",
+    "meta_description": "string",
+    "target_keyword": "string",
+    "html_content": "string with H2/H3 tags and comparison tables",
+    "schema_markup": "FAQPage or Product JSON-LD string",
+    "winner_verdict": "string"
+  },
+  "editorial_gate": {
+    "required_sections": [
+      "quick_verdict",
+      "headline_vs_realistic_bonus",
+      "deposit_requirement_math",
+      "fees_and_fiat_friction",
+      "who_should_choose_each"
+    ],
+    "must_do": [
+      "Lead with a practical verdict.",
+      "Do not repeat headline bonuses without requirements.",
+      "Explain realistic value before headline value.",
+      "Qualify claims with sources and dates when possible.",
+      "Do not use hype or generic SEO filler."
+    ]
+  }
+}

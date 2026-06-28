@@ -1,0 +1,21 @@
+{
+  "provider": "mock",
+  "query": "Binance vs Bybit bonus Brazil 2026 brazil crypto bonus fees",
+  "status": "ok",
+  "checked_at": "2026-06-28",
+  "note": "Offline deterministic evidence for tests. Do not treat mock results as factual sources.",
+  "results": [
+    {
+      "title": "Brazil Pix onboarding checks remain important for crypto users",
+      "url": "https://example.com/mock/brazil-pix-crypto-context",
+      "snippet": "Mock evidence note: Pix can reduce funding friction, but CPF/CNPJ and KYC matching still matter.",
+      "source": "mock"
+    },
+    {
+      "title": "Crypto bonus headline amounts should be checked against tier requirements",
+      "url": "https://example.com/mock/crypto-bonus-requirements",
+      "snippet": "Mock evidence note: advertised maximum rewards often require higher deposits or trading volume.",
+      "source": "mock"
+    }
+  ]
+}

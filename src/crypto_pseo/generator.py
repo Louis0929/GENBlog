@@ -63,6 +63,16 @@ def validate_blog_post(post: JsonDict, brief: JsonDict) -> list[str]:
         if insight.split(".")[0].lower() not in html:
             issues.append(f"Computed insight not reflected in article: {insight}")
 
+    schema_markup = post.get("schema_markup", "")
+    try:
+        json.loads(schema_markup)
+    except (TypeError, json.JSONDecodeError):
+        issues.append("schema_markup must be valid JSON-LD.")
+
+    missing_sources = _missing_source_urls(post, brief)
+    for source_url in missing_sources:
+        issues.append(f"Source URL missing from article: {source_url}")
+
     return issues
 
 
@@ -170,6 +180,20 @@ def _source_links(table: list[JsonDict]) -> str:
         urls.extend(row.get("source_urls", []))
     unique_urls = list(dict.fromkeys(urls))
     return "\n".join(f'<li><a href="{escape(url)}">{escape(url)}</a></li>' for url in unique_urls)
+
+
+def _missing_source_urls(post: JsonDict, brief: JsonDict) -> list[str]:
+    content = "\n".join(
+        [
+            post.get("html_content", ""),
+            post.get("schema_markup", ""),
+            post.get("winner_verdict", ""),
+        ]
+    )
+    expected_urls = []
+    for row in brief["information_gain"].get("comparison_table", []):
+        expected_urls.extend(row.get("source_urls", []))
+    return [url for url in dict.fromkeys(expected_urls) if url and url not in content]
 
 
 def _pct(value: float | None) -> str:

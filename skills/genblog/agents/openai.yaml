@@ -1,0 +1,4 @@
+interface:
+  display_name: "GenBlog"
+  short_description: "Generate claim-gated crypto pSEO blog posts"
+  default_prompt: "Generate a skeptical crypto comparison article from campaign data."

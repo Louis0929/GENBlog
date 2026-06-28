@@ -4,9 +4,11 @@ import argparse
 import json
 from pathlib import Path
 
+from .export import export_article
 from .generator import generate_blog_post, validate_blog_post
 from .insight import build_writer_brief, compute_information_gain
 from .llm_prompt import build_llm_prompt_package
+from .search import search_evidence
 from .validation import build_comparison_bundle, validate_campaign
 
 
@@ -17,6 +19,10 @@ def main() -> None:
     parser.add_argument("--brief-output", help="Optional path to write the writer brief JSON.")
     parser.add_argument("--post-output", help="Optional path to write the generated BlogPostStructure JSON.")
     parser.add_argument("--llm-prompt-output", help="Optional path to write a provider-agnostic LLM prompt package.")
+    parser.add_argument("--html-output", help="Optional path to write the generated article HTML.")
+    parser.add_argument("--output-dir", help="Optional directory to write generated_post.json and article.html.")
+    parser.add_argument("--search-provider", choices=["none", "mock", "google_cse"], default="none")
+    parser.add_argument("--evidence-output", help="Optional path to write search evidence notes JSON.")
     args = parser.parse_args()
 
     data = json.loads(Path(args.input).read_text(encoding="utf-8"))
@@ -52,7 +58,17 @@ def main() -> None:
         Path(args.llm_prompt_output).write_text(json.dumps(prompt_package, indent=2, ensure_ascii=False), encoding="utf-8")
         print(f"\nWrote LLM prompt package: {args.llm_prompt_output}")
 
-    if args.post_output:
+    evidence = search_evidence(f"{bundle.job['target_keyword']} {bundle.job['region']} crypto bonus fees", args.search_provider)
+    if args.search_provider != "none":
+        print("\nSearch Evidence")
+        print(f"- provider: {evidence['provider']}")
+        print(f"- status: {evidence['status']}")
+        print(f"- note: {evidence['note']}")
+    if args.evidence_output:
+        Path(args.evidence_output).write_text(json.dumps(evidence, indent=2, ensure_ascii=False), encoding="utf-8")
+        print(f"\nWrote evidence: {args.evidence_output}")
+
+    if args.post_output or args.html_output or args.output_dir:
         post = generate_blog_post(brief)
         post_issues = validate_blog_post(post, brief)
         print("\nGenerated BlogPostStructure")
@@ -61,8 +77,20 @@ def main() -> None:
         print(f"- passed: {not post_issues}")
         for issue in post_issues:
             print(f"  [error] {issue}")
-        Path(args.post_output).write_text(json.dumps(post, indent=2, ensure_ascii=False), encoding="utf-8")
-        print(f"\nWrote post: {args.post_output}")
+        if post_issues:
+            raise SystemExit(1)
+        if args.post_output:
+            Path(args.post_output).write_text(json.dumps(post, indent=2, ensure_ascii=False), encoding="utf-8")
+            print(f"\nWrote post: {args.post_output}")
+        if args.output_dir:
+            outputs = export_article(post, args.output_dir, evidence)
+            print(f"\nWrote article JSON: {outputs['json']}")
+            print(f"Wrote article HTML: {outputs['html']}")
+        if args.html_output:
+            from .export import render_article_html
+
+            Path(args.html_output).write_text(render_article_html(post, evidence), encoding="utf-8")
+            print(f"\nWrote HTML: {args.html_output}")
 
 
 if __name__ == "__main__":
