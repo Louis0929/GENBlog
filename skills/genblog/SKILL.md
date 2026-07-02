@@ -30,6 +30,7 @@ GenBlog supports multiple personas over time. The default is `lexington_humanize
 - Use MoneyHero-style comparison tables with clear "better fit" rows.
 - Use honest CTAs such as `Claim the bonus`, but only after requirements are visible.
 - Avoid stacked adjectives and AI-polished phrases. Prefer numbers and caveats.
+- If a platform lacks a clear numerical advantage in a multi-platform comparison, highlight source-backed ecosystem utility, local onboarding fit, or benefit evidence instead of fabricating a forced win.
 
 SEO intro rule: do not write a generic intro just to target keywords. Use at most one short context sentence, then give the verdict.
 
@@ -37,11 +38,12 @@ SEO intro rule: do not write a generic intro just to target keywords. Use at mos
 
 1. Load campaign data from JSON or the current pipeline-compatible source.
 2. Validate claim-level data before generation.
-3. Compute information gain: realistic bonus ROI, deposit burden, trading-volume hurdle, bonus delta, fee/onramp friction.
-4. Optionally collect search evidence with `mock` or `google_cse`; treat it as notes, not source-of-truth facts.
-5. Generate a `BlogPostStructure` using the baseline generator or an LLM prompt package.
-6. Run the editorial gate.
-7. Export `generated_post.json` and `article.html`.
+3. Enforce jurisdiction gating from `allowed_regions`, `restricted_regions`, and `compliance_disclaimer`.
+4. Compute information gain: realistic bonus ROI, expected net value after trading-fee drag, deposit burden, trading-volume hurdle, bonus delta, fee/onramp friction.
+5. Optionally collect search evidence with `mock` or `google_cse`; treat it as notes, not source-of-truth facts.
+6. Generate a `BlogPostStructure` using the baseline generator or an LLM prompt package.
+7. Run the editorial gate with scores. If blocked by style, missing facts, invalid schema, or disclaimer issues, append `revision_reasons` to the retry context and retry up to the configured maximum.
+8. Export `generated_post.json` and `article.html`.
 
 Comparison jobs can include two or more platforms. For three-way posts, use verdict rows such as "Small first deposit", "Highest realistic bonus", and "Best bonus ROI" instead of forcing a single overall winner.
 
@@ -86,6 +88,10 @@ The article generator must return:
   "target_keyword": "string",
   "html_content": "string",
   "schema_markup": "JSON-LD string",
-  "winner_verdict": "string"
+  "winner_verdict": "string",
+  "mentioned_entities": ["string"],
+  "compliance_disclaimer": "string"
 }
 ```
+
+`schema_markup` must include `FAQPage`, `Product`, or `Review` JSON-LD. Prefer `FAQPage` plus product entries for comparison pages.

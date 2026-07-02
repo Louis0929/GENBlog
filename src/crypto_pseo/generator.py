@@ -29,7 +29,9 @@ def generate_blog_post(brief: JsonDict) -> JsonDict:
     )
     winner_verdict = _winner_verdict(brief)
     html_content = _html_content(brief, job, table, insights, metrics, winner_verdict)
-    schema_markup = _faq_schema(table, winner_verdict)
+    mentioned_entities = _mentioned_entities(brief, table)
+    compliance_disclaimer = job.get("compliance_disclaimer", "")
+    schema_markup = _schema_markup(table, winner_verdict, mentioned_entities)
 
     return {
         "h1_title": h1_title,
@@ -38,6 +40,8 @@ def generate_blog_post(brief: JsonDict) -> JsonDict:
         "html_content": html_content,
         "schema_markup": schema_markup,
         "winner_verdict": winner_verdict,
+        "mentioned_entities": mentioned_entities,
+        "compliance_disclaimer": compliance_disclaimer,
     }
 
 
@@ -56,7 +60,16 @@ def _build_h1_title(table: list[JsonDict], job: JsonDict) -> str:
 
 def validate_blog_post(post: JsonDict, brief: JsonDict) -> list[str]:
     issues: list[str] = []
-    required = {"h1_title", "meta_description", "target_keyword", "html_content", "schema_markup", "winner_verdict"}
+    required = {
+        "h1_title",
+        "meta_description",
+        "target_keyword",
+        "html_content",
+        "schema_markup",
+        "winner_verdict",
+        "mentioned_entities",
+        "compliance_disclaimer",
+    }
     for field in sorted(required):
         if not post.get(field):
             issues.append(f"Missing output field: {field}")
@@ -77,9 +90,16 @@ def validate_blog_post(post: JsonDict, brief: JsonDict) -> list[str]:
 
     schema_markup = post.get("schema_markup", "")
     try:
-        json.loads(schema_markup)
+        parsed_schema = json.loads(schema_markup)
     except (TypeError, json.JSONDecodeError):
         issues.append("schema_markup must be valid JSON-LD.")
+    else:
+        schema_types = _schema_types(parsed_schema)
+        if not {"FAQPage", "Product", "Review"}.intersection(schema_types):
+            issues.append("schema_markup must include FAQPage, Product, or Review JSON-LD.")
+
+    if "not financial advice" not in post.get("html_content", "").lower() and "not financial advice" not in post.get("compliance_disclaimer", "").lower():
+        issues.append("Compliance disclaimer must include not financial advice language.")
 
     missing_sources = _missing_source_urls(post, brief)
     for source_url in missing_sources:
@@ -110,6 +130,7 @@ def _html_content(
             f"<td>${row['required_deposit_usdt']:,.0f}</td>"
             f"<td>${row['required_trade_volume_usdt']:,.0f}</td>"
             f"<td>{_pct(row['realistic_bonus_roi'])}</td>"
+            f"<td>${row['expected_net_value_usdt']:,.0f}</td>"
             f"<td>{escape(str(row.get('spot_fee') or 'Not provided'))}</td>"
             f"<td>{escape(str(row.get('fiat_onramp') or 'Not provided'))}: {escape(str(row.get('fiat_onramp_fee') or 'Not provided'))}</td>"
             f"<td>{escape(str(row.get('benefit_summary') or 'Not provided'))}</td>"
@@ -143,7 +164,7 @@ def _html_content(
 
 <table>
 <thead>
-<tr><th>Platform</th><th>Headline offer</th><th>Realistic value</th><th>Entry deposit</th><th>Trade volume hurdle</th><th>Realistic ROI</th><th>Spot fee</th><th>{escape(job['region'].title())} fiat onramp</th><th>Benefits lens</th><th>Action</th></tr>
+<tr><th>Platform</th><th>Headline offer</th><th>Realistic value</th><th>Entry deposit</th><th>Trade volume hurdle</th><th>Realistic ROI</th><th>Expected net value</th><th>Spot fee</th><th>{escape(job['region'].title())} fiat onramp</th><th>Benefits lens</th><th>Action</th></tr>
 </thead>
 <tbody>
 {rows}
@@ -167,7 +188,10 @@ def _html_content(
 <p>Claims should be rechecked before publishing because crypto bonuses, fiat rails, and fee schedules can change quickly.</p>
 <ul>
 {source_links}
-</ul>"""
+</ul>
+
+<h2>Compliance Disclaimer</h2>
+<p>{escape(job.get("compliance_disclaimer", "This is not financial advice. Crypto products can be volatile and may be restricted in some jurisdictions."))}</p>"""
 
 
 def _winner_verdict(brief: JsonDict) -> str:
@@ -192,10 +216,12 @@ def _verdict_rows(table: list[JsonDict], metrics: list[JsonDict]) -> str:
     low_deposit = _metric_winner(table, metrics, "required_deposit_usdt", lower_is_better=True)["platform"]
     higher_bonus = _metric_winner(table, metrics, "realistic_value_usdt", lower_is_better=False)["platform"]
     better_roi = _metric_winner(table, metrics, "realistic_bonus_roi", lower_is_better=False)["platform"]
+    better_ev = _metric_winner(table, metrics, "expected_net_value_usdt", lower_is_better=False)["platform"]
     rows = [
         ("Small first deposit", low_deposit, "Lower entry deposit and less bonus friction."),
         ("Highest realistic bonus", higher_bonus, "Higher realistic reward, before considering effort and capital lock-up."),
         ("Best bonus ROI", better_roi, "Better reward relative to the required deposit."),
+        ("Best expected value", better_ev, "Higher net value after estimated trading-fee drag."),
     ]
     return "\n".join(
         f"<tr><td>{escape(use_case)}</td><td>{escape(winner)}</td><td>{escape(reason)}</td></tr>"
@@ -237,28 +263,85 @@ def _who_should_choose_items(table: list[JsonDict], metrics: list[JsonDict]) -> 
     return "\n".join(sections)
 
 
-def _faq_schema(table: list[JsonDict], winner_verdict: str) -> str:
+def _schema_markup(table: list[JsonDict], winner_verdict: str, mentioned_entities: list[str]) -> str:
     platform_names = _platform_list_title(table)
     schema = {
         "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
+        "@graph": [
             {
-                "@type": "Question",
-                "name": f"Which bonus is better for low-budget users: {platform_names}?",
-                "acceptedAnswer": {"@type": "Answer", "text": winner_verdict},
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": f"Which bonus is better for low-budget users: {platform_names}?",
+                        "acceptedAnswer": {"@type": "Answer", "text": winner_verdict},
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Should I trust the headline crypto bonus amount?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "No. The headline amount should be checked against the realistic reward tier, deposit requirement, trading volume, expiry date, and regional eligibility.",
+                        },
+                    },
+                ],
             },
             {
-                "@type": "Question",
-                "name": "Should I trust the headline crypto bonus amount?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "No. The headline amount should be checked against the realistic reward tier, deposit requirement, trading volume, expiry date, and regional eligibility.",
-                },
+                "@type": "ItemList",
+                "name": f"{platform_names} comparison",
+                "itemListElement": [
+                    {
+                        "@type": "Product",
+                        "position": index + 1,
+                        "name": row["platform"],
+                        "description": f"{row['platform']} crypto exchange signup bonus comparison entry.",
+                    }
+                    for index, row in enumerate(table)
+                ],
+            },
+            {
+                "@type": "Thing",
+                "name": "Mentioned entities",
+                "description": ", ".join(mentioned_entities),
             },
         ],
     }
     return json.dumps(schema, ensure_ascii=False)
+
+
+def _schema_types(schema: JsonDict) -> set[str]:
+    types: set[str] = set()
+
+    def visit(node: object) -> None:
+        if isinstance(node, dict):
+            raw_type = node.get("@type")
+            if isinstance(raw_type, str):
+                types.add(raw_type)
+            elif isinstance(raw_type, list):
+                types.update(str(item) for item in raw_type)
+            for value in node.values():
+                visit(value)
+        elif isinstance(node, list):
+            for item in node:
+                visit(item)
+
+    visit(schema)
+    return types
+
+
+def _mentioned_entities(brief: JsonDict, table: list[JsonDict]) -> list[str]:
+    entities = [row["platform"] for row in table]
+    region = brief["job"].get("region")
+    category = brief["job"].get("category")
+    if region:
+        entities.append(str(region).title())
+    if category:
+        entities.append(str(category))
+    for row in table:
+        fiat = row.get("fiat_onramp")
+        if fiat:
+            entities.append(str(fiat))
+    return list(dict.fromkeys(entities))
 
 
 def _insight_items(insights: list[str]) -> str:

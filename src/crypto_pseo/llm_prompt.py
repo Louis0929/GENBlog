@@ -17,6 +17,8 @@ BLOG_POST_SCHEMA: JsonDict = {
         "html_content",
         "schema_markup",
         "winner_verdict",
+        "mentioned_entities",
+        "compliance_disclaimer",
     ],
     "properties": {
         "h1_title": {"type": "string"},
@@ -33,6 +35,15 @@ BLOG_POST_SCHEMA: JsonDict = {
         "winner_verdict": {
             "type": "string",
             "description": "Clear verdict explaining which user type should choose each platform.",
+        },
+        "mentioned_entities": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Structured entities mentioned in the article for internal linking and knowledge graph use.",
+        },
+        "compliance_disclaimer": {
+            "type": "string",
+            "description": "Dynamic legal disclaimer for the target jurisdiction.",
         },
     },
 }
@@ -93,12 +104,30 @@ Forbidden phrases:
 Required sections:
 {required_sections}
 
-Output only valid JSON matching BlogPostStructure. Do not wrap the JSON in Markdown. Do not invent facts, bonuses, fees, regions, or source URLs. Use the computed insights as the article's analytical spine. Put a clear 'Claim the bonus' CTA where it is useful, but keep the surrounding copy honest and requirements-aware."""
+Output only valid JSON matching BlogPostStructure. Do not wrap the JSON in Markdown. Do not invent facts, bonuses, fees, regions, or source URLs.
+
+Treat user_payload.data_layers.absolute_facts as the source of truth. Treat user_payload.data_layers.search_notes as optional context only. If the two conflict, use absolute_facts and mention uncertainty only when needed.
+
+Use the computed insights as the article's analytical spine. Put a clear 'Claim the bonus' CTA where it is useful, but keep the surrounding copy honest and requirements-aware. Include the compliance disclaimer exactly enough that the legal meaning is preserved."""
 
 
 def _user_payload(brief: JsonDict) -> JsonDict:
+    absolute_facts = {
+        "job": brief["job"],
+        "platforms": brief["platforms"],
+        "information_gain": brief["information_gain"],
+    }
+    search_notes = {
+        "status": "not_attached",
+        "rule": "Search notes are auxiliary context only and must not overwrite campaign facts.",
+    }
     return {
         "task": "Generate a publishable crypto affiliate comparison article.",
+        "data_layers": {
+            "absolute_facts": absolute_facts,
+            "search_notes": search_notes,
+        },
+        "prompt_context_xml": _prompt_context_xml(absolute_facts, search_notes),
         "job": brief["job"],
         "platforms": brief["platforms"],
         "information_gain": brief["information_gain"],
@@ -111,6 +140,7 @@ def _user_payload(brief: JsonDict) -> JsonDict:
             "Include a MoneyHero-style quick verdict table and an analyst math table in html_content.",
             "Include a benefits lens when benefit claims exist, covering miles, lounge access, rewards, application eligibility, or explaining when they are not evidenced.",
             "Include source notes or claim caveats in html_content.",
+            "Include the jurisdiction-specific compliance disclaimer in html_content and compliance_disclaimer.",
             "Use the CTA text 'Claim the bonus' for affiliate links.",
             "Do not overstate certainty when a claim depends on promotion terms or expiry.",
             "Avoid generic SEO filler introductions.",
@@ -123,5 +153,20 @@ def _user_payload(brief: JsonDict) -> JsonDict:
             "html_content": "<h2>Quick Verdict</h2>...",
             "schema_markup": json.dumps({"@context": "https://schema.org", "@type": "FAQPage"}, ensure_ascii=False),
             "winner_verdict": "string",
+            "mentioned_entities": ["Binance", "Bybit", "Brazil", "Pix"],
+            "compliance_disclaimer": brief["job"].get("compliance_disclaimer", "string"),
         },
     }
+
+
+def _prompt_context_xml(absolute_facts: JsonDict, search_notes: JsonDict) -> str:
+    facts_json = json.dumps(absolute_facts, ensure_ascii=False, indent=2)
+    notes_json = json.dumps(search_notes, ensure_ascii=False, indent=2)
+    return (
+        "<CAMPAIGN_FACTS>\n"
+        f"{facts_json}\n"
+        "</CAMPAIGN_FACTS>\n"
+        "<SEARCH_NOTES>\n"
+        f"{notes_json}\n"
+        "</SEARCH_NOTES>"
+    )

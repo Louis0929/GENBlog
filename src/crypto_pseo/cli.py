@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from .export import export_article
+from .gate import evaluate_article
 from .generator import generate_blog_post, validate_blog_post
 from .insight import build_writer_brief, compute_information_gain
 from .llm_prompt import build_llm_prompt_package
@@ -70,11 +71,14 @@ def main() -> None:
 
     if args.post_output or args.html_output or args.output_dir:
         post = generate_blog_post(brief)
-        post_issues = validate_blog_post(post, brief)
+        gate_report = evaluate_article(post, brief)
+        post_issues = gate_report["issues"]
         print("\nGenerated BlogPostStructure")
         print(json.dumps(post, indent=2, ensure_ascii=False))
         print("\nEditorial Gate")
-        print(f"- passed: {not post_issues}")
+        print(f"- passed: {gate_report['passed']}")
+        print(f"- weighted_score: {gate_report['weighted_score']}")
+        print(f"- scores: {json.dumps(gate_report['scores'], ensure_ascii=False)}")
         for issue in post_issues:
             print(f"  [error] {issue}")
         if post_issues:

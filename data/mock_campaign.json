@@ -342,6 +342,9 @@
       "region": "brazil",
       "category": "exchange",
       "platform_ids": ["binance", "bybit"],
+      "allowed_regions": ["brazil"],
+      "restricted_regions": ["us", "uk"],
+      "compliance_disclaimer": "This comparison is for Brazil users only. It is not financial advice. Crypto products are volatile and may be restricted or unavailable in some jurisdictions; check local rules and platform terms before opening an account.",
       "persona": "lexington_crypto_analyst",
       "intent": "Compare true onboarding costs and realistic signup bonuses for low-budget retail users.",
       "cms_target": "wordpress"
@@ -353,6 +356,9 @@
       "region": "brazil",
       "category": "exchange",
       "platform_ids": ["binance", "bybit", "okx"],
+      "allowed_regions": ["brazil"],
+      "restricted_regions": ["us", "uk"],
+      "compliance_disclaimer": "This comparison is for Brazil users only. It is not financial advice. Crypto products are volatile and may be restricted or unavailable in some jurisdictions; check local rules and platform terms before opening an account.",
       "persona": "lexington_crypto_analyst",
       "intent": "Compare account-opening value, realistic bonuses, fiat friction, and benefit evidence across three global exchanges for Brazil users.",
       "cms_target": "wordpress"
@@ -364,6 +370,9 @@
       "region": "brazil",
       "category": "exchange",
       "platform_ids": ["bybit", "okx"],
+      "allowed_regions": ["brazil"],
+      "restricted_regions": ["us", "uk"],
+      "compliance_disclaimer": "This comparison is for Brazil users only. It is not financial advice. Crypto products are volatile and may be restricted or unavailable in some jurisdictions; check local rules and platform terms before opening an account.",
       "persona": "lexington_crypto_analyst",
       "intent": "Compare source-backed onboarding claims and benefit evidence for Brazil users considering Bybit or OKX.",
       "cms_target": "wordpress"

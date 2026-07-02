@@ -51,6 +51,7 @@ Every comparison article must contain:
 - Fees and Fiat Friction
 - Who Should Choose Each
 - Source Notes
+- Compliance Disclaimer
 
 ## UI Pattern
 
@@ -82,10 +83,12 @@ Be explicit when a benefit is not evidenced. Never infer lounge access, miles, o
 ## Claim Rules
 
 - Start from realistic value, not headline bonus.
+- Use expected net value after fee drag when trading-volume requirements are material.
 - Explain deposit and trading-volume requirements whenever mentioning a bonus.
 - Treat fiat rails, KYC, CPF/CNPJ matching, fees, and regional availability as user friction.
 - Keep source URLs visible in the article output.
 - Recheck bonus and fee claims before publication.
+- Keep campaign facts and search evidence separate. Search notes can add context; they cannot overwrite numbers.
 
 ## Forbidden Phrases
 
@@ -108,5 +111,9 @@ Reject the article if:
 - required sections are missing
 - a computed insight is not reflected in the article
 - `schema_markup` is not valid JSON-LD
+- `schema_markup` does not include FAQPage, Product, or Review
 - source URLs from comparison claims are missing
+- the compliance disclaimer is missing
 - unsupported claims appear in the copy
+
+If an LLM output fails the gate, retry with the gate issues and the original prompt. Keep `max_retries` small, normally `2`.

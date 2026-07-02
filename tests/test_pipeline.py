@@ -9,6 +9,7 @@ from subprocess import run
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from crypto_pseo.export import export_article
+from crypto_pseo.gate import evaluate_article
 from crypto_pseo.generator import generate_blog_post, validate_blog_post
 from crypto_pseo.insight import build_writer_brief
 from crypto_pseo.insight import compute_information_gain
@@ -41,6 +42,9 @@ class PipelineTest(unittest.TestCase):
         self.assertEqual(info.metrics_b.realistic_bonus_roi, 0.1)
         self.assertEqual(info.deposit_burden_ratio, 50)
         self.assertEqual(info.low_budget_winner, "Binance")
+        self.assertEqual(info.expected_value_winner, "Binance")
+        self.assertEqual(info.metrics_b.estimated_fee_cost_usdt, 100)
+        self.assertEqual(info.metrics_b.expected_net_value_usdt, -50)
 
     def test_generator_outputs_blog_post_structure(self):
         data = json.loads(Path("data/mock_campaign.json").read_text(encoding="utf-8"))
@@ -59,6 +63,9 @@ class PipelineTest(unittest.TestCase):
         self.assertIn("Small first deposit", post["html_content"])
         self.assertIn("Miles, Lounge Access and Other Benefits", post["html_content"])
         self.assertIn("miles lounge access", post["html_content"])
+        self.assertIn("Compliance Disclaimer", post["html_content"])
+        self.assertIn("not financial advice", post["compliance_disclaimer"].lower())
+        self.assertIn("mentioned_entities", post)
 
     def test_llm_prompt_package_contains_schema_and_computed_insights(self):
         data = json.loads(Path("data/mock_campaign.json").read_text(encoding="utf-8"))
@@ -75,6 +82,11 @@ class PipelineTest(unittest.TestCase):
         self.assertIn("html_content", package["output_schema"]["properties"])
         self.assertIn("affiliate-friendly", package["system_prompt"])
         self.assertIn("Claim the bonus", package["system_prompt"])
+        self.assertIn("absolute_facts", package["user_payload"]["data_layers"])
+        self.assertIn("search_notes", package["user_payload"]["data_layers"])
+        self.assertIn("<CAMPAIGN_FACTS>", package["user_payload"]["prompt_context_xml"])
+        self.assertIn("<SEARCH_NOTES>", package["user_payload"]["prompt_context_xml"])
+        self.assertIn("mentioned_entities", package["output_schema"]["properties"])
 
     def test_skill_wrapper_exports_json_and_html(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -142,6 +154,14 @@ class PipelineTest(unittest.TestCase):
 
         self.assertIn("schema_markup must be valid JSON-LD.", issues)
 
+    def test_article_gate_rejects_schema_without_supported_type(self):
+        brief, post = _brief_and_post()
+        post["schema_markup"] = json.dumps({"@context": "https://schema.org", "@type": "Thing"})
+
+        issues = validate_blog_post(post, brief)
+
+        self.assertIn("schema_markup must include FAQPage, Product, or Review JSON-LD.", issues)
+
     def test_article_gate_rejects_missing_computed_insight(self):
         brief, post = _brief_and_post()
         insight = brief["information_gain"]["computed_insights"][0]
@@ -150,6 +170,28 @@ class PipelineTest(unittest.TestCase):
         issues = validate_blog_post(post, brief)
 
         self.assertTrue(any(issue.startswith("Computed insight not reflected") for issue in issues))
+
+    def test_gate_returns_scores_and_retry_plan(self):
+        brief, post = _brief_and_post()
+        post["html_content"] += "<p>This is a game-changer.</p>"
+
+        report = evaluate_article(post, brief, max_retries=2)
+
+        self.assertFalse(report["passed"])
+        self.assertIn("information_gain", report["scores"])
+        self.assertTrue(report["retry_plan"]["should_retry"])
+        self.assertEqual(report["retry_plan"]["revision_reasons"][0]["code"], "style_violation")
+        self.assertIn("html_content", report["retry_plan"]["revision_context"]["blocked_fields"])
+        self.assertIn("game-changer", report["retry_plan"]["revision_prompt"])
+
+    def test_jurisdiction_gating_requires_allowed_region(self):
+        data = json.loads(Path("data/mock_campaign.json").read_text(encoding="utf-8"))
+        data["article_jobs"][0]["allowed_regions"] = ["singapore"]
+
+        report = validate_campaign(data)
+
+        self.assertFalse(report.passed)
+        self.assertTrue(any(issue.path.endswith(".region") for issue in report.errors()))
 
     def test_export_article_writes_html_with_schema(self):
         _, post = _brief_and_post()

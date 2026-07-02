@@ -186,7 +186,20 @@ def _validate_article_job(job: JsonDict, index: int, platform_ids: set[str], iss
     path = f"article_jobs[{index}]"
     _require_fields(
         job,
-        {"job_id", "content_type", "target_keyword", "region", "category", "platform_ids", "persona", "intent", "cms_target"},
+        {
+            "job_id",
+            "content_type",
+            "target_keyword",
+            "region",
+            "category",
+            "platform_ids",
+            "persona",
+            "intent",
+            "cms_target",
+            "allowed_regions",
+            "restricted_regions",
+            "compliance_disclaimer",
+        },
         path,
         issues,
     )
@@ -197,6 +210,14 @@ def _validate_article_job(job: JsonDict, index: int, platform_ids: set[str], iss
     for platform_id in ids:
         if platform_id not in platform_ids:
             _error(issues, f"{path}.platform_ids", f"Unknown platform_id: {platform_id}")
+    if not isinstance(job.get("allowed_regions"), list) or not job.get("allowed_regions"):
+        _error(issues, f"{path}.allowed_regions", "Must be a non-empty list for jurisdiction gating.")
+    elif job.get("region") not in job["allowed_regions"]:
+        _error(issues, f"{path}.region", "Region must appear in allowed_regions.")
+    if not isinstance(job.get("restricted_regions"), list):
+        _error(issues, f"{path}.restricted_regions", "Must be a list, even when empty.")
+    if not isinstance(job.get("compliance_disclaimer"), str) or not job.get("compliance_disclaimer", "").strip():
+        _error(issues, f"{path}.compliance_disclaimer", "Must be a non-empty dynamic disclaimer.")
 
 
 def _validate_editorial_rules(rules: JsonDict, index: int, issues: list[ValidationIssue]) -> None:

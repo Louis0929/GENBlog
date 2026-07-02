@@ -7,14 +7,15 @@
   <meta name="description" content="Binance vs Bybit vs OKX in Brazil: compare realistic bonus value, deposit requirements, trading volume, fees, Pix support, and account-opening perks.">
   <style>
     :root {
-      --bg: #f5f7fb;
+      --bg: #f6f7f9;
       --surface: #ffffff;
-      --ink: #182230;
-      --muted: #5f6b7a;
-      --line: #dce3ee;
-      --brand: #ff6b00;
-      --brand-dark: #c84f00;
-      --blue: #1256a3;
+      --ink: #20242a;
+      --muted: #606b7b;
+      --line: #dde3ec;
+      --brand: #f28c28;
+      --brand-dark: #d46f00;
+      --blue: #1457a8;
+      --blue-soft: #eaf2ff;
       --green: #0f7a4f;
       --warning: #8a5a00;
     }
@@ -27,17 +28,66 @@
       line-height: 1.55;
     }
     a { color: var(--blue); }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      height: 58px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 18px;
+    }
+    .topbar-inner {
+      width: min(1120px, 100%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brandmark {
+      color: var(--blue);
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .brandmark span { color: var(--brand); }
+    .menu-dot {
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      color: var(--blue);
+      font-weight: 700;
+    }
+    .campaign-banner {
+      height: 54px;
+      background: linear-gradient(90deg, #03677a, #10bfd0);
+    }
     .page-shell {
       width: min(1120px, calc(100% - 32px));
       margin: 0 auto;
-      padding: 28px 0 48px;
+      padding: 26px 0 48px;
+    }
+    .breadcrumbs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .breadcrumbs a {
+      color: var(--muted);
+      text-decoration: none;
     }
     .hero {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 28px;
-      box-shadow: 0 8px 24px rgba(24, 34, 48, 0.06);
+      padding: 0;
     }
     .eyebrow {
       margin: 0 0 8px;
@@ -54,25 +104,76 @@
       letter-spacing: 0;
     }
     .dek {
-      max-width: 760px;
+      max-width: 900px;
       margin: 14px 0 0;
       color: var(--muted);
       font-size: 17px;
     }
-    .trust-strip {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin: 16px 0 0;
+    .updated {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
     }
-    .trust-item {
+    .trust-strip {
+      margin: 24px 0 18px;
       border: 1px solid var(--line);
       border-radius: 8px;
-      padding: 12px;
-      background: #fbfcff;
+      background: var(--surface);
+      overflow: hidden;
+    }
+    .trust-item {
+      padding: 14px 16px;
       font-size: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    .trust-item:last-child { border-bottom: 0; }
+    .trust-item:first-child {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 17px;
     }
     .trust-item strong { display: block; margin-bottom: 3px; }
+    .category-strip {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 4px 0 14px;
+      margin: 0 0 10px;
+      scrollbar-width: thin;
+    }
+    .category-chip {
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--surface);
+      color: var(--ink);
+      padding: 8px 14px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .category-chip.active {
+      border-color: var(--blue);
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+    .summary-heading {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 8px 0 14px;
+      color: var(--ink);
+      font-size: 18px;
+      font-weight: 800;
+    }
+    .summary-heading span:first-child {
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 400;
+    }
     .article-card {
       margin-top: 18px;
       background: var(--surface);
@@ -105,8 +206,8 @@
       background: var(--surface);
     }
     th {
-      background: #edf4ff;
-      color: #132f4c;
+      background: #f4f6f9;
+      color: #4a5361;
       font-size: 13px;
       text-align: left;
       padding: 13px 12px;
@@ -120,19 +221,27 @@
     }
     tr:last-child td { border-bottom: 0; }
     tbody tr:nth-child(even) td { background: #fafcff; }
-    td:nth-child(2):not(:last-child) { font-weight: 700; }
+    td:nth-child(2):not(:last-child),
+    td:nth-child(3):not(:last-child) {
+      font-weight: 700;
+    }
+    td:nth-child(3),
+    td:nth-child(4) {
+      color: #133f78;
+    }
     td a[rel~="sponsored"] {
       display: inline-block;
-      min-width: 132px;
+      min-width: 92px;
       text-align: center;
-      padding: 10px 13px;
+      padding: 9px 14px;
       border-radius: 6px;
-      background: var(--brand);
-      color: white;
+      border: 1px solid var(--brand);
+      background: var(--surface);
+      color: var(--brand-dark);
       font-weight: 700;
       text-decoration: none;
     }
-    td a[rel~="sponsored"]:hover { background: var(--brand-dark); }
+    td a[rel~="sponsored"]:hover { background: #fff4e9; }
     p a[rel~="sponsored"] {
       display: inline-block;
       margin-left: 4px;
@@ -150,27 +259,51 @@
     .evidence-box h2 { margin-top: 0; }
     @media (max-width: 760px) {
       .page-shell { width: min(100% - 20px, 1120px); padding-top: 12px; }
-      .hero, .article-card { padding: 18px; }
+      .article-card { padding: 16px; }
       h1 { font-size: 26px; }
-      .trust-strip { grid-template-columns: 1fr; }
+      .topbar { height: 48px; }
+      .brandmark { font-size: 24px; }
+      .campaign-banner { height: 48px; }
       table { display: block; overflow-x: auto; white-space: nowrap; }
       th, td { min-width: 140px; }
     }
   </style>
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Which bonus is better for low-budget users: Binance vs Bybit vs OKX?", "acceptedAnswer": {"@type": "Answer", "text": "OKX is the lower-friction option for opening an account, while Binance has the stronger realistic bonus ROI in this data set. Bybit has the higher realistic reward, but the requirements decide whether that value is practical."}}, {"@type": "Question", "name": "Should I trust the headline crypto bonus amount?", "acceptedAnswer": {"@type": "Answer", "text": "No. The headline amount should be checked against the realistic reward tier, deposit requirement, trading volume, expiry date, and regional eligibility."}}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Which bonus is better for low-budget users: Binance vs Bybit vs OKX?", "acceptedAnswer": {"@type": "Answer", "text": "OKX is the lower-friction option for opening an account, while Binance has the stronger realistic bonus ROI in this data set. Bybit has the higher realistic reward, but the requirements decide whether that value is practical."}}, {"@type": "Question", "name": "Should I trust the headline crypto bonus amount?", "acceptedAnswer": {"@type": "Answer", "text": "No. The headline amount should be checked against the realistic reward tier, deposit requirement, trading volume, expiry date, and regional eligibility."}}]}, {"@type": "ItemList", "name": "Binance vs Bybit vs OKX comparison", "itemListElement": [{"@type": "Product", "position": 1, "name": "Binance", "description": "Binance crypto exchange signup bonus comparison entry."}, {"@type": "Product", "position": 2, "name": "Bybit", "description": "Bybit crypto exchange signup bonus comparison entry."}, {"@type": "Product", "position": 3, "name": "OKX", "description": "OKX crypto exchange signup bonus comparison entry."}]}, {"@type": "Thing", "name": "Mentioned entities", "description": "Binance, Bybit, OKX, Brazil, exchange, pix, p2p"}]}</script>
 </head>
 <body>
+  <header class="topbar" aria-label="Site header">
+    <div class="topbar-inner">
+      <div class="menu-dot" aria-hidden="true">☰</div>
+      <div class="brandmark">Gen<span>Blog</span></div>
+      <div class="menu-dot" aria-hidden="true">◎</div>
+    </div>
+  </header>
+  <div class="campaign-banner" aria-hidden="true"></div>
   <main class="page-shell">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="#">Home</a><span>/</span><a href="#">Crypto Exchanges</a><span>/</span><span>Binance vs Bybit vs OKX bonus Brazil 2026</span>
+    </nav>
     <section class="hero">
       <p class="eyebrow">Crypto bonus comparison</p>
       <h1>Binance vs Bybit vs OKX in Brazil: Which Global Crypto Exchange Has the Better Bonus?</h1>
+      <p class="updated">Updated: 01 Jul 2026</p>
       <p class="dek">Binance vs Bybit vs OKX in Brazil: compare realistic bonus value, deposit requirements, trading volume, fees, Pix support, and account-opening perks.</p>
       <div class="trust-strip" aria-label="Editorial checks">
+        <div class="trust-item"><strong>Why Trust GenBlog</strong><span>⌄</span></div>
         <div class="trust-item"><strong>Realistic value first</strong>Headline bonuses are checked against unlock requirements.</div>
         <div class="trust-item"><strong>Claim-gated data</strong>Fees, bonuses, and fiat rails keep visible source notes.</div>
         <div class="trust-item"><strong>Affiliate disclosure</strong>CTA links use sponsored/nofollow attributes.</div>
       </div>
     </section>
+    <div class="category-strip" aria-label="Comparison filters">
+      <a class="category-chip active" href="#">All exchanges</a>
+      <a class="category-chip" href="#">Best bonus</a>
+      <a class="category-chip" href="#">Low deposit</a>
+      <a class="category-chip" href="#">Pix onramp</a>
+      <a class="category-chip" href="#">Fee friction</a>
+      <a class="category-chip" href="#">Beginner fit</a>
+    </div>
+    <div class="summary-heading"><span>+</span><span>Summary Products</span></div>
     <article class="article-card">
 <h2>Quick Verdict</h2>
 <p>OKX is the lower-friction option for opening an account, while Binance has the stronger realistic bonus ROI in this data set. Bybit has the higher realistic reward, but the requirements decide whether that value is practical.</p>
@@ -184,6 +317,7 @@
 <tr><td>Small first deposit</td><td>OKX</td><td>Lower entry deposit and less bonus friction.</td></tr>
 <tr><td>Highest realistic bonus</td><td>Bybit</td><td>Higher realistic reward, before considering effort and capital lock-up.</td></tr>
 <tr><td>Best bonus ROI</td><td>Binance</td><td>Better reward relative to the required deposit.</td></tr>
+<tr><td>Best expected value</td><td>Binance</td><td>Higher net value after estimated trading-fee drag.</td></tr>
 </tbody>
 </table>
 
@@ -199,17 +333,19 @@
 <li>Entry deposit requirements: Binance: $10; Bybit: $500; OKX: $0.</li>
 <li>Trading-volume hurdles appear in this data set: Bybit: $100,000.</li>
 <li>Realistic bonus values: Binance: $30; Bybit: $50; OKX: $0.</li>
+<li>Expected net bonus value after trading-fee friction: Binance: $30 after an estimated $0 trading-fee drag; Bybit: $-50 after an estimated $100 trading-fee drag; OKX: $0 after an estimated $0 trading-fee drag.</li>
 <li>ROI winner: Binance. Low-budget onboarding winner: OKX. Highest realistic bonus: Bybit.</li>
+<li>Expected-value winner after fee drag: Binance.</li>
 </ul>
 
 <table>
 <thead>
-<tr><th>Platform</th><th>Headline offer</th><th>Realistic value</th><th>Entry deposit</th><th>Trade volume hurdle</th><th>Realistic ROI</th><th>Spot fee</th><th>Brazil fiat onramp</th><th>Benefits lens</th><th>Action</th></tr>
+<tr><th>Platform</th><th>Headline offer</th><th>Realistic value</th><th>Entry deposit</th><th>Trade volume hurdle</th><th>Realistic ROI</th><th>Expected net value</th><th>Spot fee</th><th>Brazil fiat onramp</th><th>Benefits lens</th><th>Action</th></tr>
 </thead>
 <tbody>
-<tr><td>Binance</td><td>Up to $19,800 USDT or $600 Voucher</td><td>$30</td><td>$10</td><td>$0</td><td>300.0%</td><td>0.1% Maker/Taker</td><td>pix: Free / Zero Fees</td><td>miles lounge access: No miles or lounge benefit in current exchange signup data (not_evidenced)</td><td><a href="https://accounts.binance.com/register?ref=BESTBONUS" rel="sponsored nofollow">Claim the bonus</a></td></tr>
-<tr><td>Bybit</td><td>Up to $30,000 USDT</td><td>$50</td><td>$500</td><td>$100,000</td><td>10.0%</td><td>0.1% Maker/Taker</td><td>pix: Zero Fees</td><td>miles lounge access: No miles or lounge benefit in current exchange signup data (not_evidenced)</td><td><a href="https://www.bybit.com/register?affiliate_id=93065" rel="sponsored nofollow">Claim the bonus</a></td></tr>
-<tr><td>OKX</td><td>New-user rewards vary by campaign</td><td>$0</td><td>$0</td><td>$0</td><td>N/A</td><td>Varies by tier; verify current fee schedule</td><td>p2p: Varies by merchant/payment method</td><td>localization: Brazil Portuguese product experience evidenced; miles/lounge not evidenced (available)</td><td><a href="https://www.okx.com/join" rel="sponsored nofollow">Claim the bonus</a></td></tr>
+<tr><td>Binance</td><td>Up to $19,800 USDT or $600 Voucher</td><td>$30</td><td>$10</td><td>$0</td><td>300.0%</td><td>$30</td><td>0.1% Maker/Taker</td><td>pix: Free / Zero Fees</td><td>miles lounge access: No miles or lounge benefit in current exchange signup data (not_evidenced)</td><td><a href="https://accounts.binance.com/register?ref=BESTBONUS" rel="sponsored nofollow">Claim the bonus</a></td></tr>
+<tr><td>Bybit</td><td>Up to $30,000 USDT</td><td>$50</td><td>$500</td><td>$100,000</td><td>10.0%</td><td>$-50</td><td>0.1% Maker/Taker</td><td>pix: Zero Fees</td><td>miles lounge access: No miles or lounge benefit in current exchange signup data (not_evidenced)</td><td><a href="https://www.bybit.com/register?affiliate_id=93065" rel="sponsored nofollow">Claim the bonus</a></td></tr>
+<tr><td>OKX</td><td>New-user rewards vary by campaign</td><td>$0</td><td>$0</td><td>$0</td><td>N/A</td><td>$0</td><td>Varies by tier; verify current fee schedule</td><td>p2p: Varies by merchant/payment method</td><td>localization: Brazil Portuguese product experience evidenced; miles/lounge not evidenced (available)</td><td><a href="https://www.okx.com/join" rel="sponsored nofollow">Claim the bonus</a></td></tr>
 </tbody>
 </table>
 
@@ -249,6 +385,9 @@
 <li><a href="https://www.okx.com/p2p-markets/brl/buy-usdt">https://www.okx.com/p2p-markets/brl/buy-usdt</a></li>
 <li><a href="https://www.okx.com/pt-br">https://www.okx.com/pt-br</a></li>
 </ul>
+
+<h2>Compliance Disclaimer</h2>
+<p>This comparison is for Brazil users only. It is not financial advice. Crypto products are volatile and may be restricted or unavailable in some jurisdictions; check local rules and platform terms before opening an account.</p>
 
     <section class="evidence-box">
       <h2>Search Evidence Notes</h2>

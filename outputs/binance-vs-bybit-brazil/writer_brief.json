@@ -10,6 +10,14 @@
       "bybit",
       "okx"
     ],
+    "allowed_regions": [
+      "brazil"
+    ],
+    "restricted_regions": [
+      "us",
+      "uk"
+    ],
+    "compliance_disclaimer": "This comparison is for Brazil users only. It is not financial advice. Crypto products are volatile and may be restricted or unavailable in some jurisdictions; check local rules and platform terms before opening an account.",
     "persona": "lexington_crypto_analyst",
     "intent": "Compare account-opening value, realistic bonuses, fiat friction, and benefit evidence across three global exchanges for Brazil users.",
     "cms_target": "wordpress"
@@ -646,7 +654,9 @@
         "required_deposit_usdt": 10.0,
         "required_trade_volume_usdt": 0.0,
         "realistic_bonus_roi": 3.0,
-        "headline_to_realistic_ratio": 660.0
+        "headline_to_realistic_ratio": 660.0,
+        "estimated_fee_cost_usdt": 0.0,
+        "expected_net_value_usdt": 30.0
       },
       {
         "platform_id": "bybit",
@@ -656,7 +666,9 @@
         "required_deposit_usdt": 500.0,
         "required_trade_volume_usdt": 100000.0,
         "realistic_bonus_roi": 0.1,
-        "headline_to_realistic_ratio": 600.0
+        "headline_to_realistic_ratio": 600.0,
+        "estimated_fee_cost_usdt": 100.0,
+        "expected_net_value_usdt": -50.0
       },
       {
         "platform_id": "okx",
@@ -666,7 +678,9 @@
         "required_deposit_usdt": 0.0,
         "required_trade_volume_usdt": 0.0,
         "realistic_bonus_roi": null,
-        "headline_to_realistic_ratio": null
+        "headline_to_realistic_ratio": null,
+        "estimated_fee_cost_usdt": 0.0,
+        "expected_net_value_usdt": 0.0
       }
     ],
     "metrics_a": {
@@ -677,7 +691,9 @@
       "required_deposit_usdt": 10.0,
       "required_trade_volume_usdt": 0.0,
       "realistic_bonus_roi": 3.0,
-      "headline_to_realistic_ratio": 660.0
+      "headline_to_realistic_ratio": 660.0,
+      "estimated_fee_cost_usdt": 0.0,
+      "expected_net_value_usdt": 30.0
     },
     "metrics_b": {
       "platform_id": "bybit",
@@ -687,7 +703,9 @@
       "required_deposit_usdt": 500.0,
       "required_trade_volume_usdt": 100000.0,
       "realistic_bonus_roi": 0.1,
-      "headline_to_realistic_ratio": 600.0
+      "headline_to_realistic_ratio": 600.0,
+      "estimated_fee_cost_usdt": 100.0,
+      "expected_net_value_usdt": -50.0
     },
     "bonus_diff_usdt": -20.0,
     "deposit_diff_usdt": -490.0,
@@ -696,12 +714,15 @@
     "roi_winner": "Binance",
     "low_budget_winner": "OKX",
     "highest_bonus_winner": "Bybit",
+    "expected_value_winner": "Binance",
     "computed_insights": [
       "Realistic bonus ROI by platform: Binance: 300.0%; Bybit: 10.0%; OKX: N/A.",
       "Entry deposit requirements: Binance: $10; Bybit: $500; OKX: $0.",
       "Trading-volume hurdles appear in this data set: Bybit: $100,000.",
       "Realistic bonus values: Binance: $30; Bybit: $50; OKX: $0.",
-      "ROI winner: Binance. Low-budget onboarding winner: OKX. Highest realistic bonus: Bybit."
+      "Expected net bonus value after trading-fee friction: Binance: $30 after an estimated $0 trading-fee drag; Bybit: $-50 after an estimated $100 trading-fee drag; OKX: $0 after an estimated $0 trading-fee drag.",
+      "ROI winner: Binance. Low-budget onboarding winner: OKX. Highest realistic bonus: Bybit.",
+      "Expected-value winner after fee drag: Binance."
     ],
     "comparison_table": [
       {
@@ -711,6 +732,8 @@
         "required_deposit_usdt": 10.0,
         "required_trade_volume_usdt": 0.0,
         "realistic_bonus_roi": 3.0,
+        "estimated_fee_cost_usdt": 0.0,
+        "expected_net_value_usdt": 30.0,
         "spot_fee": "0.1% Maker/Taker",
         "fiat_onramp": "pix",
         "fiat_onramp_fee": "Free / Zero Fees",
@@ -752,6 +775,8 @@
         "required_deposit_usdt": 500.0,
         "required_trade_volume_usdt": 100000.0,
         "realistic_bonus_roi": 0.1,
+        "estimated_fee_cost_usdt": 100.0,
+        "expected_net_value_usdt": -50.0,
         "spot_fee": "0.1% Maker/Taker",
         "fiat_onramp": "pix",
         "fiat_onramp_fee": "Zero Fees",
@@ -793,6 +818,8 @@
         "required_deposit_usdt": 0.0,
         "required_trade_volume_usdt": 0.0,
         "realistic_bonus_roi": null,
+        "estimated_fee_cost_usdt": 0.0,
+        "expected_net_value_usdt": 0.0,
         "spot_fee": "Varies by tier; verify current fee schedule",
         "fiat_onramp": "p2p",
         "fiat_onramp_fee": "Varies by merchant/payment method",
@@ -835,7 +862,9 @@
     "target_keyword": "string",
     "html_content": "string with H2/H3 tags and comparison tables",
     "schema_markup": "FAQPage or Product JSON-LD string",
-    "winner_verdict": "string"
+    "winner_verdict": "string",
+    "mentioned_entities": "array of strings",
+    "compliance_disclaimer": "string"
   },
   "editorial_gate": {
     "required_sections": [

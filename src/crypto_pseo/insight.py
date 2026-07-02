@@ -15,6 +15,8 @@ class PlatformMetrics:
     required_trade_volume_usdt: float
     realistic_bonus_roi: float | None
     headline_to_realistic_ratio: float | None
+    estimated_fee_cost_usdt: float
+    expected_net_value_usdt: float
 
 
 @dataclass(frozen=True)
@@ -29,6 +31,7 @@ class InformationGain:
     roi_winner: str
     low_budget_winner: str
     highest_bonus_winner: str
+    expected_value_winner: str
     computed_insights: list[str]
     comparison_table: list[JsonDict]
 
@@ -45,7 +48,8 @@ def compute_information_gain(bundle: ComparisonBundle) -> InformationGain:
     roi_winner = _winner_name(metrics, "realistic_bonus_roi", lower_is_better=False)
     low_budget_winner = _winner_name(metrics, "required_deposit_usdt", lower_is_better=True)
     highest_bonus_winner = _winner_name(metrics, "realistic_value_usdt", lower_is_better=False)
-    insights = _build_insights(metrics, roi_winner, low_budget_winner, highest_bonus_winner)
+    expected_value_winner = _winner_name(metrics, "expected_net_value_usdt", lower_is_better=False)
+    insights = _build_insights(metrics, roi_winner, low_budget_winner, highest_bonus_winner, expected_value_winner)
 
     return InformationGain(
         metrics=metrics,
@@ -58,6 +62,7 @@ def compute_information_gain(bundle: ComparisonBundle) -> InformationGain:
         roi_winner=roi_winner,
         low_budget_winner=low_budget_winner,
         highest_bonus_winner=highest_bonus_winner,
+        expected_value_winner=expected_value_winner,
         computed_insights=insights,
         comparison_table=_comparison_table(bundle, metrics),
     )
@@ -89,6 +94,7 @@ def build_writer_brief(bundle: ComparisonBundle, info: InformationGain) -> JsonD
             "roi_winner": info.roi_winner,
             "low_budget_winner": info.low_budget_winner,
             "highest_bonus_winner": info.highest_bonus_winner,
+            "expected_value_winner": info.expected_value_winner,
             "computed_insights": info.computed_insights,
             "comparison_table": info.comparison_table,
         },
@@ -99,6 +105,8 @@ def build_writer_brief(bundle: ComparisonBundle, info: InformationGain) -> JsonD
             "html_content": "string with H2/H3 tags and comparison tables",
             "schema_markup": "FAQPage or Product JSON-LD string",
             "winner_verdict": "string",
+            "mentioned_entities": "array of strings",
+            "compliance_disclaimer": "string",
         },
         "editorial_gate": {
             "required_sections": bundle.editorial_rules.get("required_sections", []),
@@ -118,10 +126,13 @@ def build_writer_brief(bundle: ComparisonBundle, info: InformationGain) -> JsonD
 
 def _platform_metrics(bundle: PlatformBundle) -> PlatformMetrics:
     bonus = bundle.signup_bonus
+    fee = bundle.trading_fee or {}
     headline = float(bonus["headline_value_usdt"])
     realistic = float(bonus["realistic_value_usdt"])
     deposit = float(bonus["required_deposit_usdt"])
     trade_volume = float(bonus.get("required_trade_volume_usdt", 0))
+    fee_rate = float(fee.get("fee_value") or 0)
+    estimated_fee_cost = trade_volume * fee_rate
     return PlatformMetrics(
         platform_id=bundle.platform["platform_id"],
         name=bundle.platform["name"],
@@ -131,10 +142,18 @@ def _platform_metrics(bundle: PlatformBundle) -> PlatformMetrics:
         required_trade_volume_usdt=trade_volume,
         realistic_bonus_roi=_safe_divide(realistic, deposit),
         headline_to_realistic_ratio=_safe_divide(headline, realistic),
+        estimated_fee_cost_usdt=estimated_fee_cost,
+        expected_net_value_usdt=realistic - estimated_fee_cost,
     )
 
 
-def _build_insights(metrics: list[PlatformMetrics], roi_winner: str, low_budget_winner: str, highest_bonus_winner: str) -> list[str]:
+def _build_insights(
+    metrics: list[PlatformMetrics],
+    roi_winner: str,
+    low_budget_winner: str,
+    highest_bonus_winner: str,
+    expected_value_winner: str,
+) -> list[str]:
     insights = []
     roi_parts = [f"{metric.name}: {_pct(metric.realistic_bonus_roi)}" for metric in metrics]
     insights.append(f"Realistic bonus ROI by platform: {'; '.join(roi_parts)}.")
@@ -146,7 +165,13 @@ def _build_insights(metrics: list[PlatformMetrics], roi_winner: str, low_budget_
         insights.append(f"Trading-volume hurdles appear in this data set: {'; '.join(hurdle_parts)}.")
     bonus_parts = [f"{metric.name}: ${metric.realistic_value_usdt:,.0f}" for metric in metrics]
     insights.append(f"Realistic bonus values: {'; '.join(bonus_parts)}.")
+    ev_parts = [
+        f"{metric.name}: ${metric.expected_net_value_usdt:,.0f} after an estimated ${metric.estimated_fee_cost_usdt:,.0f} trading-fee drag"
+        for metric in metrics
+    ]
+    insights.append(f"Expected net bonus value after trading-fee friction: {'; '.join(ev_parts)}.")
     insights.append(f"ROI winner: {roi_winner}. Low-budget onboarding winner: {low_budget_winner}. Highest realistic bonus: {highest_bonus_winner}.")
+    insights.append(f"Expected-value winner after fee drag: {expected_value_winner}.")
     return insights
 
 
@@ -165,6 +190,8 @@ def _comparison_row(bundle: PlatformBundle, metrics: PlatformMetrics) -> JsonDic
         "required_deposit_usdt": metrics.required_deposit_usdt,
         "required_trade_volume_usdt": metrics.required_trade_volume_usdt,
         "realistic_bonus_roi": metrics.realistic_bonus_roi,
+        "estimated_fee_cost_usdt": metrics.estimated_fee_cost_usdt,
+        "expected_net_value_usdt": metrics.expected_net_value_usdt,
         "spot_fee": fee.get("fee_display"),
         "fiat_onramp": fiat.get("rail"),
         "fiat_onramp_fee": fiat.get("fee_display"),

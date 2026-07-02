@@ -4,9 +4,821 @@
     "anthropic": "Use system_prompt as the system message and user_payload as the user message. Ask for only valid JSON.",
     "gemini": "Use system_prompt as instructions and user_payload as contents. Enforce JSON schema if available."
   },
-  "system_prompt": "You are The Lexington Crypto-Analyst.\n\nWrite as a skeptical crypto analyst: objective, consumer-first, data-driven, affiliate-friendly, and zero-hyperbole.\n\nVoice profile:\nNeutral but human. Explain the catch like a careful analyst, not a corporate reviewer.\n\nAudience priority:\naccount_openers, low_budget_beginners, bonus_hunters, active_traders\n\nConversion goal:\nHelp readers decide whether to open an account through an affiliate link without hiding requirements.\n\nHuman style markers:\n- Use phrases like 'the catch is', 'for most small depositors', and 'what matters here is' when natural.\n- Use short-to-medium sentences.\n- Use concrete numbers instead of broad adjectives.\n- Allow light human judgment, but avoid first-person unless the user asks.\n\nAvoid style:\n- corporate SaaS tone\n- generic SEO openings\n- over-polished paragraph endings\n- stacked adjectives\n- hype around headline bonuses\n\nCore rules:\n- Do not repeat a headline bonus without explicitly stating its required deposit and trading volume.\n- Every fee or bonus claim must be source-backed, dated, and qualified if requirements or expiry terms are unclear.\n- Use realistic_value_usdt before headline_value_usdt to ground expectations.\n- Always highlight the fiat onramp method if the region requires it.\n\nForbidden phrases:\n- game-changer\n- seamless experience\n- in today's fast-paced crypto world\n- best crypto exchange\n- to the moon\n- highly recommended\n- robust platform\n- powerful solution\n- users can enjoy\n\nRequired sections:\n- quick verdict\n- headline vs realistic bonus\n- deposit requirement math\n- fees and fiat friction\n- who should choose each\n\nOutput only valid JSON matching BlogPostStructure. Do not wrap the JSON in Markdown. Do not invent facts, bonuses, fees, regions, or source URLs. Use the computed insights as the article's analytical spine. Put a clear 'Claim the bonus' CTA where it is useful, but keep the surrounding copy honest and requirements-aware.",
+  "system_prompt": "You are The Lexington Crypto-Analyst.\n\nWrite as a skeptical crypto analyst: objective, consumer-first, data-driven, affiliate-friendly, and zero-hyperbole.\n\nVoice profile:\nNeutral but human. Explain the catch like a careful analyst, not a corporate reviewer.\n\nAudience priority:\naccount_openers, low_budget_beginners, bonus_hunters, active_traders\n\nConversion goal:\nHelp readers decide whether to open an account through an affiliate link without hiding requirements.\n\nHuman style markers:\n- Use phrases like 'the catch is', 'for most small depositors', and 'what matters here is' when natural.\n- Use short-to-medium sentences.\n- Use concrete numbers instead of broad adjectives.\n- Allow light human judgment, but avoid first-person unless the user asks.\n\nAvoid style:\n- corporate SaaS tone\n- generic SEO openings\n- over-polished paragraph endings\n- stacked adjectives\n- hype around headline bonuses\n\nCore rules:\n- Do not repeat a headline bonus without explicitly stating its required deposit and trading volume.\n- Every fee or bonus claim must be source-backed, dated, and qualified if requirements or expiry terms are unclear.\n- Use realistic_value_usdt before headline_value_usdt to ground expectations.\n- Always highlight the fiat onramp method if the region requires it.\n\nForbidden phrases:\n- game-changer\n- seamless experience\n- in today's fast-paced crypto world\n- best crypto exchange\n- to the moon\n- highly recommended\n- robust platform\n- powerful solution\n- users can enjoy\n\nRequired sections:\n- quick verdict\n- headline vs realistic bonus\n- deposit requirement math\n- fees and fiat friction\n- who should choose each\n\nOutput only valid JSON matching BlogPostStructure. Do not wrap the JSON in Markdown. Do not invent facts, bonuses, fees, regions, or source URLs.\n\nTreat user_payload.data_layers.absolute_facts as the source of truth. Treat user_payload.data_layers.search_notes as optional context only. If the two conflict, use absolute_facts and mention uncertainty only when needed.\n\nUse the computed insights as the article's analytical spine. Put a clear 'Claim the bonus' CTA where it is useful, but keep the surrounding copy honest and requirements-aware. Include the compliance disclaimer exactly enough that the legal meaning is preserved.",
   "user_payload": {
     "task": "Generate a publishable crypto affiliate comparison article.",
+    "data_layers": {
+      "absolute_facts": {
+        "job": {
+          "job_id": "job_binance_vs_bybit_vs_okx_brazil_bonus",
+          "content_type": "comparison",
+          "target_keyword": "Binance vs Bybit vs OKX bonus Brazil 2026",
+          "region": "brazil",
+          "category": "exchange",
+          "platform_ids": [
+            "binance",
+            "bybit",
+            "okx"
+          ],
+          "allowed_regions": [
+            "brazil"
+          ],
+          "restricted_regions": [
+            "us",
+            "uk"
+          ],
+          "compliance_disclaimer": "This comparison is for Brazil users only. It is not financial advice. Crypto products are volatile and may be restricted or unavailable in some jurisdictions; check local rules and platform terms before opening an account.",
+          "persona": "lexington_crypto_analyst",
+          "intent": "Compare account-opening value, realistic bonuses, fiat friction, and benefit evidence across three global exchanges for Brazil users.",
+          "cms_target": "wordpress"
+        },
+        "platforms": {
+          "platform_list": [
+            {
+              "platform": {
+                "platform_id": "binance",
+                "name": "Binance",
+                "category": "exchange",
+                "tier": "tier_1",
+                "target_regions": [
+                  "global",
+                  "latam",
+                  "brazil"
+                ],
+                "supported_fiat_rails": [
+                  "pix",
+                  "bank_transfer",
+                  "card"
+                ],
+                "affiliate_program": {
+                  "status": "active",
+                  "affiliate_url": "https://accounts.binance.com/register?ref=BESTBONUS",
+                  "commission_model": "revshare_and_cpa",
+                  "commission_value": "20% fee kickback + CPA",
+                  "source_url": "https://www.binance.com/en/activity/referral"
+                }
+              },
+              "signup_bonus": {
+                "claim_id": "binance_bonus_2026_001",
+                "platform_id": "binance",
+                "claim_type": "signup_bonus",
+                "headline_offer": "Up to $19,800 USDT or $600 Voucher",
+                "headline_value_usdt": 19800,
+                "realistic_value_usdt": 30,
+                "required_deposit_usdt": 10,
+                "required_trade_volume_usdt": 0,
+                "user_requirements": "Complete KYC and deposit $10 equivalent via Pix for a $30 fee rebate voucher.",
+                "eligible_regions": [
+                  "brazil",
+                  "global"
+                ],
+                "source_id": "src_binance_official",
+                "source_url": "https://www.binance.com/en/activity/referral",
+                "last_checked_at": "2026-06-28",
+                "valid_until": "2026-07-31",
+                "claim_status": "verified",
+                "confidence": 0.95
+              },
+              "trading_fee": {
+                "claim_id": "binance_fee_2026_001",
+                "platform_id": "binance",
+                "claim_type": "trading_fee",
+                "fee_type": "spot_trading",
+                "fee_value": 0.001,
+                "fee_unit": "rate",
+                "fee_display": "0.1% Maker/Taker",
+                "notes": "Can be reduced by 25% (to 0.075%) if paid using BNB.",
+                "source_id": "src_binance_official",
+                "source_url": "https://www.binance.com/en/fee/trading",
+                "last_checked_at": "2026-06-28",
+                "claim_status": "verified",
+                "confidence": 0.99
+              },
+              "fiat_onramp": {
+                "claim_id": "binance_pix_2026_001",
+                "platform_id": "binance",
+                "claim_type": "fiat_onramp",
+                "rail": "pix",
+                "availability": "available",
+                "fee_display": "Free / Zero Fees",
+                "fee_value": 0,
+                "fee_unit": "rate",
+                "fee_currency": "BRL",
+                "region": "brazil",
+                "notes": "Accepts Pix via email, phone, CPF, CNPJ, or random key. Monthly limit of 7,000 USDT equivalent.",
+                "source_id": "src_binance_official",
+                "source_url": "https://www.binance.com/en/fiat/deposit/BRL",
+                "last_checked_at": "2026-06-28",
+                "claim_status": "verified",
+                "confidence": 0.95
+              },
+              "regional_availability": {
+                "claim_id": "binance_brazil_2026_001",
+                "platform_id": "binance",
+                "claim_type": "regional_availability",
+                "region": "brazil",
+                "availability": "active",
+                "notes": "Regulated operations with high Pix liquidity.",
+                "source_id": "src_binance_official",
+                "source_url": "https://www.binance.com/en-BH/blog/all/binance-brazil",
+                "last_checked_at": "2026-06-28",
+                "claim_status": "verified",
+                "confidence": 0.9
+              },
+              "benefit_claims": [
+                {
+                  "claim_id": "binance_benefits_2026_001",
+                  "platform_id": "binance",
+                  "claim_type": "benefit",
+                  "benefit_type": "miles_lounge_access",
+                  "availability": "not_evidenced",
+                  "value_display": "No miles or lounge benefit in current exchange signup data",
+                  "requirement": "Separate card benefit claim required before mentioning travel perks.",
+                  "eligible_regions": [
+                    "brazil",
+                    "global"
+                  ],
+                  "notes": "The current exchange onboarding data supports bonus, fee and fiat claims only. Do not infer card-style perks.",
+                  "source_id": "src_internal_mock_benefits",
+                  "source_url": "https://example.com/internal/current-data-only",
+                  "last_checked_at": "2026-06-28",
+                  "claim_status": "needs_review",
+                  "confidence": 0.4
+                }
+              ]
+            },
+            {
+              "platform": {
+                "platform_id": "bybit",
+                "name": "Bybit",
+                "category": "exchange",
+                "tier": "tier_1",
+                "target_regions": [
+                  "global",
+                  "latam",
+                  "brazil"
+                ],
+                "supported_fiat_rails": [
+                  "pix",
+                  "ted",
+                  "card"
+                ],
+                "affiliate_program": {
+                  "status": "active",
+                  "affiliate_url": "https://www.bybit.com/register?affiliate_id=93065",
+                  "commission_model": "cpa",
+                  "commission_value": "up to $1000 per trader",
+                  "source_url": "https://affiliates.bybit.com/"
+                }
+              },
+              "signup_bonus": {
+                "claim_id": "bybit_bonus_2026_001",
+                "platform_id": "bybit",
+                "claim_type": "signup_bonus",
+                "headline_offer": "Up to $30,000 USDT",
+                "headline_value_usdt": 30000,
+                "realistic_value_usdt": 50,
+                "required_deposit_usdt": 500,
+                "required_trade_volume_usdt": 100000,
+                "user_requirements": "Register via affiliate, complete KYC Lv.1, deposit $500, and trade $100,000 volume to unlock the entry $50 reward. Max reward requires $250k deposit.",
+                "eligible_regions": [
+                  "brazil",
+                  "global"
+                ],
+                "source_id": "src_bybit_official",
+                "source_url": "https://www.bybit.com/en/promo/global-deposit-blastoff",
+                "last_checked_at": "2026-06-28",
+                "valid_until": "2026-07-31",
+                "claim_status": "verified",
+                "confidence": 0.95
+              },
+              "trading_fee": {
+                "claim_id": "bybit_fee_2026_001",
+                "platform_id": "bybit",
+                "claim_type": "trading_fee",
+                "fee_type": "spot_trading",
+                "fee_value": 0.001,
+                "fee_unit": "rate",
+                "fee_display": "0.1% Maker/Taker",
+                "notes": "Can be reduced by using MNT for fee deductions.",
+                "source_id": "src_bybit_official",
+                "source_url": "https://www.bybit.com/en/help-center/article/Trading-Fee-Structure",
+                "last_checked_at": "2026-06-28",
+                "claim_status": "verified",
+                "confidence": 0.99
+              },
+              "fiat_onramp": {
+                "claim_id": "bybit_pix_2026_001",
+                "platform_id": "bybit",
+                "claim_type": "fiat_onramp",
+                "rail": "pix",
+                "availability": "available",
+                "fee_display": "Zero Fees",
+                "fee_value": 0,
+                "fee_unit": "rate",
+                "fee_currency": "BRL",
+                "region": "brazil",
+                "notes": "Requires strict matching of CPF/CNPJ with Bybit KYC details. Real-time deposits.",
+                "source_id": "src_bybit_official",
+                "source_url": "https://www.bybit.com/en/help-center",
+                "last_checked_at": "2026-06-28",
+                "claim_status": "verified",
+                "confidence": 0.95
+              },
+              "regional_availability": {
+                "claim_id": "bybit_brazil_2026_001",
+                "platform_id": "bybit",
+                "claim_type": "regional_availability",
+                "region": "brazil",
+                "availability": "active",
+                "notes": "Actively pushing Bybit Pay and Pix integrations.",
+                "source_id": "src_bybit_official",
+                "source_url": "https://www.bybit.com/en/help-center",
+                "last_checked_at": "2026-06-28",
+                "claim_status": "verified",
+                "confidence": 0.9
+              },
+              "benefit_claims": [
+                {
+                  "claim_id": "bybit_benefits_2026_001",
+                  "platform_id": "bybit",
+                  "claim_type": "benefit",
+                  "benefit_type": "miles_lounge_access",
+                  "availability": "not_evidenced",
+                  "value_display": "No miles or lounge benefit in current exchange signup data",
+                  "requirement": "Separate card benefit claim required before mentioning travel perks.",
+                  "eligible_regions": [
+                    "brazil",
+                    "global"
+                  ],
+                  "notes": "The current exchange onboarding data supports bonus, fee and fiat claims only. Do not infer card-style perks.",
+                  "source_id": "src_internal_mock_benefits",
+                  "source_url": "https://example.com/internal/current-data-only",
+                  "last_checked_at": "2026-06-28",
+                  "claim_status": "needs_review",
+                  "confidence": 0.4
+                }
+              ]
+            },
+            {
+              "platform": {
+                "platform_id": "okx",
+                "name": "OKX",
+                "category": "exchange",
+                "tier": "tier_1",
+                "target_regions": [
+                  "global",
+                  "latam",
+                  "brazil"
+                ],
+                "supported_fiat_rails": [
+                  "p2p",
+                  "card",
+                  "bank_transfer"
+                ],
+                "affiliate_program": {
+                  "status": "active",
+                  "affiliate_url": "https://www.okx.com/join",
+                  "commission_model": "affiliate_commission",
+                  "commission_value": "varies by affiliate arrangement",
+                  "source_url": "https://www.okx.com/affiliates"
+                }
+              },
+              "signup_bonus": {
+                "claim_id": "okx_bonus_2026_001",
+                "platform_id": "okx",
+                "claim_type": "signup_bonus",
+                "headline_offer": "New-user rewards vary by campaign",
+                "headline_value_usdt": 0,
+                "realistic_value_usdt": 0,
+                "required_deposit_usdt": 0,
+                "required_trade_volume_usdt": 0,
+                "user_requirements": "Campaign terms vary. Do not publish a numeric OKX bonus until a current source-backed promo claim is available.",
+                "eligible_regions": [
+                  "brazil",
+                  "global"
+                ],
+                "source_id": "src_okx_official",
+                "source_url": "https://www.okx.com/rewards",
+                "last_checked_at": "2026-06-28",
+                "claim_status": "needs_review",
+                "confidence": 0.45
+              },
+              "trading_fee": {
+                "claim_id": "okx_fee_2026_001",
+                "platform_id": "okx",
+                "claim_type": "trading_fee",
+                "fee_type": "spot_trading",
+                "fee_value": 0.001,
+                "fee_unit": "rate",
+                "fee_display": "Varies by tier; verify current fee schedule",
+                "notes": "Placeholder for testing. Must verify current OKX fee tier before publication.",
+                "source_id": "src_okx_official",
+                "source_url": "https://www.okx.com/fees",
+                "last_checked_at": "2026-06-28",
+                "claim_status": "needs_review",
+                "confidence": 0.5
+              },
+              "fiat_onramp": {
+                "claim_id": "okx_p2p_brazil_2026_001",
+                "platform_id": "okx",
+                "claim_type": "fiat_onramp",
+                "rail": "p2p",
+                "availability": "available",
+                "fee_display": "Varies by merchant/payment method",
+                "fee_value": 0,
+                "fee_unit": "rate",
+                "fee_currency": "BRL",
+                "region": "brazil",
+                "notes": "OKX supports crypto purchase/P2P flows, but specific Pix/BRL conditions require live verification before publishing.",
+                "source_id": "src_okx_official",
+                "source_url": "https://www.okx.com/p2p-markets/brl/buy-usdt",
+                "last_checked_at": "2026-06-28",
+                "claim_status": "needs_review",
+                "confidence": 0.55
+              },
+              "regional_availability": {
+                "claim_id": "okx_brazil_2026_001",
+                "platform_id": "okx",
+                "claim_type": "regional_availability",
+                "region": "brazil",
+                "availability": "active",
+                "notes": "OKX has Brazil-facing Portuguese product pages, but local product availability should be verified per product.",
+                "source_id": "src_okx_official",
+                "source_url": "https://www.okx.com/pt-br",
+                "last_checked_at": "2026-06-28",
+                "claim_status": "needs_review",
+                "confidence": 0.55
+              },
+              "benefit_claims": [
+                {
+                  "claim_id": "okx_benefits_2026_001",
+                  "platform_id": "okx",
+                  "claim_type": "benefit",
+                  "benefit_type": "localization",
+                  "availability": "available",
+                  "value_display": "Brazil Portuguese product experience evidenced; miles/lounge not evidenced",
+                  "requirement": "Verify local product and promo terms before publishing.",
+                  "eligible_regions": [
+                    "brazil",
+                    "global"
+                  ],
+                  "notes": "Useful for users who care about localized onboarding, but not a card miles or lounge claim.",
+                  "source_id": "src_okx_official",
+                  "source_url": "https://www.okx.com/pt-br",
+                  "last_checked_at": "2026-06-28",
+                  "claim_status": "needs_review",
+                  "confidence": 0.55
+                }
+              ]
+            }
+          ],
+          "platform_a": {
+            "platform": {
+              "platform_id": "binance",
+              "name": "Binance",
+              "category": "exchange",
+              "tier": "tier_1",
+              "target_regions": [
+                "global",
+                "latam",
+                "brazil"
+              ],
+              "supported_fiat_rails": [
+                "pix",
+                "bank_transfer",
+                "card"
+              ],
+              "affiliate_program": {
+                "status": "active",
+                "affiliate_url": "https://accounts.binance.com/register?ref=BESTBONUS",
+                "commission_model": "revshare_and_cpa",
+                "commission_value": "20% fee kickback + CPA",
+                "source_url": "https://www.binance.com/en/activity/referral"
+              }
+            },
+            "signup_bonus": {
+              "claim_id": "binance_bonus_2026_001",
+              "platform_id": "binance",
+              "claim_type": "signup_bonus",
+              "headline_offer": "Up to $19,800 USDT or $600 Voucher",
+              "headline_value_usdt": 19800,
+              "realistic_value_usdt": 30,
+              "required_deposit_usdt": 10,
+              "required_trade_volume_usdt": 0,
+              "user_requirements": "Complete KYC and deposit $10 equivalent via Pix for a $30 fee rebate voucher.",
+              "eligible_regions": [
+                "brazil",
+                "global"
+              ],
+              "source_id": "src_binance_official",
+              "source_url": "https://www.binance.com/en/activity/referral",
+              "last_checked_at": "2026-06-28",
+              "valid_until": "2026-07-31",
+              "claim_status": "verified",
+              "confidence": 0.95
+            },
+            "trading_fee": {
+              "claim_id": "binance_fee_2026_001",
+              "platform_id": "binance",
+              "claim_type": "trading_fee",
+              "fee_type": "spot_trading",
+              "fee_value": 0.001,
+              "fee_unit": "rate",
+              "fee_display": "0.1% Maker/Taker",
+              "notes": "Can be reduced by 25% (to 0.075%) if paid using BNB.",
+              "source_id": "src_binance_official",
+              "source_url": "https://www.binance.com/en/fee/trading",
+              "last_checked_at": "2026-06-28",
+              "claim_status": "verified",
+              "confidence": 0.99
+            },
+            "fiat_onramp": {
+              "claim_id": "binance_pix_2026_001",
+              "platform_id": "binance",
+              "claim_type": "fiat_onramp",
+              "rail": "pix",
+              "availability": "available",
+              "fee_display": "Free / Zero Fees",
+              "fee_value": 0,
+              "fee_unit": "rate",
+              "fee_currency": "BRL",
+              "region": "brazil",
+              "notes": "Accepts Pix via email, phone, CPF, CNPJ, or random key. Monthly limit of 7,000 USDT equivalent.",
+              "source_id": "src_binance_official",
+              "source_url": "https://www.binance.com/en/fiat/deposit/BRL",
+              "last_checked_at": "2026-06-28",
+              "claim_status": "verified",
+              "confidence": 0.95
+            },
+            "regional_availability": {
+              "claim_id": "binance_brazil_2026_001",
+              "platform_id": "binance",
+              "claim_type": "regional_availability",
+              "region": "brazil",
+              "availability": "active",
+              "notes": "Regulated operations with high Pix liquidity.",
+              "source_id": "src_binance_official",
+              "source_url": "https://www.binance.com/en-BH/blog/all/binance-brazil",
+              "last_checked_at": "2026-06-28",
+              "claim_status": "verified",
+              "confidence": 0.9
+            },
+            "benefit_claims": [
+              {
+                "claim_id": "binance_benefits_2026_001",
+                "platform_id": "binance",
+                "claim_type": "benefit",
+                "benefit_type": "miles_lounge_access",
+                "availability": "not_evidenced",
+                "value_display": "No miles or lounge benefit in current exchange signup data",
+                "requirement": "Separate card benefit claim required before mentioning travel perks.",
+                "eligible_regions": [
+                  "brazil",
+                  "global"
+                ],
+                "notes": "The current exchange onboarding data supports bonus, fee and fiat claims only. Do not infer card-style perks.",
+                "source_id": "src_internal_mock_benefits",
+                "source_url": "https://example.com/internal/current-data-only",
+                "last_checked_at": "2026-06-28",
+                "claim_status": "needs_review",
+                "confidence": 0.4
+              }
+            ]
+          },
+          "platform_b": {
+            "platform": {
+              "platform_id": "bybit",
+              "name": "Bybit",
+              "category": "exchange",
+              "tier": "tier_1",
+              "target_regions": [
+                "global",
+                "latam",
+                "brazil"
+              ],
+              "supported_fiat_rails": [
+                "pix",
+                "ted",
+                "card"
+              ],
+              "affiliate_program": {
+                "status": "active",
+                "affiliate_url": "https://www.bybit.com/register?affiliate_id=93065",
+                "commission_model": "cpa",
+                "commission_value": "up to $1000 per trader",
+                "source_url": "https://affiliates.bybit.com/"
+              }
+            },
+            "signup_bonus": {
+              "claim_id": "bybit_bonus_2026_001",
+              "platform_id": "bybit",
+              "claim_type": "signup_bonus",
+              "headline_offer": "Up to $30,000 USDT",
+              "headline_value_usdt": 30000,
+              "realistic_value_usdt": 50,
+              "required_deposit_usdt": 500,
+              "required_trade_volume_usdt": 100000,
+              "user_requirements": "Register via affiliate, complete KYC Lv.1, deposit $500, and trade $100,000 volume to unlock the entry $50 reward. Max reward requires $250k deposit.",
+              "eligible_regions": [
+                "brazil",
+                "global"
+              ],
+              "source_id": "src_bybit_official",
+              "source_url": "https://www.bybit.com/en/promo/global-deposit-blastoff",
+              "last_checked_at": "2026-06-28",
+              "valid_until": "2026-07-31",
+              "claim_status": "verified",
+              "confidence": 0.95
+            },
+            "trading_fee": {
+              "claim_id": "bybit_fee_2026_001",
+              "platform_id": "bybit",
+              "claim_type": "trading_fee",
+              "fee_type": "spot_trading",
+              "fee_value": 0.001,
+              "fee_unit": "rate",
+              "fee_display": "0.1% Maker/Taker",
+              "notes": "Can be reduced by using MNT for fee deductions.",
+              "source_id": "src_bybit_official",
+              "source_url": "https://www.bybit.com/en/help-center/article/Trading-Fee-Structure",
+              "last_checked_at": "2026-06-28",
+              "claim_status": "verified",
+              "confidence": 0.99
+            },
+            "fiat_onramp": {
+              "claim_id": "bybit_pix_2026_001",
+              "platform_id": "bybit",
+              "claim_type": "fiat_onramp",
+              "rail": "pix",
+              "availability": "available",
+              "fee_display": "Zero Fees",
+              "fee_value": 0,
+              "fee_unit": "rate",
+              "fee_currency": "BRL",
+              "region": "brazil",
+              "notes": "Requires strict matching of CPF/CNPJ with Bybit KYC details. Real-time deposits.",
+              "source_id": "src_bybit_official",
+              "source_url": "https://www.bybit.com/en/help-center",
+              "last_checked_at": "2026-06-28",
+              "claim_status": "verified",
+              "confidence": 0.95
+            },
+            "regional_availability": {
+              "claim_id": "bybit_brazil_2026_001",
+              "platform_id": "bybit",
+              "claim_type": "regional_availability",
+              "region": "brazil",
+              "availability": "active",
+              "notes": "Actively pushing Bybit Pay and Pix integrations.",
+              "source_id": "src_bybit_official",
+              "source_url": "https://www.bybit.com/en/help-center",
+              "last_checked_at": "2026-06-28",
+              "claim_status": "verified",
+              "confidence": 0.9
+            },
+            "benefit_claims": [
+              {
+                "claim_id": "bybit_benefits_2026_001",
+                "platform_id": "bybit",
+                "claim_type": "benefit",
+                "benefit_type": "miles_lounge_access",
+                "availability": "not_evidenced",
+                "value_display": "No miles or lounge benefit in current exchange signup data",
+                "requirement": "Separate card benefit claim required before mentioning travel perks.",
+                "eligible_regions": [
+                  "brazil",
+                  "global"
+                ],
+                "notes": "The current exchange onboarding data supports bonus, fee and fiat claims only. Do not infer card-style perks.",
+                "source_id": "src_internal_mock_benefits",
+                "source_url": "https://example.com/internal/current-data-only",
+                "last_checked_at": "2026-06-28",
+                "claim_status": "needs_review",
+                "confidence": 0.4
+              }
+            ]
+          }
+        },
+        "information_gain": {
+          "metrics": [
+            {
+              "platform_id": "binance",
+              "name": "Binance",
+              "headline_value_usdt": 19800.0,
+              "realistic_value_usdt": 30.0,
+              "required_deposit_usdt": 10.0,
+              "required_trade_volume_usdt": 0.0,
+              "realistic_bonus_roi": 3.0,
+              "headline_to_realistic_ratio": 660.0,
+              "estimated_fee_cost_usdt": 0.0,
+              "expected_net_value_usdt": 30.0
+            },
+            {
+              "platform_id": "bybit",
+              "name": "Bybit",
+              "headline_value_usdt": 30000.0,
+              "realistic_value_usdt": 50.0,
+              "required_deposit_usdt": 500.0,
+              "required_trade_volume_usdt": 100000.0,
+              "realistic_bonus_roi": 0.1,
+              "headline_to_realistic_ratio": 600.0,
+              "estimated_fee_cost_usdt": 100.0,
+              "expected_net_value_usdt": -50.0
+            },
+            {
+              "platform_id": "okx",
+              "name": "OKX",
+              "headline_value_usdt": 0.0,
+              "realistic_value_usdt": 0.0,
+              "required_deposit_usdt": 0.0,
+              "required_trade_volume_usdt": 0.0,
+              "realistic_bonus_roi": null,
+              "headline_to_realistic_ratio": null,
+              "estimated_fee_cost_usdt": 0.0,
+              "expected_net_value_usdt": 0.0
+            }
+          ],
+          "metrics_a": {
+            "platform_id": "binance",
+            "name": "Binance",
+            "headline_value_usdt": 19800.0,
+            "realistic_value_usdt": 30.0,
+            "required_deposit_usdt": 10.0,
+            "required_trade_volume_usdt": 0.0,
+            "realistic_bonus_roi": 3.0,
+            "headline_to_realistic_ratio": 660.0,
+            "estimated_fee_cost_usdt": 0.0,
+            "expected_net_value_usdt": 30.0
+          },
+          "metrics_b": {
+            "platform_id": "bybit",
+            "name": "Bybit",
+            "headline_value_usdt": 30000.0,
+            "realistic_value_usdt": 50.0,
+            "required_deposit_usdt": 500.0,
+            "required_trade_volume_usdt": 100000.0,
+            "realistic_bonus_roi": 0.1,
+            "headline_to_realistic_ratio": 600.0,
+            "estimated_fee_cost_usdt": 100.0,
+            "expected_net_value_usdt": -50.0
+          },
+          "bonus_diff_usdt": -20.0,
+          "deposit_diff_usdt": -490.0,
+          "deposit_burden_ratio": 50.0,
+          "trade_volume_diff_usdt": -100000.0,
+          "roi_winner": "Binance",
+          "low_budget_winner": "OKX",
+          "highest_bonus_winner": "Bybit",
+          "expected_value_winner": "Binance",
+          "computed_insights": [
+            "Realistic bonus ROI by platform: Binance: 300.0%; Bybit: 10.0%; OKX: N/A.",
+            "Entry deposit requirements: Binance: $10; Bybit: $500; OKX: $0.",
+            "Trading-volume hurdles appear in this data set: Bybit: $100,000.",
+            "Realistic bonus values: Binance: $30; Bybit: $50; OKX: $0.",
+            "Expected net bonus value after trading-fee friction: Binance: $30 after an estimated $0 trading-fee drag; Bybit: $-50 after an estimated $100 trading-fee drag; OKX: $0 after an estimated $0 trading-fee drag.",
+            "ROI winner: Binance. Low-budget onboarding winner: OKX. Highest realistic bonus: Bybit.",
+            "Expected-value winner after fee drag: Binance."
+          ],
+          "comparison_table": [
+            {
+              "platform": "Binance",
+              "headline_offer": "Up to $19,800 USDT or $600 Voucher",
+              "realistic_value_usdt": 30.0,
+              "required_deposit_usdt": 10.0,
+              "required_trade_volume_usdt": 0.0,
+              "realistic_bonus_roi": 3.0,
+              "estimated_fee_cost_usdt": 0.0,
+              "expected_net_value_usdt": 30.0,
+              "spot_fee": "0.1% Maker/Taker",
+              "fiat_onramp": "pix",
+              "fiat_onramp_fee": "Free / Zero Fees",
+              "benefit_summary": "miles lounge access: No miles or lounge benefit in current exchange signup data (not_evidenced)",
+              "benefit_claims": [
+                {
+                  "claim_id": "binance_benefits_2026_001",
+                  "platform_id": "binance",
+                  "claim_type": "benefit",
+                  "benefit_type": "miles_lounge_access",
+                  "availability": "not_evidenced",
+                  "value_display": "No miles or lounge benefit in current exchange signup data",
+                  "requirement": "Separate card benefit claim required before mentioning travel perks.",
+                  "eligible_regions": [
+                    "brazil",
+                    "global"
+                  ],
+                  "notes": "The current exchange onboarding data supports bonus, fee and fiat claims only. Do not infer card-style perks.",
+                  "source_id": "src_internal_mock_benefits",
+                  "source_url": "https://example.com/internal/current-data-only",
+                  "last_checked_at": "2026-06-28",
+                  "claim_status": "needs_review",
+                  "confidence": 0.4
+                }
+              ],
+              "affiliate_url": "https://accounts.binance.com/register?ref=BESTBONUS",
+              "source_urls": [
+                "https://www.binance.com/en/activity/referral",
+                "https://www.binance.com/en/fee/trading",
+                "https://www.binance.com/en/fiat/deposit/BRL",
+                "https://www.binance.com/en-BH/blog/all/binance-brazil",
+                "https://example.com/internal/current-data-only"
+              ]
+            },
+            {
+              "platform": "Bybit",
+              "headline_offer": "Up to $30,000 USDT",
+              "realistic_value_usdt": 50.0,
+              "required_deposit_usdt": 500.0,
+              "required_trade_volume_usdt": 100000.0,
+              "realistic_bonus_roi": 0.1,
+              "estimated_fee_cost_usdt": 100.0,
+              "expected_net_value_usdt": -50.0,
+              "spot_fee": "0.1% Maker/Taker",
+              "fiat_onramp": "pix",
+              "fiat_onramp_fee": "Zero Fees",
+              "benefit_summary": "miles lounge access: No miles or lounge benefit in current exchange signup data (not_evidenced)",
+              "benefit_claims": [
+                {
+                  "claim_id": "bybit_benefits_2026_001",
+                  "platform_id": "bybit",
+                  "claim_type": "benefit",
+                  "benefit_type": "miles_lounge_access",
+                  "availability": "not_evidenced",
+                  "value_display": "No miles or lounge benefit in current exchange signup data",
+                  "requirement": "Separate card benefit claim required before mentioning travel perks.",
+                  "eligible_regions": [
+                    "brazil",
+                    "global"
+                  ],
+                  "notes": "The current exchange onboarding data supports bonus, fee and fiat claims only. Do not infer card-style perks.",
+                  "source_id": "src_internal_mock_benefits",
+                  "source_url": "https://example.com/internal/current-data-only",
+                  "last_checked_at": "2026-06-28",
+                  "claim_status": "needs_review",
+                  "confidence": 0.4
+                }
+              ],
+              "affiliate_url": "https://www.bybit.com/register?affiliate_id=93065",
+              "source_urls": [
+                "https://www.bybit.com/en/promo/global-deposit-blastoff",
+                "https://www.bybit.com/en/help-center/article/Trading-Fee-Structure",
+                "https://www.bybit.com/en/help-center",
+                "https://www.bybit.com/en/help-center",
+                "https://example.com/internal/current-data-only"
+              ]
+            },
+            {
+              "platform": "OKX",
+              "headline_offer": "New-user rewards vary by campaign",
+              "realistic_value_usdt": 0.0,
+              "required_deposit_usdt": 0.0,
+              "required_trade_volume_usdt": 0.0,
+              "realistic_bonus_roi": null,
+              "estimated_fee_cost_usdt": 0.0,
+              "expected_net_value_usdt": 0.0,
+              "spot_fee": "Varies by tier; verify current fee schedule",
+              "fiat_onramp": "p2p",
+              "fiat_onramp_fee": "Varies by merchant/payment method",
+              "benefit_summary": "localization: Brazil Portuguese product experience evidenced; miles/lounge not evidenced (available)",
+              "benefit_claims": [
+                {
+                  "claim_id": "okx_benefits_2026_001",
+                  "platform_id": "okx",
+                  "claim_type": "benefit",
+                  "benefit_type": "localization",
+                  "availability": "available",
+                  "value_display": "Brazil Portuguese product experience evidenced; miles/lounge not evidenced",
+                  "requirement": "Verify local product and promo terms before publishing.",
+                  "eligible_regions": [
+                    "brazil",
+                    "global"
+                  ],
+                  "notes": "Useful for users who care about localized onboarding, but not a card miles or lounge claim.",
+                  "source_id": "src_okx_official",
+                  "source_url": "https://www.okx.com/pt-br",
+                  "last_checked_at": "2026-06-28",
+                  "claim_status": "needs_review",
+                  "confidence": 0.55
+                }
+              ],
+              "affiliate_url": "https://www.okx.com/join",
+              "source_urls": [
+                "https://www.okx.com/rewards",
+                "https://www.okx.com/fees",
+                "https://www.okx.com/p2p-markets/brl/buy-usdt",
+                "https://www.okx.com/pt-br",
+                "https://www.okx.com/pt-br"
+              ]
+            }
+          ]
+        }
+      },
+      "search_notes": {
+        "status": "not_attached",
+        "rule": "Search notes are auxiliary context only and must not overwrite campaign facts."
+      }
+    },
+    "prompt_context_xml": "<CAMPAIGN_FACTS>\n{\n  \"job\": {\n    \"job_id\": \"job_binance_vs_bybit_vs_okx_brazil_bonus\",\n    \"content_type\": \"comparison\",\n    \"target_keyword\": \"Binance vs Bybit vs OKX bonus Brazil 2026\",\n    \"region\": \"brazil\",\n    \"category\": \"exchange\",\n    \"platform_ids\": [\n      \"binance\",\n      \"bybit\",\n      \"okx\"\n    ],\n    \"allowed_regions\": [\n      \"brazil\"\n    ],\n    \"restricted_regions\": [\n      \"us\",\n      \"uk\"\n    ],\n    \"compliance_disclaimer\": \"This comparison is for Brazil users only. It is not financial advice. Crypto products are volatile and may be restricted or unavailable in some jurisdictions; check local rules and platform terms before opening an account.\",\n    \"persona\": \"lexington_crypto_analyst\",\n    \"intent\": \"Compare account-opening value, realistic bonuses, fiat friction, and benefit evidence across three global exchanges for Brazil users.\",\n    \"cms_target\": \"wordpress\"\n  },\n  \"platforms\": {\n    \"platform_list\": [\n      {\n        \"platform\": {\n          \"platform_id\": \"binance\",\n          \"name\": \"Binance\",\n          \"category\": \"exchange\",\n          \"tier\": \"tier_1\",\n          \"target_regions\": [\n            \"global\",\n            \"latam\",\n            \"brazil\"\n          ],\n          \"supported_fiat_rails\": [\n            \"pix\",\n            \"bank_transfer\",\n            \"card\"\n          ],\n          \"affiliate_program\": {\n            \"status\": \"active\",\n            \"affiliate_url\": \"https://accounts.binance.com/register?ref=BESTBONUS\",\n            \"commission_model\": \"revshare_and_cpa\",\n            \"commission_value\": \"20% fee kickback + CPA\",\n            \"source_url\": \"https://www.binance.com/en/activity/referral\"\n          }\n        },\n        \"signup_bonus\": {\n          \"claim_id\": \"binance_bonus_2026_001\",\n          \"platform_id\": \"binance\",\n          \"claim_type\": \"signup_bonus\",\n          \"headline_offer\": \"Up to $19,800 USDT or $600 Voucher\",\n          \"headline_value_usdt\": 19800,\n          \"realistic_value_usdt\": 30,\n          \"required_deposit_usdt\": 10,\n          \"required_trade_volume_usdt\": 0,\n          \"user_requirements\": \"Complete KYC and deposit $10 equivalent via Pix for a $30 fee rebate voucher.\",\n          \"eligible_regions\": [\n            \"brazil\",\n            \"global\"\n          ],\n          \"source_id\": \"src_binance_official\",\n          \"source_url\": \"https://www.binance.com/en/activity/referral\",\n          \"last_checked_at\": \"2026-06-28\",\n          \"valid_until\": \"2026-07-31\",\n          \"claim_status\": \"verified\",\n          \"confidence\": 0.95\n        },\n        \"trading_fee\": {\n          \"claim_id\": \"binance_fee_2026_001\",\n          \"platform_id\": \"binance\",\n          \"claim_type\": \"trading_fee\",\n          \"fee_type\": \"spot_trading\",\n          \"fee_value\": 0.001,\n          \"fee_unit\": \"rate\",\n          \"fee_display\": \"0.1% Maker/Taker\",\n          \"notes\": \"Can be reduced by 25% (to 0.075%) if paid using BNB.\",\n          \"source_id\": \"src_binance_official\",\n          \"source_url\": \"https://www.binance.com/en/fee/trading\",\n          \"last_checked_at\": \"2026-06-28\",\n          \"claim_status\": \"verified\",\n          \"confidence\": 0.99\n        },\n        \"fiat_onramp\": {\n          \"claim_id\": \"binance_pix_2026_001\",\n          \"platform_id\": \"binance\",\n          \"claim_type\": \"fiat_onramp\",\n          \"rail\": \"pix\",\n          \"availability\": \"available\",\n          \"fee_display\": \"Free / Zero Fees\",\n          \"fee_value\": 0,\n          \"fee_unit\": \"rate\",\n          \"fee_currency\": \"BRL\",\n          \"region\": \"brazil\",\n          \"notes\": \"Accepts Pix via email, phone, CPF, CNPJ, or random key. Monthly limit of 7,000 USDT equivalent.\",\n          \"source_id\": \"src_binance_official\",\n          \"source_url\": \"https://www.binance.com/en/fiat/deposit/BRL\",\n          \"last_checked_at\": \"2026-06-28\",\n          \"claim_status\": \"verified\",\n          \"confidence\": 0.95\n        },\n        \"regional_availability\": {\n          \"claim_id\": \"binance_brazil_2026_001\",\n          \"platform_id\": \"binance\",\n          \"claim_type\": \"regional_availability\",\n          \"region\": \"brazil\",\n          \"availability\": \"active\",\n          \"notes\": \"Regulated operations with high Pix liquidity.\",\n          \"source_id\": \"src_binance_official\",\n          \"source_url\": \"https://www.binance.com/en-BH/blog/all/binance-brazil\",\n          \"last_checked_at\": \"2026-06-28\",\n          \"claim_status\": \"verified\",\n          \"confidence\": 0.9\n        },\n        \"benefit_claims\": [\n          {\n            \"claim_id\": \"binance_benefits_2026_001\",\n            \"platform_id\": \"binance\",\n            \"claim_type\": \"benefit\",\n            \"benefit_type\": \"miles_lounge_access\",\n            \"availability\": \"not_evidenced\",\n            \"value_display\": \"No miles or lounge benefit in current exchange signup data\",\n            \"requirement\": \"Separate card benefit claim required before mentioning travel perks.\",\n            \"eligible_regions\": [\n              \"brazil\",\n              \"global\"\n            ],\n            \"notes\": \"The current exchange onboarding data supports bonus, fee and fiat claims only. Do not infer card-style perks.\",\n            \"source_id\": \"src_internal_mock_benefits\",\n            \"source_url\": \"https://example.com/internal/current-data-only\",\n            \"last_checked_at\": \"2026-06-28\",\n            \"claim_status\": \"needs_review\",\n            \"confidence\": 0.4\n          }\n        ]\n      },\n      {\n        \"platform\": {\n          \"platform_id\": \"bybit\",\n          \"name\": \"Bybit\",\n          \"category\": \"exchange\",\n          \"tier\": \"tier_1\",\n          \"target_regions\": [\n            \"global\",\n            \"latam\",\n            \"brazil\"\n          ],\n          \"supported_fiat_rails\": [\n            \"pix\",\n            \"ted\",\n            \"card\"\n          ],\n          \"affiliate_program\": {\n            \"status\": \"active\",\n            \"affiliate_url\": \"https://www.bybit.com/register?affiliate_id=93065\",\n            \"commission_model\": \"cpa\",\n            \"commission_value\": \"up to $1000 per trader\",\n            \"source_url\": \"https://affiliates.bybit.com/\"\n          }\n        },\n        \"signup_bonus\": {\n          \"claim_id\": \"bybit_bonus_2026_001\",\n          \"platform_id\": \"bybit\",\n          \"claim_type\": \"signup_bonus\",\n          \"headline_offer\": \"Up to $30,000 USDT\",\n          \"headline_value_usdt\": 30000,\n          \"realistic_value_usdt\": 50,\n          \"required_deposit_usdt\": 500,\n          \"required_trade_volume_usdt\": 100000,\n          \"user_requirements\": \"Register via affiliate, complete KYC Lv.1, deposit $500, and trade $100,000 volume to unlock the entry $50 reward. Max reward requires $250k deposit.\",\n          \"eligible_regions\": [\n            \"brazil\",\n            \"global\"\n          ],\n          \"source_id\": \"src_bybit_official\",\n          \"source_url\": \"https://www.bybit.com/en/promo/global-deposit-blastoff\",\n          \"last_checked_at\": \"2026-06-28\",\n          \"valid_until\": \"2026-07-31\",\n          \"claim_status\": \"verified\",\n          \"confidence\": 0.95\n        },\n        \"trading_fee\": {\n          \"claim_id\": \"bybit_fee_2026_001\",\n          \"platform_id\": \"bybit\",\n          \"claim_type\": \"trading_fee\",\n          \"fee_type\": \"spot_trading\",\n          \"fee_value\": 0.001,\n          \"fee_unit\": \"rate\",\n          \"fee_display\": \"0.1% Maker/Taker\",\n          \"notes\": \"Can be reduced by using MNT for fee deductions.\",\n          \"source_id\": \"src_bybit_official\",\n          \"source_url\": \"https://www.bybit.com/en/help-center/article/Trading-Fee-Structure\",\n          \"last_checked_at\": \"2026-06-28\",\n          \"claim_status\": \"verified\",\n          \"confidence\": 0.99\n        },\n        \"fiat_onramp\": {\n          \"claim_id\": \"bybit_pix_2026_001\",\n          \"platform_id\": \"bybit\",\n          \"claim_type\": \"fiat_onramp\",\n          \"rail\": \"pix\",\n          \"availability\": \"available\",\n          \"fee_display\": \"Zero Fees\",\n          \"fee_value\": 0,\n          \"fee_unit\": \"rate\",\n          \"fee_currency\": \"BRL\",\n          \"region\": \"brazil\",\n          \"notes\": \"Requires strict matching of CPF/CNPJ with Bybit KYC details. Real-time deposits.\",\n          \"source_id\": \"src_bybit_official\",\n          \"source_url\": \"https://www.bybit.com/en/help-center\",\n          \"last_checked_at\": \"2026-06-28\",\n          \"claim_status\": \"verified\",\n          \"confidence\": 0.95\n        },\n        \"regional_availability\": {\n          \"claim_id\": \"bybit_brazil_2026_001\",\n          \"platform_id\": \"bybit\",\n          \"claim_type\": \"regional_availability\",\n          \"region\": \"brazil\",\n          \"availability\": \"active\",\n          \"notes\": \"Actively pushing Bybit Pay and Pix integrations.\",\n          \"source_id\": \"src_bybit_official\",\n          \"source_url\": \"https://www.bybit.com/en/help-center\",\n          \"last_checked_at\": \"2026-06-28\",\n          \"claim_status\": \"verified\",\n          \"confidence\": 0.9\n        },\n        \"benefit_claims\": [\n          {\n            \"claim_id\": \"bybit_benefits_2026_001\",\n            \"platform_id\": \"bybit\",\n            \"claim_type\": \"benefit\",\n            \"benefit_type\": \"miles_lounge_access\",\n            \"availability\": \"not_evidenced\",\n            \"value_display\": \"No miles or lounge benefit in current exchange signup data\",\n            \"requirement\": \"Separate card benefit claim required before mentioning travel perks.\",\n            \"eligible_regions\": [\n              \"brazil\",\n              \"global\"\n            ],\n            \"notes\": \"The current exchange onboarding data supports bonus, fee and fiat claims only. Do not infer card-style perks.\",\n            \"source_id\": \"src_internal_mock_benefits\",\n            \"source_url\": \"https://example.com/internal/current-data-only\",\n            \"last_checked_at\": \"2026-06-28\",\n            \"claim_status\": \"needs_review\",\n            \"confidence\": 0.4\n          }\n        ]\n      },\n      {\n        \"platform\": {\n          \"platform_id\": \"okx\",\n          \"name\": \"OKX\",\n          \"category\": \"exchange\",\n          \"tier\": \"tier_1\",\n          \"target_regions\": [\n            \"global\",\n            \"latam\",\n            \"brazil\"\n          ],\n          \"supported_fiat_rails\": [\n            \"p2p\",\n            \"card\",\n            \"bank_transfer\"\n          ],\n          \"affiliate_program\": {\n            \"status\": \"active\",\n            \"affiliate_url\": \"https://www.okx.com/join\",\n            \"commission_model\": \"affiliate_commission\",\n            \"commission_value\": \"varies by affiliate arrangement\",\n            \"source_url\": \"https://www.okx.com/affiliates\"\n          }\n        },\n        \"signup_bonus\": {\n          \"claim_id\": \"okx_bonus_2026_001\",\n          \"platform_id\": \"okx\",\n          \"claim_type\": \"signup_bonus\",\n          \"headline_offer\": \"New-user rewards vary by campaign\",\n          \"headline_value_usdt\": 0,\n          \"realistic_value_usdt\": 0,\n          \"required_deposit_usdt\": 0,\n          \"required_trade_volume_usdt\": 0,\n          \"user_requirements\": \"Campaign terms vary. Do not publish a numeric OKX bonus until a current source-backed promo claim is available.\",\n          \"eligible_regions\": [\n            \"brazil\",\n            \"global\"\n          ],\n          \"source_id\": \"src_okx_official\",\n          \"source_url\": \"https://www.okx.com/rewards\",\n          \"last_checked_at\": \"2026-06-28\",\n          \"claim_status\": \"needs_review\",\n          \"confidence\": 0.45\n        },\n        \"trading_fee\": {\n          \"claim_id\": \"okx_fee_2026_001\",\n          \"platform_id\": \"okx\",\n          \"claim_type\": \"trading_fee\",\n          \"fee_type\": \"spot_trading\",\n          \"fee_value\": 0.001,\n          \"fee_unit\": \"rate\",\n          \"fee_display\": \"Varies by tier; verify current fee schedule\",\n          \"notes\": \"Placeholder for testing. Must verify current OKX fee tier before publication.\",\n          \"source_id\": \"src_okx_official\",\n          \"source_url\": \"https://www.okx.com/fees\",\n          \"last_checked_at\": \"2026-06-28\",\n          \"claim_status\": \"needs_review\",\n          \"confidence\": 0.5\n        },\n        \"fiat_onramp\": {\n          \"claim_id\": \"okx_p2p_brazil_2026_001\",\n          \"platform_id\": \"okx\",\n          \"claim_type\": \"fiat_onramp\",\n          \"rail\": \"p2p\",\n          \"availability\": \"available\",\n          \"fee_display\": \"Varies by merchant/payment method\",\n          \"fee_value\": 0,\n          \"fee_unit\": \"rate\",\n          \"fee_currency\": \"BRL\",\n          \"region\": \"brazil\",\n          \"notes\": \"OKX supports crypto purchase/P2P flows, but specific Pix/BRL conditions require live verification before publishing.\",\n          \"source_id\": \"src_okx_official\",\n          \"source_url\": \"https://www.okx.com/p2p-markets/brl/buy-usdt\",\n          \"last_checked_at\": \"2026-06-28\",\n          \"claim_status\": \"needs_review\",\n          \"confidence\": 0.55\n        },\n        \"regional_availability\": {\n          \"claim_id\": \"okx_brazil_2026_001\",\n          \"platform_id\": \"okx\",\n          \"claim_type\": \"regional_availability\",\n          \"region\": \"brazil\",\n          \"availability\": \"active\",\n          \"notes\": \"OKX has Brazil-facing Portuguese product pages, but local product availability should be verified per product.\",\n          \"source_id\": \"src_okx_official\",\n          \"source_url\": \"https://www.okx.com/pt-br\",\n          \"last_checked_at\": \"2026-06-28\",\n          \"claim_status\": \"needs_review\",\n          \"confidence\": 0.55\n        },\n        \"benefit_claims\": [\n          {\n            \"claim_id\": \"okx_benefits_2026_001\",\n            \"platform_id\": \"okx\",\n            \"claim_type\": \"benefit\",\n            \"benefit_type\": \"localization\",\n            \"availability\": \"available\",\n            \"value_display\": \"Brazil Portuguese product experience evidenced; miles/lounge not evidenced\",\n            \"requirement\": \"Verify local product and promo terms before publishing.\",\n            \"eligible_regions\": [\n              \"brazil\",\n              \"global\"\n            ],\n            \"notes\": \"Useful for users who care about localized onboarding, but not a card miles or lounge claim.\",\n            \"source_id\": \"src_okx_official\",\n            \"source_url\": \"https://www.okx.com/pt-br\",\n            \"last_checked_at\": \"2026-06-28\",\n            \"claim_status\": \"needs_review\",\n            \"confidence\": 0.55\n          }\n        ]\n      }\n    ],\n    \"platform_a\": {\n      \"platform\": {\n        \"platform_id\": \"binance\",\n        \"name\": \"Binance\",\n        \"category\": \"exchange\",\n        \"tier\": \"tier_1\",\n        \"target_regions\": [\n          \"global\",\n          \"latam\",\n          \"brazil\"\n        ],\n        \"supported_fiat_rails\": [\n          \"pix\",\n          \"bank_transfer\",\n          \"card\"\n        ],\n        \"affiliate_program\": {\n          \"status\": \"active\",\n          \"affiliate_url\": \"https://accounts.binance.com/register?ref=BESTBONUS\",\n          \"commission_model\": \"revshare_and_cpa\",\n          \"commission_value\": \"20% fee kickback + CPA\",\n          \"source_url\": \"https://www.binance.com/en/activity/referral\"\n        }\n      },\n      \"signup_bonus\": {\n        \"claim_id\": \"binance_bonus_2026_001\",\n        \"platform_id\": \"binance\",\n        \"claim_type\": \"signup_bonus\",\n        \"headline_offer\": \"Up to $19,800 USDT or $600 Voucher\",\n        \"headline_value_usdt\": 19800,\n        \"realistic_value_usdt\": 30,\n        \"required_deposit_usdt\": 10,\n        \"required_trade_volume_usdt\": 0,\n        \"user_requirements\": \"Complete KYC and deposit $10 equivalent via Pix for a $30 fee rebate voucher.\",\n        \"eligible_regions\": [\n          \"brazil\",\n          \"global\"\n        ],\n        \"source_id\": \"src_binance_official\",\n        \"source_url\": \"https://www.binance.com/en/activity/referral\",\n        \"last_checked_at\": \"2026-06-28\",\n        \"valid_until\": \"2026-07-31\",\n        \"claim_status\": \"verified\",\n        \"confidence\": 0.95\n      },\n      \"trading_fee\": {\n        \"claim_id\": \"binance_fee_2026_001\",\n        \"platform_id\": \"binance\",\n        \"claim_type\": \"trading_fee\",\n        \"fee_type\": \"spot_trading\",\n        \"fee_value\": 0.001,\n        \"fee_unit\": \"rate\",\n        \"fee_display\": \"0.1% Maker/Taker\",\n        \"notes\": \"Can be reduced by 25% (to 0.075%) if paid using BNB.\",\n        \"source_id\": \"src_binance_official\",\n        \"source_url\": \"https://www.binance.com/en/fee/trading\",\n        \"last_checked_at\": \"2026-06-28\",\n        \"claim_status\": \"verified\",\n        \"confidence\": 0.99\n      },\n      \"fiat_onramp\": {\n        \"claim_id\": \"binance_pix_2026_001\",\n        \"platform_id\": \"binance\",\n        \"claim_type\": \"fiat_onramp\",\n        \"rail\": \"pix\",\n        \"availability\": \"available\",\n        \"fee_display\": \"Free / Zero Fees\",\n        \"fee_value\": 0,\n        \"fee_unit\": \"rate\",\n        \"fee_currency\": \"BRL\",\n        \"region\": \"brazil\",\n        \"notes\": \"Accepts Pix via email, phone, CPF, CNPJ, or random key. Monthly limit of 7,000 USDT equivalent.\",\n        \"source_id\": \"src_binance_official\",\n        \"source_url\": \"https://www.binance.com/en/fiat/deposit/BRL\",\n        \"last_checked_at\": \"2026-06-28\",\n        \"claim_status\": \"verified\",\n        \"confidence\": 0.95\n      },\n      \"regional_availability\": {\n        \"claim_id\": \"binance_brazil_2026_001\",\n        \"platform_id\": \"binance\",\n        \"claim_type\": \"regional_availability\",\n        \"region\": \"brazil\",\n        \"availability\": \"active\",\n        \"notes\": \"Regulated operations with high Pix liquidity.\",\n        \"source_id\": \"src_binance_official\",\n        \"source_url\": \"https://www.binance.com/en-BH/blog/all/binance-brazil\",\n        \"last_checked_at\": \"2026-06-28\",\n        \"claim_status\": \"verified\",\n        \"confidence\": 0.9\n      },\n      \"benefit_claims\": [\n        {\n          \"claim_id\": \"binance_benefits_2026_001\",\n          \"platform_id\": \"binance\",\n          \"claim_type\": \"benefit\",\n          \"benefit_type\": \"miles_lounge_access\",\n          \"availability\": \"not_evidenced\",\n          \"value_display\": \"No miles or lounge benefit in current exchange signup data\",\n          \"requirement\": \"Separate card benefit claim required before mentioning travel perks.\",\n          \"eligible_regions\": [\n            \"brazil\",\n            \"global\"\n          ],\n          \"notes\": \"The current exchange onboarding data supports bonus, fee and fiat claims only. Do not infer card-style perks.\",\n          \"source_id\": \"src_internal_mock_benefits\",\n          \"source_url\": \"https://example.com/internal/current-data-only\",\n          \"last_checked_at\": \"2026-06-28\",\n          \"claim_status\": \"needs_review\",\n          \"confidence\": 0.4\n        }\n      ]\n    },\n    \"platform_b\": {\n      \"platform\": {\n        \"platform_id\": \"bybit\",\n        \"name\": \"Bybit\",\n        \"category\": \"exchange\",\n        \"tier\": \"tier_1\",\n        \"target_regions\": [\n          \"global\",\n          \"latam\",\n          \"brazil\"\n        ],\n        \"supported_fiat_rails\": [\n          \"pix\",\n          \"ted\",\n          \"card\"\n        ],\n        \"affiliate_program\": {\n          \"status\": \"active\",\n          \"affiliate_url\": \"https://www.bybit.com/register?affiliate_id=93065\",\n          \"commission_model\": \"cpa\",\n          \"commission_value\": \"up to $1000 per trader\",\n          \"source_url\": \"https://affiliates.bybit.com/\"\n        }\n      },\n      \"signup_bonus\": {\n        \"claim_id\": \"bybit_bonus_2026_001\",\n        \"platform_id\": \"bybit\",\n        \"claim_type\": \"signup_bonus\",\n        \"headline_offer\": \"Up to $30,000 USDT\",\n        \"headline_value_usdt\": 30000,\n        \"realistic_value_usdt\": 50,\n        \"required_deposit_usdt\": 500,\n        \"required_trade_volume_usdt\": 100000,\n        \"user_requirements\": \"Register via affiliate, complete KYC Lv.1, deposit $500, and trade $100,000 volume to unlock the entry $50 reward. Max reward requires $250k deposit.\",\n        \"eligible_regions\": [\n          \"brazil\",\n          \"global\"\n        ],\n        \"source_id\": \"src_bybit_official\",\n        \"source_url\": \"https://www.bybit.com/en/promo/global-deposit-blastoff\",\n        \"last_checked_at\": \"2026-06-28\",\n        \"valid_until\": \"2026-07-31\",\n        \"claim_status\": \"verified\",\n        \"confidence\": 0.95\n      },\n      \"trading_fee\": {\n        \"claim_id\": \"bybit_fee_2026_001\",\n        \"platform_id\": \"bybit\",\n        \"claim_type\": \"trading_fee\",\n        \"fee_type\": \"spot_trading\",\n        \"fee_value\": 0.001,\n        \"fee_unit\": \"rate\",\n        \"fee_display\": \"0.1% Maker/Taker\",\n        \"notes\": \"Can be reduced by using MNT for fee deductions.\",\n        \"source_id\": \"src_bybit_official\",\n        \"source_url\": \"https://www.bybit.com/en/help-center/article/Trading-Fee-Structure\",\n        \"last_checked_at\": \"2026-06-28\",\n        \"claim_status\": \"verified\",\n        \"confidence\": 0.99\n      },\n      \"fiat_onramp\": {\n        \"claim_id\": \"bybit_pix_2026_001\",\n        \"platform_id\": \"bybit\",\n        \"claim_type\": \"fiat_onramp\",\n        \"rail\": \"pix\",\n        \"availability\": \"available\",\n        \"fee_display\": \"Zero Fees\",\n        \"fee_value\": 0,\n        \"fee_unit\": \"rate\",\n        \"fee_currency\": \"BRL\",\n        \"region\": \"brazil\",\n        \"notes\": \"Requires strict matching of CPF/CNPJ with Bybit KYC details. Real-time deposits.\",\n        \"source_id\": \"src_bybit_official\",\n        \"source_url\": \"https://www.bybit.com/en/help-center\",\n        \"last_checked_at\": \"2026-06-28\",\n        \"claim_status\": \"verified\",\n        \"confidence\": 0.95\n      },\n      \"regional_availability\": {\n        \"claim_id\": \"bybit_brazil_2026_001\",\n        \"platform_id\": \"bybit\",\n        \"claim_type\": \"regional_availability\",\n        \"region\": \"brazil\",\n        \"availability\": \"active\",\n        \"notes\": \"Actively pushing Bybit Pay and Pix integrations.\",\n        \"source_id\": \"src_bybit_official\",\n        \"source_url\": \"https://www.bybit.com/en/help-center\",\n        \"last_checked_at\": \"2026-06-28\",\n        \"claim_status\": \"verified\",\n        \"confidence\": 0.9\n      },\n      \"benefit_claims\": [\n        {\n          \"claim_id\": \"bybit_benefits_2026_001\",\n          \"platform_id\": \"bybit\",\n          \"claim_type\": \"benefit\",\n          \"benefit_type\": \"miles_lounge_access\",\n          \"availability\": \"not_evidenced\",\n          \"value_display\": \"No miles or lounge benefit in current exchange signup data\",\n          \"requirement\": \"Separate card benefit claim required before mentioning travel perks.\",\n          \"eligible_regions\": [\n            \"brazil\",\n            \"global\"\n          ],\n          \"notes\": \"The current exchange onboarding data supports bonus, fee and fiat claims only. Do not infer card-style perks.\",\n          \"source_id\": \"src_internal_mock_benefits\",\n          \"source_url\": \"https://example.com/internal/current-data-only\",\n          \"last_checked_at\": \"2026-06-28\",\n          \"claim_status\": \"needs_review\",\n          \"confidence\": 0.4\n        }\n      ]\n    }\n  },\n  \"information_gain\": {\n    \"metrics\": [\n      {\n        \"platform_id\": \"binance\",\n        \"name\": \"Binance\",\n        \"headline_value_usdt\": 19800.0,\n        \"realistic_value_usdt\": 30.0,\n        \"required_deposit_usdt\": 10.0,\n        \"required_trade_volume_usdt\": 0.0,\n        \"realistic_bonus_roi\": 3.0,\n        \"headline_to_realistic_ratio\": 660.0,\n        \"estimated_fee_cost_usdt\": 0.0,\n        \"expected_net_value_usdt\": 30.0\n      },\n      {\n        \"platform_id\": \"bybit\",\n        \"name\": \"Bybit\",\n        \"headline_value_usdt\": 30000.0,\n        \"realistic_value_usdt\": 50.0,\n        \"required_deposit_usdt\": 500.0,\n        \"required_trade_volume_usdt\": 100000.0,\n        \"realistic_bonus_roi\": 0.1,\n        \"headline_to_realistic_ratio\": 600.0,\n        \"estimated_fee_cost_usdt\": 100.0,\n        \"expected_net_value_usdt\": -50.0\n      },\n      {\n        \"platform_id\": \"okx\",\n        \"name\": \"OKX\",\n        \"headline_value_usdt\": 0.0,\n        \"realistic_value_usdt\": 0.0,\n        \"required_deposit_usdt\": 0.0,\n        \"required_trade_volume_usdt\": 0.0,\n        \"realistic_bonus_roi\": null,\n        \"headline_to_realistic_ratio\": null,\n        \"estimated_fee_cost_usdt\": 0.0,\n        \"expected_net_value_usdt\": 0.0\n      }\n    ],\n    \"metrics_a\": {\n      \"platform_id\": \"binance\",\n      \"name\": \"Binance\",\n      \"headline_value_usdt\": 19800.0,\n      \"realistic_value_usdt\": 30.0,\n      \"required_deposit_usdt\": 10.0,\n      \"required_trade_volume_usdt\": 0.0,\n      \"realistic_bonus_roi\": 3.0,\n      \"headline_to_realistic_ratio\": 660.0,\n      \"estimated_fee_cost_usdt\": 0.0,\n      \"expected_net_value_usdt\": 30.0\n    },\n    \"metrics_b\": {\n      \"platform_id\": \"bybit\",\n      \"name\": \"Bybit\",\n      \"headline_value_usdt\": 30000.0,\n      \"realistic_value_usdt\": 50.0,\n      \"required_deposit_usdt\": 500.0,\n      \"required_trade_volume_usdt\": 100000.0,\n      \"realistic_bonus_roi\": 0.1,\n      \"headline_to_realistic_ratio\": 600.0,\n      \"estimated_fee_cost_usdt\": 100.0,\n      \"expected_net_value_usdt\": -50.0\n    },\n    \"bonus_diff_usdt\": -20.0,\n    \"deposit_diff_usdt\": -490.0,\n    \"deposit_burden_ratio\": 50.0,\n    \"trade_volume_diff_usdt\": -100000.0,\n    \"roi_winner\": \"Binance\",\n    \"low_budget_winner\": \"OKX\",\n    \"highest_bonus_winner\": \"Bybit\",\n    \"expected_value_winner\": \"Binance\",\n    \"computed_insights\": [\n      \"Realistic bonus ROI by platform: Binance: 300.0%; Bybit: 10.0%; OKX: N/A.\",\n      \"Entry deposit requirements: Binance: $10; Bybit: $500; OKX: $0.\",\n      \"Trading-volume hurdles appear in this data set: Bybit: $100,000.\",\n      \"Realistic bonus values: Binance: $30; Bybit: $50; OKX: $0.\",\n      \"Expected net bonus value after trading-fee friction: Binance: $30 after an estimated $0 trading-fee drag; Bybit: $-50 after an estimated $100 trading-fee drag; OKX: $0 after an estimated $0 trading-fee drag.\",\n      \"ROI winner: Binance. Low-budget onboarding winner: OKX. Highest realistic bonus: Bybit.\",\n      \"Expected-value winner after fee drag: Binance.\"\n    ],\n    \"comparison_table\": [\n      {\n        \"platform\": \"Binance\",\n        \"headline_offer\": \"Up to $19,800 USDT or $600 Voucher\",\n        \"realistic_value_usdt\": 30.0,\n        \"required_deposit_usdt\": 10.0,\n        \"required_trade_volume_usdt\": 0.0,\n        \"realistic_bonus_roi\": 3.0,\n        \"estimated_fee_cost_usdt\": 0.0,\n        \"expected_net_value_usdt\": 30.0,\n        \"spot_fee\": \"0.1% Maker/Taker\",\n        \"fiat_onramp\": \"pix\",\n        \"fiat_onramp_fee\": \"Free / Zero Fees\",\n        \"benefit_summary\": \"miles lounge access: No miles or lounge benefit in current exchange signup data (not_evidenced)\",\n        \"benefit_claims\": [\n          {\n            \"claim_id\": \"binance_benefits_2026_001\",\n            \"platform_id\": \"binance\",\n            \"claim_type\": \"benefit\",\n            \"benefit_type\": \"miles_lounge_access\",\n            \"availability\": \"not_evidenced\",\n            \"value_display\": \"No miles or lounge benefit in current exchange signup data\",\n            \"requirement\": \"Separate card benefit claim required before mentioning travel perks.\",\n            \"eligible_regions\": [\n              \"brazil\",\n              \"global\"\n            ],\n            \"notes\": \"The current exchange onboarding data supports bonus, fee and fiat claims only. Do not infer card-style perks.\",\n            \"source_id\": \"src_internal_mock_benefits\",\n            \"source_url\": \"https://example.com/internal/current-data-only\",\n            \"last_checked_at\": \"2026-06-28\",\n            \"claim_status\": \"needs_review\",\n            \"confidence\": 0.4\n          }\n        ],\n        \"affiliate_url\": \"https://accounts.binance.com/register?ref=BESTBONUS\",\n        \"source_urls\": [\n          \"https://www.binance.com/en/activity/referral\",\n          \"https://www.binance.com/en/fee/trading\",\n          \"https://www.binance.com/en/fiat/deposit/BRL\",\n          \"https://www.binance.com/en-BH/blog/all/binance-brazil\",\n          \"https://example.com/internal/current-data-only\"\n        ]\n      },\n      {\n        \"platform\": \"Bybit\",\n        \"headline_offer\": \"Up to $30,000 USDT\",\n        \"realistic_value_usdt\": 50.0,\n        \"required_deposit_usdt\": 500.0,\n        \"required_trade_volume_usdt\": 100000.0,\n        \"realistic_bonus_roi\": 0.1,\n        \"estimated_fee_cost_usdt\": 100.0,\n        \"expected_net_value_usdt\": -50.0,\n        \"spot_fee\": \"0.1% Maker/Taker\",\n        \"fiat_onramp\": \"pix\",\n        \"fiat_onramp_fee\": \"Zero Fees\",\n        \"benefit_summary\": \"miles lounge access: No miles or lounge benefit in current exchange signup data (not_evidenced)\",\n        \"benefit_claims\": [\n          {\n            \"claim_id\": \"bybit_benefits_2026_001\",\n            \"platform_id\": \"bybit\",\n            \"claim_type\": \"benefit\",\n            \"benefit_type\": \"miles_lounge_access\",\n            \"availability\": \"not_evidenced\",\n            \"value_display\": \"No miles or lounge benefit in current exchange signup data\",\n            \"requirement\": \"Separate card benefit claim required before mentioning travel perks.\",\n            \"eligible_regions\": [\n              \"brazil\",\n              \"global\"\n            ],\n            \"notes\": \"The current exchange onboarding data supports bonus, fee and fiat claims only. Do not infer card-style perks.\",\n            \"source_id\": \"src_internal_mock_benefits\",\n            \"source_url\": \"https://example.com/internal/current-data-only\",\n            \"last_checked_at\": \"2026-06-28\",\n            \"claim_status\": \"needs_review\",\n            \"confidence\": 0.4\n          }\n        ],\n        \"affiliate_url\": \"https://www.bybit.com/register?affiliate_id=93065\",\n        \"source_urls\": [\n          \"https://www.bybit.com/en/promo/global-deposit-blastoff\",\n          \"https://www.bybit.com/en/help-center/article/Trading-Fee-Structure\",\n          \"https://www.bybit.com/en/help-center\",\n          \"https://www.bybit.com/en/help-center\",\n          \"https://example.com/internal/current-data-only\"\n        ]\n      },\n      {\n        \"platform\": \"OKX\",\n        \"headline_offer\": \"New-user rewards vary by campaign\",\n        \"realistic_value_usdt\": 0.0,\n        \"required_deposit_usdt\": 0.0,\n        \"required_trade_volume_usdt\": 0.0,\n        \"realistic_bonus_roi\": null,\n        \"estimated_fee_cost_usdt\": 0.0,\n        \"expected_net_value_usdt\": 0.0,\n        \"spot_fee\": \"Varies by tier; verify current fee schedule\",\n        \"fiat_onramp\": \"p2p\",\n        \"fiat_onramp_fee\": \"Varies by merchant/payment method\",\n        \"benefit_summary\": \"localization: Brazil Portuguese product experience evidenced; miles/lounge not evidenced (available)\",\n        \"benefit_claims\": [\n          {\n            \"claim_id\": \"okx_benefits_2026_001\",\n            \"platform_id\": \"okx\",\n            \"claim_type\": \"benefit\",\n            \"benefit_type\": \"localization\",\n            \"availability\": \"available\",\n            \"value_display\": \"Brazil Portuguese product experience evidenced; miles/lounge not evidenced\",\n            \"requirement\": \"Verify local product and promo terms before publishing.\",\n            \"eligible_regions\": [\n              \"brazil\",\n              \"global\"\n            ],\n            \"notes\": \"Useful for users who care about localized onboarding, but not a card miles or lounge claim.\",\n            \"source_id\": \"src_okx_official\",\n            \"source_url\": \"https://www.okx.com/pt-br\",\n            \"last_checked_at\": \"2026-06-28\",\n            \"claim_status\": \"needs_review\",\n            \"confidence\": 0.55\n          }\n        ],\n        \"affiliate_url\": \"https://www.okx.com/join\",\n        \"source_urls\": [\n          \"https://www.okx.com/rewards\",\n          \"https://www.okx.com/fees\",\n          \"https://www.okx.com/p2p-markets/brl/buy-usdt\",\n          \"https://www.okx.com/pt-br\",\n          \"https://www.okx.com/pt-br\"\n        ]\n      }\n    ]\n  }\n}\n</CAMPAIGN_FACTS>\n<SEARCH_NOTES>\n{\n  \"status\": \"not_attached\",\n  \"rule\": \"Search notes are auxiliary context only and must not overwrite campaign facts.\"\n}\n</SEARCH_NOTES>",
     "job": {
       "job_id": "job_binance_vs_bybit_vs_okx_brazil_bonus",
       "content_type": "comparison",
@@ -18,6 +830,14 @@
         "bybit",
         "okx"
       ],
+      "allowed_regions": [
+        "brazil"
+      ],
+      "restricted_regions": [
+        "us",
+        "uk"
+      ],
+      "compliance_disclaimer": "This comparison is for Brazil users only. It is not financial advice. Crypto products are volatile and may be restricted or unavailable in some jurisdictions; check local rules and platform terms before opening an account.",
       "persona": "lexington_crypto_analyst",
       "intent": "Compare account-opening value, realistic bonuses, fiat friction, and benefit evidence across three global exchanges for Brazil users.",
       "cms_target": "wordpress"
@@ -600,7 +1420,9 @@
           "required_deposit_usdt": 10.0,
           "required_trade_volume_usdt": 0.0,
           "realistic_bonus_roi": 3.0,
-          "headline_to_realistic_ratio": 660.0
+          "headline_to_realistic_ratio": 660.0,
+          "estimated_fee_cost_usdt": 0.0,
+          "expected_net_value_usdt": 30.0
         },
         {
           "platform_id": "bybit",
@@ -610,7 +1432,9 @@
           "required_deposit_usdt": 500.0,
           "required_trade_volume_usdt": 100000.0,
           "realistic_bonus_roi": 0.1,
-          "headline_to_realistic_ratio": 600.0
+          "headline_to_realistic_ratio": 600.0,
+          "estimated_fee_cost_usdt": 100.0,
+          "expected_net_value_usdt": -50.0
         },
         {
           "platform_id": "okx",
@@ -620,7 +1444,9 @@
           "required_deposit_usdt": 0.0,
           "required_trade_volume_usdt": 0.0,
           "realistic_bonus_roi": null,
-          "headline_to_realistic_ratio": null
+          "headline_to_realistic_ratio": null,
+          "estimated_fee_cost_usdt": 0.0,
+          "expected_net_value_usdt": 0.0
         }
       ],
       "metrics_a": {
@@ -631,7 +1457,9 @@
         "required_deposit_usdt": 10.0,
         "required_trade_volume_usdt": 0.0,
         "realistic_bonus_roi": 3.0,
-        "headline_to_realistic_ratio": 660.0
+        "headline_to_realistic_ratio": 660.0,
+        "estimated_fee_cost_usdt": 0.0,
+        "expected_net_value_usdt": 30.0
       },
       "metrics_b": {
         "platform_id": "bybit",
@@ -641,7 +1469,9 @@
         "required_deposit_usdt": 500.0,
         "required_trade_volume_usdt": 100000.0,
         "realistic_bonus_roi": 0.1,
-        "headline_to_realistic_ratio": 600.0
+        "headline_to_realistic_ratio": 600.0,
+        "estimated_fee_cost_usdt": 100.0,
+        "expected_net_value_usdt": -50.0
       },
       "bonus_diff_usdt": -20.0,
       "deposit_diff_usdt": -490.0,
@@ -650,12 +1480,15 @@
       "roi_winner": "Binance",
       "low_budget_winner": "OKX",
       "highest_bonus_winner": "Bybit",
+      "expected_value_winner": "Binance",
       "computed_insights": [
         "Realistic bonus ROI by platform: Binance: 300.0%; Bybit: 10.0%; OKX: N/A.",
         "Entry deposit requirements: Binance: $10; Bybit: $500; OKX: $0.",
         "Trading-volume hurdles appear in this data set: Bybit: $100,000.",
         "Realistic bonus values: Binance: $30; Bybit: $50; OKX: $0.",
-        "ROI winner: Binance. Low-budget onboarding winner: OKX. Highest realistic bonus: Bybit."
+        "Expected net bonus value after trading-fee friction: Binance: $30 after an estimated $0 trading-fee drag; Bybit: $-50 after an estimated $100 trading-fee drag; OKX: $0 after an estimated $0 trading-fee drag.",
+        "ROI winner: Binance. Low-budget onboarding winner: OKX. Highest realistic bonus: Bybit.",
+        "Expected-value winner after fee drag: Binance."
       ],
       "comparison_table": [
         {
@@ -665,6 +1498,8 @@
           "required_deposit_usdt": 10.0,
           "required_trade_volume_usdt": 0.0,
           "realistic_bonus_roi": 3.0,
+          "estimated_fee_cost_usdt": 0.0,
+          "expected_net_value_usdt": 30.0,
           "spot_fee": "0.1% Maker/Taker",
           "fiat_onramp": "pix",
           "fiat_onramp_fee": "Free / Zero Fees",
@@ -706,6 +1541,8 @@
           "required_deposit_usdt": 500.0,
           "required_trade_volume_usdt": 100000.0,
           "realistic_bonus_roi": 0.1,
+          "estimated_fee_cost_usdt": 100.0,
+          "expected_net_value_usdt": -50.0,
           "spot_fee": "0.1% Maker/Taker",
           "fiat_onramp": "pix",
           "fiat_onramp_fee": "Zero Fees",
@@ -747,6 +1584,8 @@
           "required_deposit_usdt": 0.0,
           "required_trade_volume_usdt": 0.0,
           "realistic_bonus_roi": null,
+          "estimated_fee_cost_usdt": 0.0,
+          "expected_net_value_usdt": 0.0,
           "spot_fee": "Varies by tier; verify current fee schedule",
           "fiat_onramp": "p2p",
           "fiat_onramp_fee": "Varies by merchant/payment method",
@@ -789,7 +1628,9 @@
       "target_keyword": "string",
       "html_content": "string with H2/H3 tags and comparison tables",
       "schema_markup": "FAQPage or Product JSON-LD string",
-      "winner_verdict": "string"
+      "winner_verdict": "string",
+      "mentioned_entities": "array of strings",
+      "compliance_disclaimer": "string"
     },
     "writing_requirements": [
       "Lead with the practical verdict.",
@@ -799,6 +1640,7 @@
       "Include a MoneyHero-style quick verdict table and an analyst math table in html_content.",
       "Include a benefits lens when benefit claims exist, covering miles, lounge access, rewards, application eligibility, or explaining when they are not evidenced.",
       "Include source notes or claim caveats in html_content.",
+      "Include the jurisdiction-specific compliance disclaimer in html_content and compliance_disclaimer.",
       "Use the CTA text 'Claim the bonus' for affiliate links.",
       "Do not overstate certainty when a claim depends on promotion terms or expiry.",
       "Avoid generic SEO filler introductions.",
@@ -810,7 +1652,14 @@
       "target_keyword": "Binance vs Bybit vs OKX bonus Brazil 2026",
       "html_content": "<h2>Quick Verdict</h2>...",
       "schema_markup": "{\"@context\": \"https://schema.org\", \"@type\": \"FAQPage\"}",
-      "winner_verdict": "string"
+      "winner_verdict": "string",
+      "mentioned_entities": [
+        "Binance",
+        "Bybit",
+        "Brazil",
+        "Pix"
+      ],
+      "compliance_disclaimer": "This comparison is for Brazil users only. It is not financial advice. Crypto products are volatile and may be restricted or unavailable in some jurisdictions; check local rules and platform terms before opening an account."
     }
   },
   "output_schema_name": "BlogPostStructure",
@@ -823,7 +1672,9 @@
       "target_keyword",
       "html_content",
       "schema_markup",
-      "winner_verdict"
+      "winner_verdict",
+      "mentioned_entities",
+      "compliance_disclaimer"
     ],
     "properties": {
       "h1_title": {
@@ -847,6 +1698,17 @@
       "winner_verdict": {
         "type": "string",
         "description": "Clear verdict explaining which user type should choose each platform."
+      },
+      "mentioned_entities": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Structured entities mentioned in the article for internal linking and knowledge graph use."
+      },
+      "compliance_disclaimer": {
+        "type": "string",
+        "description": "Dynamic legal disclaimer for the target jurisdiction."
       }
     }
   },
