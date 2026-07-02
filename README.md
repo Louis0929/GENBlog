@@ -21,6 +21,40 @@ It is designed around one core rule:
 - Supports benefit-lens claims for miles, lounge access, card rewards, fee rebates, application eligibility, and localized onboarding.
 - Supports two-platform and multi-platform comparisons from the same campaign shape.
 
+## Workflow
+
+```mermaid
+flowchart TD
+    A["Upstream data<br/>MongoDB / JSON / CSV / API"] --> B["Normalize<br/>Campaign contract"]
+    B --> C["Credibility lookup<br/>sources + allowed claim types"]
+    C --> D{"Missing claim terms?"}
+    D -->|Yes| E["Evidence search<br/>complete or verify claims"]
+    D -->|No| F["Claim validation"]
+    E --> F
+    F --> G{"Validation passed?"}
+    G -->|No| X["Stop<br/>return validation errors"]
+    G -->|Yes| H["Compliance check<br/>regions + disclaimer"]
+    H --> I["Information gain engine<br/>ROI + fee drag + expected net value"]
+    I --> J["Optional context search<br/>background notes only"]
+    J --> K["Writer brief<br/>locked facts + computed insights"]
+    K --> L["LLM prompt package<br/>CAMPAIGN_FACTS + SEARCH_NOTES"]
+    L --> M["Writer agent<br/>baseline or LLM"]
+    M --> N["BlogPostStructure<br/>JSON + markdown/html content"]
+    N --> O["Editorial gate<br/>facts, sources, schema, disclaimer, style"]
+    O -->|Fail| P["Auto-revision payload<br/>revision_reasons + revision_prompt"]
+    P -->|max retries| M
+    O -->|Pass| Q["Export<br/>generated_post.json + article.md/html + audits"]
+```
+
+Core idea:
+
+```text
+Upstream and credibility checks decide facts.
+Python decides math and verdict backbone.
+The writer decides wording.
+The editorial gate decides publishability.
+```
+
 ## Run
 
 ```powershell
@@ -58,6 +92,7 @@ src/crypto_pseo/
   cli.py
   contract.py
   export.py
+  gate.py
   generator.py
   insight.py
   llm_prompt.py
